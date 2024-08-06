@@ -1,0 +1,31 @@
+import { CSSProperties } from 'react';
+
+import { Style } from '@react-pdf/types/style';
+
+import { ArrayField } from './field/array-field.ts';
+import { CompositeField } from './field/composite-field.ts';
+import { Field } from './field/field.ts';
+
+export interface FormDefine {
+	sections: Section[];
+}
+
+export interface Section {
+	id: string;
+	hide: boolean;
+	hideInPDF: boolean;
+	type: string;
+	maxWidth?: string;
+	isHeader?: boolean;
+	subSections: SubSection[];
+	style?: CSSProperties | Style | Style[];
+}
+
+export interface SubSection {
+	id: string;
+	hide: boolean;
+	hideInPDF: boolean;
+	maxWidth?: string;
+	fields: (Field | ArrayField | CompositeField)[];
+	style?: CSSProperties | Style | Style[];
+}

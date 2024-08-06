@@ -1,37 +1,55 @@
-import { useState } from 'react';
-
 import './App.css';
-import { Button, Input, Label } from '..';
+import React from 'react';
+
+import { Stack, Tab, Tabs } from '@mui/material';
+import Box from '@mui/material/Box';
+import { RecoilRoot } from 'recoil';
+
+import TabPanel from '../lib/UI/TabPanel/TabPanel.tsx';
+import Report from './sample/Report.tsx';
+import ReportGenerator from './sample/ReportGenerator.tsx';
 
 function App() {
-	const [count, setCount] = useState(0);
-	const [inputCustomCountValue, setInputCustomCountValue] = useState('');
+	const [tabIndex, setTabIndex] = React.useState(0);
 
-	const handleClickCustomCount = () => {
-		if (inputCustomCountValue === '') {
-			setCount((count) => count + 1);
-		} else {
-			setCount(Number(inputCustomCountValue));
-		}
+	const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+		setTabIndex(newValue);
 	};
 
 	return (
-		<>
-			<div className="card">
-				<Label>My Label</Label>
-				<br />
-				<Input
-					placeholder="Custom count"
-					value={inputCustomCountValue}
-					onChange={(e) => setInputCustomCountValue(e.target.value)}
-				/>
-				<br />
-				<Button onClick={handleClickCustomCount}>count is {count}</Button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-		</>
+		<RecoilRoot override={false}>
+			<Stack sx={{ height: '100vh', p: 2 }}>
+				<Stack
+					direction="row"
+					spacing={2}
+					sx={{
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+				>
+					<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+						<Tabs value={tabIndex} onChange={handleTabChange}>
+							<Tab label="Report" value={0} />
+							<Tab label="Rep. Generator" value={1} />
+							<Tab label="Test" value={2} />
+							<Tab label="Test" value={3} />
+						</Tabs>
+					</Box>
+				</Stack>
+				<TabPanel value={tabIndex} index={0}>
+					<Report />
+				</TabPanel>
+				<TabPanel value={tabIndex} index={1}>
+					<ReportGenerator />
+				</TabPanel>
+				<TabPanel value={tabIndex} index={2}>
+					<div />
+				</TabPanel>
+				<TabPanel value={tabIndex} index={3}>
+					<div />
+				</TabPanel>
+			</Stack>
+		</RecoilRoot>
 	);
 }
 

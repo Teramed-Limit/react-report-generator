@@ -1,0 +1,63 @@
+.reportContainer {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    position: relative;
+    flex: 1 1 auto;
+    height: 100%;
+    justify-content: space-between;
+    overflow: auto;
+}
+
+.reportLayout {
+    width: fit-content;
+    margin: 10px auto;
+    padding: 10px;
+    user-select: none;
+    border: 1px solid darkgrey;
+    box-shadow: 5px 5px 5px 1px #ccc;
+    border-radius: 5px;
+    overflow: auto;
+}
+
+.page {
+    //width: 210mm;
+    width: 794px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
+.header {
+    position: sticky;
+    top: 0;
+    min-height: 60px;
+    background-color: #4082dd;
+    box-shadow: 6px 0 10px #48596233;
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+}
+
+.sticky {
+    //z-index: 1000;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 6px;
+    padding-bottom: 8px;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid hsl(215, 15%, 92%);
+    background-color: hsla(0, 0%, 100%, 0.6);
+    color: hsl(215, 15%, 22%);
+}
+
+.toolbar {
+    padding: 8px;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid hsl(215, 15%, 92%);
+    background-color: hsla(0, 0%, 100%, 0.6);
+    color: hsl(215, 15%, 22%);
+}

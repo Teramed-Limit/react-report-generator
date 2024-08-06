@@ -1,6 +1,7 @@
-import styles from './styles.module.scss';
+interface Props {
+	id: string;
+}
 
-export function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-	const { className, ...restProps } = props;
-	return <button type="button" className={`${className} ${styles.button}`} {...restProps} />;
+export function Button({ id }: Props) {
+	return <button type="button" id={id} />;
 }

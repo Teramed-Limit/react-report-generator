@@ -1,0 +1,14 @@
+.container {
+    flex: 1 1 auto;
+}
+
+select {
+    border: 0;
+    width: 100%;
+    font: inherit;
+    min-height: 1rem;
+    line-height: 1rem;
+    color: inherit;
+    outline: 0;
+    background-color: transparent;
+}
