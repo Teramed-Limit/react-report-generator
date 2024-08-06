@@ -1,0 +1,22 @@
+import Checkbox from './Checkbox/Checkbox';
+import CodeListLexiconInput from './CodeListLexiconInput/CodeListLexiconInput';
+import CodeListSelection from './CodeListSelection/CodeListSelection';
+import DatePicker from './DatePicker/DatePicker';
+import { FormFieldType } from './field-type';
+import NumberInput from './NumberInput/NumberInput';
+import RadioButton from './RadioButton/RadioButton.tsx';
+import ReportDiagram from './ReportDiagram/ReportDiagram';
+import TextArea from './TextArea/TextArea';
+import TextInput from './TextInput/TextInput';
+
+export const FieldMapper = {
+	[FormFieldType.Text]: TextInput,
+	[FormFieldType.TextArea]: TextArea,
+	[FormFieldType.CodeListSelection]: CodeListSelection,
+	[FormFieldType.CodeListLexicon]: CodeListLexiconInput,
+	[FormFieldType.Radio]: RadioButton,
+	[FormFieldType.Number]: NumberInput,
+	[FormFieldType.Checkbox]: Checkbox,
+	[FormFieldType.ReportDiagram]: ReportDiagram,
+	[FormFieldType.DatePicker]: DatePicker,
+};
