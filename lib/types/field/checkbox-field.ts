@@ -2,7 +2,7 @@ import { Field } from './field';
 
 export interface CheckboxField extends Field {
 	checkboxLabel: string;
-	valueType: string;
+	valueType: ValueType;
 }
 
 export enum ValueType {

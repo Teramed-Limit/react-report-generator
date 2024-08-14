@@ -1,0 +1,42 @@
+import { RepPage } from '../../lib/types/report-generator/rep-page.ts';
+
+export const defaultHeaderDefine: RepPage = {
+	name: 'header',
+	width: 595,
+	height: 75,
+	paddingBottom: 5,
+	paddingLeft: 10,
+	paddingRight: 5,
+	paddingTop: 10,
+	components: {
+		'628397ab-953e-5705-580c-6c299436d4ff': {
+			uuid: '628397ab-953e-5705-580c-6c299436d4ff',
+			componentType: 'Line',
+			width: 585,
+			height: 10,
+			x: 6.752837326607608,
+			y: 62.745901639344254,
+			x1: 0,
+			y1: 5,
+			x2: 585,
+			y2: 5,
+			color: '#000000',
+			thickness: 1,
+		},
+		'67a1033c-7692-8604-9ed1-7564e119b1f6': {
+			uuid: '67a1033c-7692-8604-9ed1-7564e119b1f6',
+			x: 361.96849385245895,
+			y: 42.01765447667091,
+			componentType: 'Label',
+			valueType: 'string',
+			value: 'COLONSCOPY REPORT',
+			fontSize: 20,
+			fontName: 'Arial',
+			fontStyle: 'normal',
+			fontColor: '#0070c0',
+			fontWeight: 400,
+			suffix: '',
+			prefix: '',
+		},
+	},
+};

@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Konva from 'konva';
 import * as R from 'ramda';
 
 import AttributeList from '../../attribute/AttributeList/AttributeList.tsx';
-import ColorPickerButton from '../../componentV2/ColorPickerButton/ColorPickerButton.tsx';
 import { useElementSize } from '../../hooks/useElementSize.tsx';
 import useLocalStorage from '../../hooks/useLocalStorage.ts';
 import Canvas from '../../konva-comp/Canvas/Canvas.tsx';
 import CanvasOverlay from '../../konva-comp/CanvasOvelay/CanvasOverlay.tsx';
 import CanvasToolbar from '../../konva-comp/CanvasToolbar/CanvasToolbar.tsx';
 import { CanvasMarker, MarkerType } from '../../types/canvas/canvas-maker-attribute.ts';
+import ColorPickerButton from '../../UI/ColorPickerButton/ColorPickerButton.tsx';
 import { generateUUID, isEmptyOrNil } from '../../utils/general.ts';
 import classes from './ImageCanvasModal.module.scss';
 
@@ -158,9 +158,11 @@ function ImageCanvasModal({ imageSrc, initMarkers, onExportCanvas }: Props) {
 					) : null}
 				</div>
 			</div>
-			<Button variant="contained" onClick={() => onConfirm()}>
-				Confirm
-			</Button>
+			<Box sx={{ alignSelf: 'end' }}>
+				<Button variant="contained" onClick={() => onConfirm()}>
+					Confirm
+				</Button>
+			</Box>
 		</>
 	);
 }

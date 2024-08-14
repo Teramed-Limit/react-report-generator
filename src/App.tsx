@@ -1,199 +1,159 @@
 import './App.css';
-import { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
-import { Button } from '@mui/material';
-import { RecoilRoot } from 'recoil';
+import { Button, Stack, Tab, Tabs } from '@mui/material';
+import Box from '@mui/material/Box';
+import ReactPDF, { Styles } from '@react-pdf/renderer';
 
-import { ISVReport, ISVReportHandle } from '../lib/components/ISVReport';
+import { registerFont } from '../lib/assets/fonts.ts';
+import withRecoilRoot from '../lib/hoc/withRecoilRoot.tsx';
+import { useModal } from '../lib/hooks/useModal.ts';
+import ISVReport, { ISVReportHandle } from '../lib/ISVReport/index.tsx';
+import ISVReportGenerator, { ISVReportGeneratorHandle } from '../lib/ISVReportGenerator/ISVReportGenerator.tsx';
+import ISVReportPDF from '../lib/ISVReportPDF/ISVReportPDF.tsx';
+import CustomModal from '../lib/modals/CustomModal/CustomModal.tsx';
 import { FormDefine } from '../lib/types/define.ts';
-import { gridDefine } from './constant/report-define.ts';
+import { Field } from '../lib/types/field/field.ts';
+import { RepPage } from '../lib/types/report-generator/rep-page.ts';
+import { ReportImageData } from '../lib/types/report-image-data.ts';
+import { codeList } from './constant/code-list.ts';
+import { gridTableDefine } from './constant/cystoscopy-define.ts';
+import { fakeData, fakeImageListData } from './constant/fakeData.ts';
+import { defaultFooterDefine } from './constant/footer-define.ts';
+import { defaultHeaderDefine } from './constant/header-define.ts';
+import { imageFieldsDefine } from './constant/image-define.ts';
+import TabPanel from './TabPanel/TabPanel.tsx';
 
-const initialFormData = {
-	// ReportTemplate: 'value1',
-	// ReportTemplate2: ['value12', 'value2'],
-	StudyInstanceUID: '1.3.6.1.4.1.54514.20240314115126.1.9494.278',
-	StudyDate: '20240411',
-	PatientId: 'test',
-	PatientsName: 'test',
-	PatientsSex: 'M',
-	PatientsBirthDate: '20240303',
-	PatientAge: '0',
-	Version: '1',
-	ReportStatus: 'Saved',
-	Author: 'user',
-	ReportAttachmentData: [
-		{
-			Id: 253,
-			AttachmentType: 'ReferringLetter',
-			FilePath:
-				'http://192.168.50.214:8080//attachment\\1.3.6.1.4.1.54514.20240314115126.1.9494.278_ReferringLetter_1.pdf',
-		},
-		{
-			Id: 254,
-			AttachmentType: 'OldReport',
-			FilePath:
-				'http://192.168.50.214:8080//attachment\\1.3.6.1.4.1.54514.20240314115126.1.9494.278_OldReport_1.jpg',
-		},
-	],
-	AccessionNumber: 'S220240314001',
-	StudyDescription: 'ddddddd',
-	Modality: 'US',
-	DateTime: '2024-07-16T14:26:34',
-	ReferringPhysiciansName: '',
-	NameofPhysiciansReading: 'DR01004',
-	PerformingPhysiciansName: 'DR01004',
-	LastSignOffExecuteTime: '',
-	UserId: 'user',
-	DoctorinCharge: 'user',
-	Endoscopist1: 'user',
-	Indication: '',
-	DiagramData:
-		'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=',
-	DiagramMarkers: [],
-	Other: '',
-	OtherDescription: '',
-	OccurrenceofComplication: '',
-	PlannedforPartialColonoscopy: '',
-	BowelPreparation: '',
-	PostRighthemicolectomy: '',
-	TechnicalDifficulties: '',
-	MechanicalObstruction: '',
-	IsCaecumReached: '',
-	WithdrawalTime: 0,
-	QualityOfBowelPreparation: '',
-	QualityBowelScore: 0,
-	BBPS_Left: -1,
-	BBPS_Right: -1,
-	BBPS_Transverse: -1,
-	Sedation: [{ SedationDrug: '', SedationDosage: '', SedationDosageUnit: '' }],
-	BowelPrepQuality: 'Excellent',
-	ReportDate: '2024-07-16',
-	TableBreastLesion: [
-		{
-			location: 'R_H',
-			nature: '瑞克·格萊姆斯的妻子。是這一小隊倖存者的情感中樞，並且努力維持着他們的道德和行為。她是一位具有自我保護意識母親，不顧一切的保護她的兒子卡爾的安全，也因此對他人非常多疑，不易接近。與瑞克重逢後，她果斷地與肖恩·威爾士斷絕了關係。後來她懷孕了，但卻不知道孩子是瑞克的還是肖恩的。經過一番掙扎，她決定把孩子生下來，並向瑞克坦白了一切。',
-			'cm-fm': '20',
-			size: '40',
-			'bi-RADS': 'Test',
-		},
-	],
-};
-
-const formDefine = {
-	sections: [
-		{
-			id: 'sectionReportType',
-			type: 'form',
-			subSections: [
-				{
-					id: 'subSection_2',
-					maxWidth: '50%',
-					fields: [
-						{
-							id: 'ReportTemplate',
-							label: 'Report Template',
-							type: 'CodeListSelection',
-							orientation: 'row',
-							optionSource: {
-								type: 'http',
-								source: 'ReportTemplate',
-								labelKey: 'label',
-								key: 'value',
-							},
-							validate: {
-								type: 'required',
-							},
-							labelStyle: {
-								color: '#0070c0',
-								fontFamily: 'Noto Sans TC',
-								fontWeight: 'bold',
-								fontSize: '10',
-								backgroundColor: 'transparent',
-							},
-							valueStyle: {
-								fontSize: '10',
-								fontFamily: 'Noto Sans TC',
-								fontWeight: 'bold',
-								color: 'black',
-							},
-						},
-					],
-				},
-			],
-			maxWidth: '100%',
-			hideInPDF: true,
-			style: {
-				backgroundColor: '#dadada',
-			},
-		},
-		{
-			id: 'sectionPatientInfo',
-			type: 'form',
-			subSections: [
-				{
-					id: 'subSection_1',
-					maxWidth: '100%',
-					fields: [],
-				},
-			],
-			maxWidth: '100%',
-			style: {
-				backgroundColor: '#dadada',
-				paddingTop: 0,
-				paddingRight: 0,
-				paddingBottom: 0,
-				paddingLeft: 0,
-			},
-		},
-	],
-} as FormDefine;
-
-const codeList = [
-	{
-		label: 'label1',
-		value: 'value1',
-	},
-	{
-		label: 'label2',
-		value: 'value2',
-	},
-	{
-		label: 'label3',
-		value: 'value3',
-	},
-	{
-		label: 'label4',
-		value: 'value4',
-	},
-];
+registerFont();
 
 function App() {
-	const [formData, setFormData] = useState(initialFormData);
-	const isvReportRef = useRef<ISVReportHandle>(null);
+	const { open, setOpen, onModalClose } = useModal({});
+	const isvReportRef = useRef<ISVReportHandle>();
+	const isvReportGeneratorHandleRef = useRef<ISVReportGeneratorHandle>();
+
+	const [value, setValue] = React.useState(0);
+
+	const [formData, setFormData] = React.useState<Record<string, any>>(fakeData);
+	// const [formDefine, setFormDefine] = React.useState<FormDefine>(cystoscopyDefine);
+	const [formDefine, setFormDefine] = React.useState<FormDefine>(gridTableDefine);
+	const [imageDefine, setImageDefine] = React.useState<Field[]>(imageFieldsDefine);
+	const [headerDefine, setHeaderDefine] = React.useState<RepPage>(defaultHeaderDefine);
+	const [footerDefine, setFooterDefine] = React.useState<RepPage>(defaultFooterDefine);
+
+	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+		setValue(newValue);
+	};
 
 	const handleButtonClick = () => {
 		if (isvReportRef.current) {
-			const currentFormData = isvReportRef.current.getFormData();
-			console.log('Current FormData:', currentFormData);
+			console.log(isvReportRef.current.getFormData());
+			setFormData(isvReportRef.current.getFormData());
+		}
+		if (isvReportGeneratorHandleRef.current) {
+			console.log(isvReportGeneratorHandleRef.current.getFormDefine());
+			setFormDefine(isvReportGeneratorHandleRef.current.getFormDefine());
+			setImageDefine(isvReportGeneratorHandleRef.current.getImageDefine());
+			setHeaderDefine(isvReportGeneratorHandleRef.current.getHeaderDefine());
+			setFooterDefine(isvReportGeneratorHandleRef.current.getFooterDefine());
 		}
 	};
 
 	return (
-		<RecoilRoot>
-			<Button variant="contained" onClick={handleButtonClick}>
-				獲取 Form Data
-			</Button>
-			<ISVReport
-				ref={isvReportRef}
-				formData={formData}
-				formDefine={gridDefine}
-				codeList={{
-					ReportTemplate: codeList,
-					Anesthesiologist: codeList,
+		<Stack sx={{ height: '100vh', p: 2 }}>
+			<Stack
+				direction="row"
+				spacing={2}
+				sx={{
+					alignItems: 'center',
+					justifyContent: 'center',
 				}}
-			/>
-		</RecoilRoot>
+			>
+				<Button variant="contained" onClick={handleButtonClick}>
+					Save
+				</Button>
+				<Button variant="contained" onClick={() => setOpen(true)}>
+					Print PDF
+				</Button>
+				<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+					<Tabs value={value} onChange={handleChange}>
+						<Tab label="Report" value={0} />
+						<Tab label="Rep. Generator" value={1} />
+					</Tabs>
+				</Box>
+			</Stack>
+			<TabPanel value={value} index={0}>
+				<ISVReport
+					ref={isvReportRef}
+					formData={formData}
+					formDefine={formDefine}
+					formDisabled={false}
+					codeList={codeList as any}
+					buttonActionMap={{
+						createTemplate: (field: Field) => {
+							window.alert('Create Template');
+						},
+					}}
+				/>
+			</TabPanel>
+			<TabPanel value={value} index={1}>
+				<ISVReportGenerator
+					ref={isvReportGeneratorHandleRef}
+					formData={formData}
+					formDefine={formDefine}
+					imageDefine={imageDefine}
+					headerDefine={headerDefine}
+					footerDefine={footerDefine}
+					codeList={codeList as any}
+				/>
+			</TabPanel>
+			<CustomModal width="90%" height="90%" label="" open={open} onModalClose={() => onModalClose()}>
+				<ISVReportPDF<ReportImageData>
+					showToolbar
+					formData={formData}
+					formDefine={formDefine}
+					headerDefine={headerDefine}
+					footerDefine={footerDefine}
+					imageList={fakeImageListData}
+					getImageKey={(image) => image.SOPInstanceUID}
+					getImageSrc={(image) => image.ImageSrc}
+					compareFunction={(a, b) => (a.MappingNumber > b.MappingNumber ? 1 : -1)}
+					renderImageDesc={(image) => (
+						<ReactPDF.View
+							style={{
+								width: '100%',
+								maxWidth: '100%',
+								display: 'flex',
+								flexDirection: 'column',
+							}}
+						>
+							{imageDefine.map((field) => {
+								return (
+									<ReactPDF.Text key={field.id} style={{ ...(field.valueStyle as Styles) }}>
+										{field.id}
+									</ReactPDF.Text>
+								);
+							})}
+						</ReactPDF.View>
+					)}
+					renderImageNumber={(image) => (
+						<ReactPDF.Text
+							style={{
+								fontWeight: 'bold',
+								fontSize: '18px',
+								position: 'absolute',
+								color: 'white',
+								padding: '4px',
+								left: 0,
+								top: 0,
+							}}
+						>
+							{image.MappingNumber > 0 && `${image.MappingNumber}`}
+						</ReactPDF.Text>
+					)}
+				/>
+			</CustomModal>
+		</Stack>
 	);
 }
 
-export default App;
+export default withRecoilRoot(App);

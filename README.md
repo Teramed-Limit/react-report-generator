@@ -48,8 +48,8 @@ password: teramed
 
 * 取消發佈
 
-```npm unpublish PackageName --force --registry http://192.168.50.253:49153```
+```npm unpublish react-report-lib --force --registry http://192.168.50.253:49153```
 
 * 下載
 
-```npm install PackageName --registry http://192.168.50.253:49153```
+```npm install react-report-lib --registry http://192.168.50.253:49153```

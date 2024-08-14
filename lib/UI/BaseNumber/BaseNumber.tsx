@@ -1,3 +1,5 @@
+import React from 'react';
+
 import classes from './BaseNumber.module.scss';
 
 interface Props {
@@ -13,7 +15,7 @@ interface Props {
 function BaseNumber({ id, value, disabled = false, onValueChange, suffix, prefix, customClass }: Props) {
 	return (
 		<div className={classes.container}>
-			<span>{prefix}</span>
+			{prefix && <span className={classes.span}>{prefix}&nbsp;</span>}
 			<input
 				id={id}
 				disabled={disabled}
@@ -23,7 +25,7 @@ function BaseNumber({ id, value, disabled = false, onValueChange, suffix, prefix
 				value={Number(value).toString()}
 				onChange={(event) => onValueChange(+event.target.value)}
 			/>
-			<span>{suffix}</span>
+			{suffix && <span className={classes.span}>{suffix}&nbsp;</span>}
 		</div>
 	);
 }

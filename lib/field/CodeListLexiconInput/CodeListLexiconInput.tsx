@@ -1,19 +1,21 @@
 import React from 'react';
 
-import { Autocomplete, Box, TextField } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
+import Box from '@mui/material/Box';
 import { useRecoilValue } from 'recoil';
 
 import { codeListAtom } from '../../recoil/atoms/formAtoms.ts';
 import { LexiconField } from '../../types/field/lexicon-field.ts';
 
 interface Props {
+	id: string;
 	field: LexiconField;
 	value: string;
 	onValueChange: (value: string) => void;
 	disabled: boolean;
 }
 
-function CodeListLexiconInput({ field, value, onValueChange, disabled }: Props) {
+function CodeListLexiconInput({ id, field, value, onValueChange, disabled }: Props) {
 	const options = useRecoilValue(
 		codeListAtom({
 			optionSource: field.optionSource,
@@ -21,26 +23,29 @@ function CodeListLexiconInput({ field, value, onValueChange, disabled }: Props) 
 		}),
 	);
 
+	const labelKey = field.optionSource.labelKey || 'Label';
+	const valueKey = field.optionSource.key || 'Value';
+
 	let defaultValue = null;
-	defaultValue = options.find((option) => option[field.optionSource.key] === value);
+	defaultValue = options.find((option) => option[valueKey] === value);
 	if (!defaultValue) defaultValue = null;
 
 	return (
 		<Autocomplete
-			id={field.id}
-			sx={{ height: '100%', width: '100%' }}
+			id={id}
+			sx={{ height: '100%', width: '100%', p: 0 }}
 			freeSolo
 			disablePortal
 			value={defaultValue}
 			options={options}
-			getOptionLabel={(option: any) => option[field.optionSource.labelKey]}
-			getOptionKey={(option: any) => option[field.optionSource.key]}
+			getOptionLabel={(option: any) => option[labelKey]}
+			getOptionKey={(option: any) => option[valueKey]}
 			onChange={(event, newValue: any) => {
 				if (!newValue) {
 					onValueChange('');
 					return;
 				}
-				onValueChange(newValue[field.optionSource.key]);
+				onValueChange(newValue[valueKey]);
 			}}
 			componentsProps={{ paper: { sx: { width: 'fit-content', minWidth: '100%' } } }}
 			renderOption={(props, option, state, ownerState) => {
@@ -55,22 +60,23 @@ function CodeListLexiconInput({ field, value, onValueChange, disabled }: Props) 
 				return (
 					<TextField
 						{...params}
+						// InputProps={{
+						// 	endAdornment: (
+						// 		<InputAdornment sx={{ p: 0 }} position="end">
+						// 			<ImportContactsIcon fontSize="small" />
+						// 		</InputAdornment>
+						// 	),
+						// }}
 						sx={{
 							width: '100%',
 							fieldset: {
 								display: 'none',
 							},
-							"& .MuiAutocomplete-inputRoot[class*='MuiOutlinedInput-root']": {
-								paddingRight: '34px !important',
-								'& .MuiAutocomplete-input': {
-									padding: 0,
-								},
-							},
 							'& .MuiInputBase-root': {
 								fieldset: {
 									border: 'none',
 								},
-								padding: '0',
+								padding: '0 !important',
 								height: '100%',
 								fontFamily: 'inherit',
 								fontSize: 'inherit',
@@ -89,7 +95,7 @@ function CodeListLexiconInput({ field, value, onValueChange, disabled }: Props) 
 								color: 'inherit',
 							},
 							'& .MuiInputBase-input': {
-								padding: 0,
+								padding: '0 !important',
 								border: 'none',
 								borderRadius: 0,
 								height: 'auto',

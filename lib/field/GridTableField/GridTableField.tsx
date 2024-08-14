@@ -12,7 +12,8 @@ import { generateUUID, isEmptyOrNil } from '../../utils/general.ts'; // Optional
 import classes from './GridTableField.module.scss';
 import 'ag-grid-community/styles/ag-grid.css'; // Mandatory CSS required by the Data Grid
 import 'ag-grid-community/styles/ag-theme-quartz.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
+// import 'ag-grid-community/styles/ag-theme-alpine.css';
+import './ag-theme-report-grid.scss';
 
 interface GridProps {
 	field: GirdField;
@@ -26,7 +27,10 @@ function CustomHeader({ column, headerStyle }: { column: Column; headerStyle: Ce
 }
 
 function GridTableField({ field, value, onValueChange, disabled }: GridProps) {
-	const uuidRowData = value.map((row) => ({ ...row, uuid: row.uuid ?? generateUUID() }));
+	let uuidRowData = value;
+	if (value && value.length > 0 && Array.isArray(value))
+		uuidRowData = uuidRowData.map((row) => ({ ...row, uuid: row.uuid ?? generateUUID() })) || [];
+	else uuidRowData = [];
 
 	const gridRef = useRef<AgGridReact>(null);
 
@@ -92,7 +96,7 @@ function GridTableField({ field, value, onValueChange, disabled }: GridProps) {
 					<DeleteIcon fontSize="inherit" />
 				</IconButton>
 			</Stack>
-			<Box className={`ag-theme-alpine ${classes.gridContainer}`}>
+			<Box className={`ag-theme-quartz ag-theme-custom ${classes.gridContainer}`}>
 				<AgGridReact
 					ref={gridRef}
 					getRowId={(params) => params.data.uuid}

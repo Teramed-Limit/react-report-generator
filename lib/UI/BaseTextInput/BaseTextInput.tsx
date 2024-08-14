@@ -8,6 +8,8 @@ interface Props {
 	disabled?: boolean;
 	placeholder?: string;
 	onValueChange: (str: string) => void;
+	onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+	onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
 	suffix?: string;
 	prefix?: string;
 	customClass?: string;
@@ -19,13 +21,15 @@ function BaseTextInput({
 	disabled = false,
 	placeholder = '',
 	onValueChange,
+	onKeyUp,
+	onFocus,
 	suffix = '',
 	prefix = '',
 	customClass,
 }: Props) {
 	return (
 		<div className={classes.container}>
-			<span className={classes.span}>{prefix}&nbsp;</span>
+			{prefix && <span className={classes.span}>{prefix}&nbsp;</span>}
 			<input
 				autoComplete="off"
 				id={id}
@@ -36,9 +40,11 @@ function BaseTextInput({
 				tabIndex={0}
 				maxLength={200}
 				value={value}
+				onKeyUp={onKeyUp}
+				onFocus={onFocus}
 				onChange={(event) => onValueChange(event.target.value)}
 			/>
-			<span className={classes.span}>&nbsp;{suffix}</span>
+			{suffix && <span className={classes.span}>{suffix}&nbsp;</span>}
 		</div>
 	);
 }

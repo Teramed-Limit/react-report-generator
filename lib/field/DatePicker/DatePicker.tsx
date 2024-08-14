@@ -8,6 +8,7 @@ import { dateFormatString, isEmptyOrNil, stringFormatDate } from '../../utils/ge
 import classes from './DatePicker.module.scss';
 
 interface Props {
+	id: string;
 	field: DateField;
 	value: string;
 	onValueChange: (value: string) => void;
@@ -16,7 +17,7 @@ interface Props {
 	prefix?: string;
 }
 
-function DatePicker({ field, value, onValueChange, disabled, suffix, prefix }: Props) {
+function DatePicker({ id, field, value, onValueChange, disabled, suffix, prefix }: Props) {
 	const defaultToFormat = field.toFormat || 'yyyy-MM-dd';
 	const defaultFromFormat = field.fromFormat || 'yyyy-MM-dd';
 

@@ -1,7 +1,12 @@
-import { atom, selectorFamily } from 'recoil';
+import * as R from 'ramda';
+import { atom, selector, selectorFamily } from 'recoil';
 
 import { Field } from '../../types/field/field.ts';
 import { FilterCondition, OptionSource } from '../../types/field/selection-field.ts';
+import { FormState } from '../../types/form-state.ts';
+
+// const validationService = new ValidationService();
+// const reportDataService = new ReportDataService();
 
 // 定義表單的value atom
 export const formValuesAtom = atom<Record<string, any>>({
@@ -10,7 +15,7 @@ export const formValuesAtom = atom<Record<string, any>>({
 });
 
 // 定義表單的state atom
-export const formStatesAtom = atom<Record<string, any>>({
+export const formStatesAtom = atom<FormState>({
 	key: 'formStatesAtom',
 	default: {},
 });
@@ -20,23 +25,14 @@ export const formDisabledAtom = atom<boolean>({
 	default: false,
 });
 
-// 使用selectorFamily來動態創建和formValuesAtom聯結的valueAtom
+// 單一 field 的 valueAtom
 export const valueAtom = selectorFamily<any, any>({
 	key: 'valueAtom',
 	get:
-		(field: Field) =>
+		({ field, valueChangedId }: { field: Field; valueChangedId: string[] }) =>
 		({ get }) => {
 			const formValues = get(formValuesAtom);
-			return formValues[field.id];
-		},
-	set:
-		(field: Field) =>
-		({ get, set }, newValue) => {
-			const formValues = get(formValuesAtom);
-			set(formValuesAtom, {
-				...formValues,
-				[field.id]: newValue,
-			});
+			return R.path(valueChangedId, formValues) || '';
 		},
 });
 
@@ -44,25 +40,24 @@ export const valueAtom = selectorFamily<any, any>({
 export const stateAtom = selectorFamily<any, any>({
 	key: 'stateAtom',
 	get:
-		(field: Field) =>
+		({ field, valueChangedId }: { field: Field; valueChangedId: string[] }) =>
 		({ get }) => {
 			const formStates = get(formStatesAtom);
 			return formStates[field.id];
-		},
-	set:
-		(field: Field) =>
-		({ get, set }, newState) => {
-			const formStates = get(formStatesAtom);
-			set(formStatesAtom, {
-				...formStates,
-				[field.id]: newState,
-			});
 		},
 });
 
 export const codeListMapAtom = atom<Record<string, any[]>>({
 	key: 'codeListMapAtom',
 	default: {},
+});
+
+export const codeListKeyAtom = selector<string[]>({
+	key: 'codeListKeyAtom',
+	get: ({ get }) => {
+		const codeListMap = get(codeListMapAtom);
+		return Object.keys(codeListMap);
+	},
 });
 
 export const codeListAtom = selectorFamily<any[], any>({
@@ -92,4 +87,9 @@ export const codeListAtom = selectorFamily<any[], any>({
 				[optionSource.source]: newState,
 			});
 		},
+});
+
+export const buttonActionMapAtom = atom<Record<string, (field: Field) => void>>({
+	key: 'buttonActionMap',
+	default: {},
 });

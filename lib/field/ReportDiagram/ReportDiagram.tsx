@@ -13,6 +13,7 @@ import { isEmptyOrNil } from '../../utils/general.ts';
 import classes from './ReportDiagram.module.scss';
 
 interface Props {
+	id: string;
 	field: DiagramField;
 	value: string;
 	onGetFieldValue?: (id: string) => any;
@@ -37,7 +38,7 @@ function processImageSource(value: string) {
 	return `data:image/png;base64,${value}`;
 }
 
-function ReportDiagram({ field, value, onGetFieldValue, onValueChange, onFieldValueChange }: Props, _) {
+function ReportDiagram({ id, field, value, onGetFieldValue, onValueChange, onFieldValueChange }: Props, _) {
 	const imageUrl = processImageSource(value ?? field?.defaultValue);
 	const { open, setOpen, onModalClose } = useModal({});
 
@@ -56,7 +57,7 @@ function ReportDiagram({ field, value, onGetFieldValue, onValueChange, onFieldVa
 	return (
 		<>
 			<div style={{ height: field.height }} className={cx(classes.imageContainer)}>
-				<img src={imageUrl} alt="None" />
+				<img id={id} src={imageUrl} alt="None" />
 				{!field.hideToolbar && (
 					<Stack className={classes.topRight} spacing={0.5}>
 						<IconButton size="small" onClick={() => setOpen(true)}>

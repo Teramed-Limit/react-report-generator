@@ -1,11 +1,14 @@
 import React from 'react';
 
 import { Stack } from '@mui/material';
+import Box from '@mui/material/Box';
 import * as R from 'ramda';
 
 import BaseCheckbox from '../../UI/BaseCheckbox/BaseCheckbox.tsx';
 import BaseNumber from '../../UI/BaseNumber/BaseNumber.tsx';
 import BaseTextInput from '../../UI/BaseTextInput/BaseTextInput.tsx';
+import ExpandToggler from '../../UI/ExpandToggler/ExpandToggler.tsx';
+import { camelize } from '../../utils/general.ts';
 import AttributeColumn from '../AttributeColumn/AttributeColumn';
 import classes from './AttributeList.module.scss';
 
@@ -28,6 +31,7 @@ export interface Props {
 	excludeAttribute?: string[];
 	skipAttributes?: string[];
 	setAttribute: (attrName: (string | number)[], attrValue: any) => void;
+	toolbar?: React.ReactNode;
 }
 
 function AttributeList({
@@ -41,6 +45,7 @@ function AttributeList({
 	excludeAttribute,
 	skipAttributes,
 	setAttribute,
+	toolbar,
 }: Props) {
 	const isReactComponent = (element: any): element is React.FC<any> =>
 		typeof element === 'function' && !React.isValidElement(element);
@@ -73,16 +78,12 @@ function AttributeList({
 
 	// 渲染物件
 	const renderObject = (obj: any, parentPath: (string | number)[] = []) => {
-		// if (!obj) return null;
-
 		return Object.keys(obj).map((key) => {
 			if (skipAttributes && skipAttributes.includes(key)) {
 				return null;
 			}
 
 			const currentPath: (string | number)[] = Number.isNaN(+key) ? [...parentPath, key] : [...parentPath, +key];
-
-			// if (!obj[key]) return null;
 
 			// 如果值是物件或陣列，則遞迴渲染
 			if (typeof obj[key] === 'object' || Array.isArray(obj[key])) {
@@ -93,38 +94,36 @@ function AttributeList({
 						RenderAttributeComponent = attributeComponentMapper[key];
 					} else if (isReactNode(attributeComponentMapper[key])) {
 						return (
-							<></>
-							// <ExpandToggler
-							// 	key={currentPath.join('.')}
-							// 	defaultExpanded={defaultExpanded}
-							// 	title={camelize(key) || key}
-							// >
-							// 	{attributeComponentMapper[key] as React.ReactNode}
-							// </ExpandToggler>
+							<ExpandToggler
+								key={currentPath.join('.')}
+								defaultExpanded={defaultExpanded}
+								title={camelize(key) || key}
+							>
+								{attributeComponentMapper[key] as React.ReactNode}
+							</ExpandToggler>
 						);
 					}
 				}
 
 				return (
-					<></>
-					// <ExpandToggler
-					// 	key={currentPath.join('.')}
-					// 	defaultExpanded={defaultExpanded}
-					// 	title={camelize(key) || key}
-					// >
-					// 	<RenderAttributeComponent
-					// 		attrPath={currentPath}
-					// 		attribute={obj[key]}
-					// 		setAttribute={setAttribute}
-					// 	/>
-					// </ExpandToggler>
+					<ExpandToggler
+						key={currentPath.join('.')}
+						defaultExpanded={defaultExpanded}
+						title={camelize(key) || key}
+					>
+						<RenderAttributeComponent
+							attrPath={currentPath}
+							attribute={obj[key]}
+							setAttribute={setAttribute}
+						/>
+					</ExpandToggler>
 				);
 			}
 
 			return (
-				<div id={currentPath.join('.')} key={currentPath.join('.')}>
+				<Box id={`attribute_${currentPath.join('.')}`} key={currentPath.join('.')}>
 					{renderInput(obj[key], key, currentPath)}
-				</div>
+				</Box>
 			);
 		});
 	};
@@ -134,8 +133,14 @@ function AttributeList({
 		return (
 			<>
 				{title && (
-					<Stack flexDirection="row" className={classes.title}>
-						<div>{title}</div>
+					<Stack
+						flexDirection="row"
+						className={classes.title}
+						justifyContent="space-between"
+						alignItems="center"
+					>
+						<Box sx={{ pl: 1 }}>{title}</Box>
+						<Box>{toolbar}</Box>
 					</Stack>
 				)}
 			</>

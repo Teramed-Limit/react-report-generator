@@ -26,7 +26,7 @@ const style = {
 	bgcolor: 'background.paper',
 	borderRadius: 4,
 	boxShadow: 24,
-	p: 2,
+	p: 1.5,
 };
 
 function CustomModal({
@@ -41,9 +41,11 @@ function CustomModal({
 	return (
 		<Modal keepMounted={keepMounted} open={open} onClose={onModalClose}>
 			<Stack sx={{ ...(style as any), width, height }} spacing={2}>
-				<Typography variant="h5" component="div">
-					{label}
-				</Typography>
+				{label && (
+					<Typography variant="h5" component="div">
+						{label}
+					</Typography>
+				)}
 				{children}
 			</Stack>
 		</Modal>
