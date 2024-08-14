@@ -1,25 +1,27 @@
 import React, { CSSProperties } from 'react';
 
-import { Field } from '../../types/field/field.ts';
+import { TextField } from '../../types/field/text-field.ts';
 import classes from '../TextInput/TextInput.module.scss';
 
 interface Props {
-	field: Field;
+	id: string;
+	field: TextField;
 	value: string;
 	onValueChange: (value: number) => void;
 	disabled: boolean;
 	outerStyle?: CSSProperties;
 }
 
-function NumberInput({ field, value, onValueChange, disabled, outerStyle }: Props) {
+function NumberInput({ id, field, value, onValueChange, disabled, outerStyle }: Props) {
 	return (
 		<div className={classes.container}>
-			<span>{field.prefix}</span>
+			{field.prefix && <span>{field.prefix}</span>}
 			<input
-				id={field.id}
+				id={id}
 				style={outerStyle}
 				readOnly={field.readOnly}
 				disabled={disabled}
+				placeholder={field.placeholder}
 				className={classes.textInput}
 				type="number"
 				autoComplete="off"
@@ -27,7 +29,7 @@ function NumberInput({ field, value, onValueChange, disabled, outerStyle }: Prop
 				value={value}
 				onChange={(event) => onValueChange(+event.target.value)}
 			/>
-			<span>{field.suffix}</span>
+			{field.suffix && <span style={{ paddingRight: '4px' }}>{field.suffix}</span>}
 		</div>
 	);
 }

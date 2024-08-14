@@ -18,4 +18,5 @@ export interface SelectionField extends Field {
 	isMulti?: boolean;
 	optionSource: OptionSource;
 	filterCondition: FilterCondition;
+	joinStr?: string;
 }

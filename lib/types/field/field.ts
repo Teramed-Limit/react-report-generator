@@ -1,38 +1,36 @@
 import { CSSProperties } from 'react';
 
+import { Style } from '@react-pdf/types/style';
+
 import { FormFieldType } from '../../field/field-type.ts';
 import { Validate } from '../validate';
 
-export interface BaseField {
+export interface Field {
 	id: string;
-	label?: string;
-	labelWidth: string;
 	type: FormFieldType;
-	orientation: 'column' | 'row';
-	hint?: string;
 	hide?: boolean;
+	hideInPDF?: boolean;
+	hint?: string;
+	orientation: 'column' | 'row';
+	validate?: Validate;
+	readOnly?: boolean;
+	buttonBar?: ButtonMeta[];
+	// label
+	label?: string;
 	hideLabel?: boolean;
-	labelStyle?: CSSProperties;
-}
-
-export interface Field extends BaseField {
-	// 初始值
+	labelWidth: string;
+	labelStyle?: CSSProperties | Style | Style[];
+	// value
 	defaultValue?: string;
+	valueStyle?: CSSProperties | Style | Style[];
 	// 和哪個Id的欄位做連動
 	initMapping?: string;
-	readOnly?: boolean;
-	suffix?: string;
-	prefix?: string;
-	buttonBar?: ButtonMeta[];
-	validate?: Validate;
-	fromModal?: string;
-	valueStyle?: CSSProperties;
-	valueChangedEvent?: ValueChangedEvent;
+	valueChangedEvent?: ValueChangedEvent<any>;
 }
 
-export interface ValueChangedEvent {
+export interface ValueChangedEvent<T> {
 	event: string;
-	eventParams: any;
+	eventParams: T;
 }
 
 export interface ButtonMeta {

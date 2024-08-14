@@ -120,3 +120,14 @@ export const dateFormatString = (value: string | Date, fromFormat: string = 'yyy
 export const stringFormatDate = (value: string, fromFormat: string): Date => {
 	return parse(value, fromFormat, new Date());
 };
+
+export const convertToDate = (value: string | Date, fromFormat: string) => {
+	try {
+		if (value instanceof Date) {
+			return format(value, fromFormat);
+		}
+		return format(new Date(value), fromFormat);
+	} catch {
+		return '';
+	}
+};

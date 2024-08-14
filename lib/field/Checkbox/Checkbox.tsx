@@ -4,13 +4,14 @@ import { CheckboxField } from '../../types/field/checkbox-field.ts';
 import BaseCheckbox from '../../UI/BaseCheckbox/BaseCheckbox.tsx';
 
 interface Props {
+	id: string;
 	field: CheckboxField;
 	value: string;
 	onValueChange: (value: string | number | boolean) => void;
 	disabled: boolean;
 }
 
-function Checkbox({ field, value, onValueChange, disabled }: Props) {
+function Checkbox({ id, field, value, onValueChange, disabled }: Props) {
 	const onChecked = (isCheck: boolean) => {
 		if (field.valueType === 'boolean') {
 			onValueChange(isCheck);
@@ -23,7 +24,7 @@ function Checkbox({ field, value, onValueChange, disabled }: Props) {
 
 	return (
 		<BaseCheckbox
-			id={field.id}
+			id={id}
 			disabled={disabled || field.readOnly}
 			label={field.checkboxLabel}
 			value={!!+value}

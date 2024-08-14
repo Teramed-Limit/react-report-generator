@@ -7,6 +7,9 @@ import GridTableField from './GridTableField/GridTableField.tsx';
 import NumberInput from './NumberInput/NumberInput';
 import RadioButton from './RadioButton/RadioButton.tsx';
 import ReportDiagram from './ReportDiagram/ReportDiagram';
+import ReportDiagramEdit from './ReportDiagram/ReportDiagramEdit/ReportDiagramEdit.tsx';
+import SRTextInputEdit from './SRTextInput/SRConfigTextInput/SRTextInputEdit.tsx';
+import SRTextInput from './SRTextInput/SRTextInput.tsx';
 import TextArea from './TextArea/TextArea';
 import TextInput from './TextInput/TextInput';
 import TimePicker from './TimePicker/TimePicker.tsx';
@@ -23,4 +26,11 @@ export const FieldMapper = {
 	[FormFieldType.DatePicker]: DatePicker,
 	[FormFieldType.TimePicker]: TimePicker,
 	[FormFieldType.GridTable]: GridTableField,
+	[FormFieldType.SRText]: SRTextInput,
+};
+
+export const FieldEditMapper = {
+	...FieldMapper,
+	[FormFieldType.SRText]: SRTextInputEdit,
+	[FormFieldType.ReportDiagram]: ReportDiagramEdit,
 };
