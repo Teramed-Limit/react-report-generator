@@ -1,7 +1,7 @@
 {
   "name": "react-report-lib",
   "private": false,
-  "version": "0.0.18",
+  "version": "0.0.19",
   "type": "module",
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
@@ -29,8 +29,6 @@
     "@mui/x-tree-view": "^7.15.0",
     "@react-pdf/renderer": "3.3.8",
     "@react-pdf/types": "^2.7.0",
-    "ag-grid-community": "^31.0.3",
-    "ag-grid-react": "^31.0.3",
     "axios": "^1.7.3",
     "classnames": "^2.5.1",
     "date-fns": "^2.30.0",
