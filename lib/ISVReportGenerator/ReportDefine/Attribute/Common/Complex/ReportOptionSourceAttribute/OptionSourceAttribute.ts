@@ -9,7 +9,7 @@ export class OptionSourceAttribute implements OptionSource {
 	constructor(value: OptionSource) {
 		this.type = value.type || 'http';
 		this.source = value.source || 'ReportTemplate';
-		this.labelKey = value.labelKey || undefined;
-		this.key = value.key || undefined;
+		this.labelKey = value.labelKey || 'Label';
+		this.key = value.key || 'Value';
 	}
 }
