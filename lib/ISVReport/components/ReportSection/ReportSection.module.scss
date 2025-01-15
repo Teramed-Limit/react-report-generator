@@ -1,20 +1,16 @@
 .section-header {
     display: flex;
-    align-items: center;
-    height: 32px;
+    flex-direction: row;
     width: 100%;
+}
 
-    &:before {
-        content: '';
-        width: 4px;
-        height: 24px;
-        margin-right: 8px;
-        background-color: #71d2de;
-    }
+.label-decoration {
+    width: 4px;
+    margin-right: 8px;
+    background-color: #71d2de;
 }
 
 .header-label {
     margin: 0;
-    color: #3a464d;
     white-space: nowrap;
 }

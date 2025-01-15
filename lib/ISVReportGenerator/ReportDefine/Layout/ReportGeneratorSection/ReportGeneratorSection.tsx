@@ -6,6 +6,7 @@ import { Style } from '@react-pdf/types/style';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import { LayoutType } from '../../../../field/field-type.ts';
+import classes from '../../../../ISVReport/components/ReportSection/ReportSection.module.scss';
 import { reportSection } from '../../../../ISVReport/style.ts';
 import {
 	isFieldsetTemplateFocus,
@@ -13,8 +14,9 @@ import {
 	selectedAttributeTypeAtom,
 	selectedDefineType,
 } from '../../../../recoil/atoms/report-generator-atoms.ts';
-import { Section, SubSection } from '../../../../types/define.ts';
+import { Section, SubSection } from '../../../../types';
 import BoxInspector from '../../../../UI/BoxInspector/BoxInspector.tsx';
+import { styleConverter } from '../../../../utils/style-converter.ts';
 import { SectionAttributeClass } from '../../Attribute/Layout/SectionAttribute/SectionAttributeClass.tsx';
 import FieldsetTemplate from '../FieldsetTemplate/FieldsetTemplate';
 import ReportGeneratorSubSection from '../ReportGeneratorSubSection/ReportGeneratorSubSection';
@@ -41,6 +43,8 @@ function ReportGeneratorSection({ section, sectionIdx, showGuideLine }: Props) {
 	};
 
 	const style = section?.style as Style;
+
+	const sectionLableStyle = section?.labelStyle as Style;
 
 	return (
 		<FieldsetTemplate
@@ -76,6 +80,34 @@ function ReportGeneratorSection({ section, sectionIdx, showGuideLine }: Props) {
 						} as CSSProperties
 					}
 				>
+					{section?.label && (
+						<BoxInspector
+							paddingTop={sectionLableStyle?.paddingTop || '0'}
+							paddingBottom={sectionLableStyle?.paddingBottom || '0'}
+							paddingLeft={sectionLableStyle?.paddingLeft || '0'}
+							paddingRight={sectionLableStyle?.paddingRight || '0'}
+							marginTop={sectionLableStyle?.marginTop || '0'}
+							marginBottom={sectionLableStyle?.marginBottom || '0'}
+							marginLeft={sectionLableStyle?.marginLeft || '0'}
+							marginRight={sectionLableStyle?.marginRight || '0'}
+						>
+							<div
+								className={classes[`section-header`]}
+								style={{
+									...((section?.labelStyle as CSSProperties) || {}),
+									...styleConverter(section.labelStyle as CSSProperties),
+								}}
+							>
+								<div
+									style={{ backgroundColor: section.labelDecorationColor }}
+									className={classes['label-decoration']}
+								/>
+								<h4 style={{}} className={classes[`header-label`]}>
+									{section?.label}
+								</h4>
+							</div>
+						</BoxInspector>
+					)}
 					{section.subSections.map((subSection: SubSection, idx: number) => (
 						<ReportGeneratorSubSection
 							key={subSection.id}

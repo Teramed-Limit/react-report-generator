@@ -14,6 +14,7 @@ import { FormFieldType } from '../../../../../field/field-type.ts';
 import { useReportLayout } from '../../../../../hooks/useReportLayout.ts';
 import { selectedReportDefine } from '../../../../../recoil/atoms/report-generator-atoms.ts';
 import { Section, SubSection } from '../../../../../types/define.ts';
+import ColorPickerButton from '../../../../../UI/ColorPickerButton/ColorPickerButton.tsx';
 import ReportCSSStyleAttribute from '../../Common/Complex/ReportCSSStyleAttribute/ReportCSSStyleAttribute';
 import PercentageNumber from '../../Common/PercentageNumber/PercentageNumber';
 import { TextAttributeClass } from '../../Field/TextAttribute/TextAttributeClass.ts';
@@ -68,6 +69,8 @@ function SectionAttributeComponent({
 				attributeComponentMapper={{
 					maxWidth: PercentageNumber,
 					style: ReportCSSStyleAttribute,
+					labelStyle: ReportCSSStyleAttribute,
+					labelDecorationColor: ColorPickerButton,
 				}}
 				excludeAttribute={['subSections', 'type']}
 				toolbar={

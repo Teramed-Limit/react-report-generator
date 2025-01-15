@@ -24,6 +24,7 @@ function PageAttribute({ onSetAttribute }: FieldAttributeComponentProps<FormDefi
 				maxWidth: '100%',
 				hide: false,
 				hideInPDF: false,
+				label: '',
 				subSections: [
 					{
 						id: `subSection-1`,

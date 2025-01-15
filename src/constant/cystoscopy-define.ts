@@ -892,6 +892,14 @@ export const cystoscopyDefine: any = {
 				borderRight: 0,
 			},
 			isHeader: true,
+			label: 'PatientInfo',
+			labelStyle: {
+				fontSize: 20,
+				color: '#000000',
+				backgroundColor: 'transparent',
+				paddingBottom: 4,
+				paddingTop: 4,
+			},
 		},
 		{
 			id: 'sectionFindings',

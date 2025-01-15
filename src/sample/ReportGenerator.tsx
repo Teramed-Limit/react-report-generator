@@ -41,6 +41,7 @@ function ReportGenerator() {
 		setFooterDefine(isvReportGeneratorHandleRef.current?.getFooterDefine());
 		setFormDefine(isvReportGeneratorHandleRef.current?.getFormDefine());
 		setImageDefine(isvReportGeneratorHandleRef.current?.getImageDefine());
+		console.log(isvReportGeneratorHandleRef.current?.getFormDefine());
 	};
 
 	// 根據表單定義，產生 PDF

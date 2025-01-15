@@ -12,6 +12,7 @@ export interface FormDefine {
 
 export interface Section {
 	id: string;
+	label: string;
 	hide: boolean;
 	hideInPDF: boolean;
 	type: string;
@@ -19,6 +20,8 @@ export interface Section {
 	isHeader?: boolean;
 	subSections: SubSection[];
 	style?: CSSProperties | Style | Style[];
+	labelStyle?: CSSProperties | Style | Style[];
+	labelDecorationColor?: string;
 }
 
 export interface SubSection {
