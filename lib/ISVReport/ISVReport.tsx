@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { CSSProperties, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -56,6 +56,10 @@ interface Props {
 	structReportParseApi?: string;
 	defineChangeTriggerId: string;
 	defineChangeTriggerCallBack: (template: string) => void;
+	pageStyle?: {
+		pageContainer?: CSSProperties;
+		page?: CSSProperties;
+	};
 }
 
 export const ISVReport = forwardRef<ISVReportHandle, Props>(
@@ -70,6 +74,7 @@ export const ISVReport = forwardRef<ISVReportHandle, Props>(
 			structReportParseApi,
 			defineChangeTriggerId,
 			defineChangeTriggerCallBack,
+			pageStyle,
 		}: Props,
 		ref,
 	) => {
@@ -223,9 +228,9 @@ export const ISVReport = forwardRef<ISVReportHandle, Props>(
 
 		return (
 			<ThemeProvider theme={rootTheme}>
-				<Stack direction="row" className={classes.pageContainer}>
+				<Stack style={pageStyle?.pageContainer} direction="row" className={classes.pageContainer}>
 					<Box className={classes.reportLayout} sx={reportPage}>
-						<Box className={classes.page} sx={{ transform: `scale(${scale})` }}>
+						<Box style={pageStyle?.page} className={classes.page} sx={{ transform: `scale(${scale})` }}>
 							{formDefine?.sections
 								.filter((section: Section) => !section.hide)
 								.map((section: Section) => <ReportSection key={section.id} section={section} />)}
