@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 import { Box, Button, Stack, ThemeProvider } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -11,6 +11,7 @@ import { formValuesAtom } from '../recoil/atoms/formDataAtoms.ts';
 import { formDefineAtom, imageDefineAtom } from '../recoil/atoms/formDefineAtoms.ts';
 import { footerDefineAtom, headerDefineAtom } from '../recoil/atoms/header-footer-defineAtom.ts';
 import { selectedDefineType } from '../recoil/atoms/report-generator-atoms.ts';
+import '../styles/scrollbar.scss';
 import { rootTheme } from '../theme/rootTheme.ts';
 import { Field, FontFamily, FormDefine, RepPage } from '../types';
 import { ISVReportGeneratorHandle } from '../types/component-handle';
@@ -23,7 +24,6 @@ import ReportDefineAttributeEditor from './ReportDefine/Attribute/AttributeEdito
 import UniversalFontStyle from './ReportDefine/Component/UniversalFontStyle/UniversalFontStyle';
 import ReportGeneratorImagePage from './ReportDefine/Layout/ReportGeneratorImagePage/ReportGeneratorImagePage.tsx';
 import ReportGeneratorPage from './ReportDefine/Layout/ReportGeneratorPage/ReportGeneratorPage.tsx';
-import '../styles/scrollbar.scss';
 
 interface Props {
 	formData?: Record<string, any>;
@@ -60,7 +60,7 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 
 		useEffect(() => {
 			setFormData(formData);
-		}, [formData]);
+		}, [formData, setFormData]);
 
 		useEffect(() => {
 			setHeaderDefine(headerDefine);
