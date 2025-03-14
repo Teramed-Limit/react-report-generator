@@ -60,6 +60,7 @@ interface Props {
 		pageContainer?: CSSProperties;
 		page?: CSSProperties;
 	};
+	showFlowButton?: boolean;
 }
 
 export const ISVReport = forwardRef<ISVReportHandle, Props>(
@@ -75,6 +76,7 @@ export const ISVReport = forwardRef<ISVReportHandle, Props>(
 			defineChangeTriggerId,
 			defineChangeTriggerCallBack,
 			pageStyle,
+			showFlowButton = true,
 		}: Props,
 		ref,
 	) => {
@@ -228,22 +230,34 @@ export const ISVReport = forwardRef<ISVReportHandle, Props>(
 
 		return (
 			<ThemeProvider theme={rootTheme}>
-				<Stack style={pageStyle?.pageContainer} direction="row" className={classes.pageContainer}>
-					<Box className={classes.reportLayout} sx={reportPage}>
-						<Box style={pageStyle?.page} className={classes.page} sx={{ transform: `scale(${scale})` }}>
+				<Stack
+					id="pageContainer"
+					style={pageStyle?.pageContainer}
+					direction="row"
+					className={classes.pageContainer}
+				>
+					<Box id="reportLayout" className={classes.reportLayout} sx={reportPage}>
+						<Box
+							id="page"
+							style={pageStyle?.page}
+							className={classes.page}
+							sx={{ transform: `scale(${scale})` }}
+						>
 							{formDefine?.sections
 								.filter((section: Section) => !section.hide)
 								.map((section: Section) => <ReportSection key={section.id} section={section} />)}
 						</Box>
 					</Box>
-					<Stack className={classes.flowButtonContainer}>
-						<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev + 0.2)}>
-							<AddCircleIcon fontSize="large" />
-						</IconButton>
-						<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev - 0.2)}>
-							<RemoveCircleIcon fontSize="large" />
-						</IconButton>
-					</Stack>
+					{showFlowButton && (
+						<Stack id="flowScaleButton" className={classes.flowButtonContainer}>
+							<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev + 0.2)}>
+								<AddCircleIcon fontSize="large" />
+							</IconButton>
+							<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev - 0.2)}>
+								<RemoveCircleIcon fontSize="large" />
+							</IconButton>
+						</Stack>
+					)}
 				</Stack>
 			</ThemeProvider>
 		);
