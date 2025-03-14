@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { CSSProperties, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -16,11 +16,11 @@ import {
 	structReportParseApiAtom,
 } from '../recoil/atoms/formDataAtoms.ts';
 import { fieldCollectionAtom, formDefineAtom, srFieldsAtom } from '../recoil/atoms/formDefineAtoms.ts';
-import { SRUtility } from '../service/sr-utility/sr-utility.ts';
-import { ValidationService } from '../service/validation/validation-service.ts';
 
 import '@mui/material/styles/styled';
-
+import { SRUtility } from '../service/sr-utility/sr-utility.ts';
+import { ValidationService } from '../service/validation/validation-service.ts';
+import '../styles/scrollbar.scss';
 import { rootTheme } from '../theme/rootTheme.ts';
 import {
 	Field,
@@ -44,7 +44,6 @@ import {
 import ReportSection from './components/ReportSection/ReportSection.tsx';
 import classes from './ISVReport.module.scss';
 import { reportPage } from './style.ts';
-import '../styles/scrollbar.scss';
 
 interface Props {
 	formDefine: FormDefine;
@@ -60,6 +59,7 @@ interface Props {
 		pageContainer?: CSSProperties;
 		page?: CSSProperties;
 	};
+	showFlowButton?: boolean;
 }
 
 export const ISVReport = forwardRef<ISVReportHandle, Props>(
@@ -75,6 +75,7 @@ export const ISVReport = forwardRef<ISVReportHandle, Props>(
 			defineChangeTriggerId,
 			defineChangeTriggerCallBack,
 			pageStyle,
+			showFlowButton = true,
 		}: Props,
 		ref,
 	) => {
@@ -228,22 +229,34 @@ export const ISVReport = forwardRef<ISVReportHandle, Props>(
 
 		return (
 			<ThemeProvider theme={rootTheme}>
-				<Stack style={pageStyle?.pageContainer} direction="row" className={classes.pageContainer}>
-					<Box className={classes.reportLayout} sx={reportPage}>
-						<Box style={pageStyle?.page} className={classes.page} sx={{ transform: `scale(${scale})` }}>
+				<Stack
+					id="pageContainer"
+					style={pageStyle?.pageContainer}
+					direction="row"
+					className={classes.pageContainer}
+				>
+					<Box id="reportLayout" className={classes.reportLayout} sx={reportPage}>
+						<Box
+							id="page"
+							style={pageStyle?.page}
+							className={classes.page}
+							sx={{ transform: `scale(${scale})` }}
+						>
 							{formDefine?.sections
 								.filter((section: Section) => !section.hide)
 								.map((section: Section) => <ReportSection key={section.id} section={section} />)}
 						</Box>
 					</Box>
-					<Stack className={classes.flowButtonContainer}>
-						<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev + 0.2)}>
-							<AddCircleIcon fontSize="large" />
-						</IconButton>
-						<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev - 0.2)}>
-							<RemoveCircleIcon fontSize="large" />
-						</IconButton>
-					</Stack>
+					{showFlowButton && (
+						<Stack id="flowScaleButton" className={classes.flowButtonContainer}>
+							<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev + 0.2)}>
+								<AddCircleIcon fontSize="large" />
+							</IconButton>
+							<IconButton size="large" color="primary" onClick={() => setScale((prev) => prev - 0.2)}>
+								<RemoveCircleIcon fontSize="large" />
+							</IconButton>
+						</Stack>
+					)}
 				</Stack>
 			</ThemeProvider>
 		);

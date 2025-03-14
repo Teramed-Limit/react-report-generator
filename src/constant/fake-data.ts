@@ -4,6 +4,7 @@ import { blankDefine, cardiacUltrasoundReportDefine, cystoscopyDefine, gridTable
 import { defaultFooterDefine } from './footer-define.ts';
 import { defaultHeaderDefine } from './header-define.ts';
 import { imageFieldsDefine } from './image-define.ts';
+import { WoundDefine } from './wound-define.ts';
 
 export const fakeDefine: FormDefineMap = {
 	Blank: {
@@ -29,6 +30,12 @@ export const fakeDefine: FormDefineMap = {
 		imageDefine: imageFieldsDefine,
 		headerDefine: defaultHeaderDefine,
 		footerDefine: defaultFooterDefine,
+	},
+	WoundReportDefine: {
+		formDefine: WoundDefine as any,
+		imageDefine: [],
+		headerDefine: initRepPage('header'),
+		footerDefine: initRepPage('footer'),
 	},
 };
 

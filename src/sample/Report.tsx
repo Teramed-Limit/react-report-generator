@@ -62,6 +62,7 @@ function Report() {
 					defineChangeTriggerCallBack={loadFormDefine}
 					codeList={codeList as any}
 					structReportParseApi="http://localhost:61818/api/structureReport/load"
+					showFlowButton={false}
 					buttonActionMap={{
 						createTemplate: (field: Field) => {
 							window.alert('Create Template');
