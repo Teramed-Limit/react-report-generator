@@ -13,7 +13,6 @@ import { TextField } from '../../../types/field/text-field.ts';
 import { convertToDate, emptyBaseImage, isEmptyOrNil, stringFormatDate } from '../../../utils/general.ts';
 import { CheckboxCheckedIcon, CheckboxUnCheckedIcon } from '../../assets';
 import { styles } from '../../styles/style.ts';
-import PDFGridTable from './Field/PDFGridTable.tsx';
 
 Font.registerHyphenationCallback((word: string) => {
 	// 判斷是否為中文字符
@@ -60,8 +59,6 @@ const PDFFieldRenderer = ({ field, value, getOptions }: Props) => {
 				return reportDiagram(rendererField, rendererValue);
 			case FormFieldType.DatePicker:
 				return datePicker(rendererField, rendererValue);
-			case FormFieldType.GridTable:
-				return <PDFGridTable value={value as any} field={rendererField} />;
 			default:
 				return text(rendererField, rendererValue);
 		}

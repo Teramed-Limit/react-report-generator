@@ -9,11 +9,11 @@ export enum FormFieldType {
 	Checkbox = 'Checkbox',
 	Radio = 'Radio',
 	ReportDiagram = 'ReportDiagram',
-	GridTable = 'GridTable',
+	// GridTable = 'GridTable',
 	Composite = 'Composite',
 	Array = 'Array',
 	SRText = 'SRText',
-	OBGYNChart = 'OBGYNChart',
+	// OBGYNChart = 'OBGYNChart',
 	// QualityBowelScore = 'QualityBowelScore',
 }
 
@@ -27,16 +27,16 @@ export const noBorderField = {
 	[FormFieldType.Radio]: true,
 	[FormFieldType.Checkbox]: true,
 	// [FormFieldType.QualityBowelScore]: true,
-	[FormFieldType.OBGYNChart]: true,
-	[FormFieldType.GridTable]: true,
+	// [FormFieldType.OBGYNChart]: true,
+	// [FormFieldType.GridTable]: true,
 };
 
 export const noHoverField = {
 	[FormFieldType.Radio]: true,
 	[FormFieldType.Checkbox]: true,
 	// [FormFieldType.QualityBowelScore]: true,
-	[FormFieldType.OBGYNChart]: true,
-	[FormFieldType.GridTable]: true,
+	// [FormFieldType.OBGYNChart]: true,
+	// [FormFieldType.GridTable]: true,
 };
 
 export const noLabelField = {

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import Typography from '@mui/material/Typography';
-import ReactPDF from '@react-pdf/renderer';
+import ReactPDF, { OnRenderProps } from '@react-pdf/renderer';
 import { useRecoilValue } from 'recoil';
 import { Observable, Subject, switchMap } from 'rxjs';
 
@@ -63,7 +63,7 @@ export function ISVReportPDF<TImage>({
 	const onPdfRenderSubject = useRef(new Subject<Blob>());
 
 	// 確保就算onPdfRender，render好幾次，也只會執行一次callback
-	const onPdfRender = useCallback((renderProps: ReactPDF.OnRenderProps) => {
+	const onPdfRender = useCallback((renderProps: OnRenderProps) => {
 		if (!renderProps?.blob) return;
 		onPdfRenderSubject.current.next(renderProps.blob);
 	}, []);

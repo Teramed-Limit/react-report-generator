@@ -3,7 +3,6 @@ import CodeListLexiconInput from './CodeListLexiconInput/CodeListLexiconInput';
 import CodeListSelection from './CodeListSelection/CodeListSelection';
 import DatePicker from './DatePicker/DatePicker';
 import { FormFieldType } from './field-type';
-import GridTableField from './GridTableField/GridTableField.tsx';
 import NumberInput from './NumberInput/NumberInput';
 import RadioButton from './RadioButton/RadioButton.tsx';
 import ReportDiagram from './ReportDiagram/ReportDiagram';
@@ -25,7 +24,7 @@ export const FieldMapper = {
 	[FormFieldType.ReportDiagram]: ReportDiagram,
 	[FormFieldType.DatePicker]: DatePicker,
 	[FormFieldType.TimePicker]: TimePicker,
-	[FormFieldType.GridTable]: GridTableField,
+	// [FormFieldType.GridTable]: GridTableField,
 	[FormFieldType.SRText]: SRTextInput,
 };
 

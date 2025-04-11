@@ -110,7 +110,7 @@ export class CSSStyle implements Style {
 
 	// Borders
 	// border?: number | string;
-	borderWidth?: number | string;
+	// borderWidth?: number | string;
 	borderColor?: string;
 	borderStyle?: 'dashed' | 'dotted' | 'solid';
 	borderTop?: number | string;
@@ -161,7 +161,7 @@ export class CSSStyle implements Style {
 		this.paddingLeft = style?.paddingLeft || 0;
 
 		// border
-		this.borderWidth = style?.borderWidth || 0;
+		// this.borderWidth = style?.borderWidth || 0;
 		this.borderColor = style?.borderColor || 'black';
 		this.borderStyle = style?.borderStyle || 'solid';
 		this.borderTop = style?.borderTop || 0;
