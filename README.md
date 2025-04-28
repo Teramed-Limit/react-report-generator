@@ -9,16 +9,17 @@
 You can install it with npm (don't expect much fanciness):
 
 ```
-npm install react-report-lib --registry http://192.168.50.254:49153//
+npm install react-report-lib@latest --registry http://192.168.50.254:49153
 ```
 
 ```
-yarn add react-report-lib --registry http://192.168.50.254:49153//
+yarn add react-report-lib@latest --registry http://192.168.50.254:49153
 ```
 
 ## Usage
 
 ```javascript
+
 ```
 
 ## Verdaccio 關於使用到NPM操作指令
@@ -26,30 +27,30 @@ yarn add react-report-lib --registry http://192.168.50.254:49153//
 user: teramed
 password: teramed
 
-* 建立User
+- 建立User
 
-```npm adduser --registry http://192.168.50.254:49153```
+`npm adduser --registry http://192.168.50.254:49153`
 
-* 登入User
+- 登入User
 
-```npm login --registry http://192.168.50.254:49153```
+`npm login --registry http://192.168.50.254:49153`
 
-* 登出User
+- 登出User
 
-```npm logout --registry http://192.168.50.254:49153```
+`npm logout --registry http://192.168.50.254:49153`
 
-* 登查看目前登入者
+- 登查看目前登入者
 
-```npm whoami --registry http://192.168.50.254:49153```
+`npm whoami --registry http://192.168.50.254:49153`
 
-* 發佈
+- 發佈
 
-```npm publish --registry http://192.168.50.254:49153```
+`npm publish --registry http://192.168.50.254:49153`
 
-* 取消發佈
+- 取消發佈
 
-```npm unpublish react-report-lib --force --registry http://192.168.50.254:49153```
+`npm unpublish react-report-lib --force --registry http://192.168.50.254:49153`
 
-* 下載
+- 下載
 
-```npm install react-report-lib --registry http://192.168.50.254:49153```
+`npm install react-report-lib --registry http://192.168.50.254:49153`

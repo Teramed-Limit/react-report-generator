@@ -156,6 +156,11 @@ function ReportPDF({ formData, formDefine, headerDefine, footerDefine, imageDefi
 						{image.MappingNumber > 0 && `${image.MappingNumber}`}
 					</ReactPDF.Text>
 				)}
+				contentContainerStyle={{ width: '100%', flexDirection: 'row' }}
+				contentHeaderComponent={<ReactPDF.Text style={{ width: '100%' }}>patientInfo.bedLabel</ReactPDF.Text>}
+				contentComponent={<ReactPDF.Text>hello</ReactPDF.Text>}
+				imgContainerStyle={{ width: '100%', flexDirection: 'row' }}
+				imgComponent={<ReactPDF.Text>hello</ReactPDF.Text>}
 			/>
 			<Stack direction="column" alignItems="end">
 				<Box>

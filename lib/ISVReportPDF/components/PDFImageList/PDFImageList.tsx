@@ -25,7 +25,6 @@ interface Props<T> {
 	pdfStyle: {
 		imagePerRow: number;
 		imagePageBreak: boolean;
-		pagePadding: number;
 	};
 	imageList: T[];
 	getImageKey: (image: T) => string;
@@ -57,14 +56,7 @@ function PDFImageList<T>({
 					.slice(pdfStyle.imagePerRow * column, pdfStyle.imagePerRow + pdfStyle.imagePerRow * column);
 
 				return (
-					<ReactPDF.View
-						key={column}
-						style={{
-							...styles.gallery,
-							paddingRight: pdfStyle.pagePadding,
-							paddingLeft: pdfStyle.pagePadding,
-						}}
-					>
+					<ReactPDF.View key={column} style={{ ...styles.gallery }}>
 						{renderImageList.map((image: T) => {
 							return (
 								<ReactPDF.View

@@ -47,7 +47,7 @@ export const WoundDefine: any = {
 								fontFamily: 'Microsoft JhengHei',
 								fontStyle: 'normal',
 								fontWeight: 'bold',
-								textAlign: 'left',
+								textAlign: 'right',
 								textDecoration: 'none',
 								marginTop: 0,
 								marginRight: 0,
