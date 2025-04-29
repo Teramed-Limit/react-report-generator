@@ -16,8 +16,8 @@ function PDFReportSection({ section, children }: Props) {
 		<ReactPDF.View
 			wrap={false}
 			style={{
-				...(reportSection as Style | Style[]),
-				...(section.style as Style | Style[]),
+				...(reportSection as Style),
+				...(section.style as Style),
 				maxWidth: section.maxWidth,
 				width: section.maxWidth,
 			}}

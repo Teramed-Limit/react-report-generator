@@ -4,10 +4,10 @@ import { CheckBoxAttributeClass } from './Field/CheckBoxAttribute/CheckBoxAttrib
 import { CodeListLexiconAttributeClass } from './Field/CodeListLexiconAttribute/CodeListLexiconAttributeClass.ts';
 import { CodeListSelectionAttributeClass } from './Field/CodeListSelectionAttribute/CodeListSelectionAttributeClass.ts';
 import { CompositeAttributeClass } from './Field/CompositeAttribute/CompositeAttributeClass.ts';
-import { CurveChartAttributeClass } from './Field/CurveChartAttribute/CurveChartAttributeClass.ts';
+// import { CurveChartAttributeClass } from './Field/CurveChartAttribute/CurveChartAttributeClass.ts';
 import { DatePickerAttributeClass } from './Field/DatePickerAttribute/DatePickerAttributeClass.ts';
 import { DiagramAttributeClass } from './Field/DiagramAttribute/DiagramAttributeClass.ts';
-import { GridTableAttributeClass } from './Field/GridTableAttribute/GridTableAttributeClass.ts';
+// import { GridTableAttributeClass } from './Field/GridTableAttribute/GridTableAttributeClass.ts';
 import { NumberAttributeClass } from './Field/NumberAttribute/NumberAttributeClass.ts';
 import { RadioAttributeClass } from './Field/RadioAttribute/RadioAttributeClass.ts';
 import { SRTextAttributeClass } from './Field/SRTextAttribute/SRTextAttributeClass.ts';
@@ -29,6 +29,6 @@ export const FieldAttributeClassMapper = {
 	[FormFieldType.Array]: (field) => new ArrayAttributeClass(field),
 	[FormFieldType.Composite]: (field) => new CompositeAttributeClass(field),
 	[FormFieldType.SRText]: (field) => new SRTextAttributeClass(field),
-	[FormFieldType.OBGYNChart]: (field) => new CurveChartAttributeClass(field),
-	[FormFieldType.GridTable]: (field) => new GridTableAttributeClass(field),
+	// [FormFieldType.OBGYNChart]: (field) => new CurveChartAttributeClass(field),
+	// [FormFieldType.GridTable]: (field) => new GridTableAttributeClass(field),
 };

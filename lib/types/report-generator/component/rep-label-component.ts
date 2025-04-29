@@ -9,7 +9,7 @@ export interface RepLabelComponent extends RepComponent, Font {
 export interface Font {
 	fontSize: number;
 	fontName: string;
-	fontStyle: string;
+	fontStyle: 'normal' | 'italic' | 'oblique';
 	fontColor: string;
 	fontWeight: number;
 }

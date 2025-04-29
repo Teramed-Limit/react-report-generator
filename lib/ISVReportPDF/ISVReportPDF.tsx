@@ -50,6 +50,8 @@ interface Props<TImage> {
 	imagePageBreak?: boolean;
 	/** 內容容器的自定義樣式 */
 	contentContainerStyle?: Style;
+	/** 主要內容容器的自定義樣式 */
+	mainContentStyle?: Style;
 	/** 自定義內容組件，將在主內容區域之後渲染 */
 	contentComponent?: React.ReactNode;
 	/** 自定義內容組件Header，將在主內容上方區域渲染 */
@@ -59,7 +61,7 @@ interface Props<TImage> {
 	/** 圖片容器的自定義樣式 */
 	imgContainerStyle?: Style;
 	/** 自定義圖片組件，將在圖片列表之後渲染 */
-	imgComponent?: React.ReactNode;
+	// imgComponent?: React.ReactNode;
 	/** 自定義圖片組件Header，將在圖片列表上方區域渲染 */
 	imgHeaderComponent?: React.ReactNode;
 	/** 自定義圖片組件Footer，將在圖片列表下方區域渲染 */
@@ -86,10 +88,11 @@ export function ISVReportPDF<TImage>({
 	imagePageBreak,
 	contentContainerStyle,
 	contentComponent,
+	mainContentStyle,
 	contentHeaderComponent,
 	contentFooterComponent,
 	imgContainerStyle,
-	imgComponent,
+	// imgComponent,
 	imgHeaderComponent,
 	imgFooterComponent,
 }: Props<TImage>) {
@@ -144,9 +147,9 @@ export function ISVReportPDF<TImage>({
 	// 檢查圖片相關屬性是否都已提供，以便正確渲染圖片列表
 	const shouldRenderImageList =
 		imageList &&
+		imageList.length > 0 &&
 		getImageKey &&
 		getImageSrc &&
-		compareFunction &&
 		imagePerRow !== undefined &&
 		imagePageBreak !== undefined;
 
@@ -186,12 +189,13 @@ export function ISVReportPDF<TImage>({
 									/>
 								</View>
 							</PDFReportHeader>
+
 							{/* 內容 */}
-							<View style={{ width: '100%', ...styles.page, paddingHorizontal: pagePadding }}>
+							<View style={{ width: '100%', ...contentContainerStyle, paddingHorizontal: pagePadding }}>
 								{/* 內容客製化Header */}
 								{contentHeaderComponent}
 								{/* 內容主體 */}
-								<View style={{ width: '100%', ...contentContainerStyle }}>
+								<View style={{ width: '100%', ...mainContentStyle }}>
 									<PDFReportContent
 										formSections={contentSections}
 										formData={formData}
@@ -201,24 +205,26 @@ export function ISVReportPDF<TImage>({
 								</View>
 								{/* 內容客製化Footer */}
 								{contentFooterComponent}
+							</View>
 
+							{/* 圖片內容 */}
+							<View
+								style={{ width: '100%', ...imgContainerStyle, paddingHorizontal: pagePadding }}
+								break={imagePageBreak}
+							>
 								{/* 圖片客製化Header */}
 								{imgHeaderComponent}
-								{/* 圖片內容主體 */}
-								<View style={{ width: '100%', ...imgContainerStyle }}>
-									{shouldRenderImageList && (
-										<PDFImageList<TImage>
-											pdfStyle={{ imagePerRow, imagePageBreak }}
-											imageList={imageList}
-											getImageKey={getImageKey}
-											getImageSrc={getImageSrc}
-											compareFunction={compareFunction}
-											renderImageDesc={renderImageDesc}
-											renderImageNumber={renderImageNumber}
-										/>
-									)}
-									{imgComponent}
-								</View>
+								{shouldRenderImageList && (
+									<PDFImageList<TImage>
+										imageList={imageList}
+										imagePerRow={imagePerRow}
+										getImageKey={getImageKey}
+										getImageSrc={getImageSrc}
+										compareFunction={compareFunction}
+										renderImageDesc={renderImageDesc}
+										renderImageNumber={renderImageNumber}
+									/>
+								)}
 								{/* 圖片客製化Footer */}
 								{imgFooterComponent}
 							</View>

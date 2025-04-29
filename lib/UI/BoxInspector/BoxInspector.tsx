@@ -11,7 +11,7 @@ interface Props {
 	marginBottom: string | number;
 	marginLeft: string | number;
 	marginRight: string | number;
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 function BoxInspector({

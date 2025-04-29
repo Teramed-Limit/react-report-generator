@@ -6,10 +6,8 @@ import CheckBoxAttributeComponent from './Field/CheckBoxAttribute/CheckBoxAttrib
 import CodeListLexiconAttributeComponent from './Field/CodeListLexiconAttribute/CodeListLexiconAttributeComponent.tsx';
 import CodeListSelectionAttributeComponent from './Field/CodeListSelectionAttribute/CodeListSelectionAttributeComponent.tsx';
 import CompositeAttributeComponent from './Field/CompositeAttribute/CompositeAttributeComponent.tsx';
-import CurveChartAttributeComponent from './Field/CurveChartAttribute/CurveChartAttributeComponent.tsx';
 import DatePickerAttributeComponent from './Field/DatePickerAttribute/DatePickerAttributeComponent.tsx';
 import DiagramAttributeComponent from './Field/DiagramAttribute/DiagramAttributeComponent.tsx';
-import GridTableAttributeComponent from './Field/GridTableAttribute/GridTableAttributeComponent.tsx';
 import NumberAttributeComponent from './Field/NumberAttribute/NumberAttributeComponent.tsx';
 import RadioAttributeComponent from './Field/RadioAttribute/RadioAttributeComponent.tsx';
 import SRTextAttributeComponent from './Field/SRTextAttribute/SRTextAttributeComponent.tsx';
@@ -39,8 +37,6 @@ export const FieldAttributeComponentMapper: ComponentTypeMap = {
 	[FormFieldType.TimePicker]: ReportTimePickerAttribute,
 	[FormFieldType.ReportDiagram]: DiagramAttributeComponent,
 	[FormFieldType.SRText]: SRTextAttributeComponent,
-	[FormFieldType.OBGYNChart]: CurveChartAttributeComponent,
-	[FormFieldType.GridTable]: GridTableAttributeComponent,
 	[FormFieldType.Composite]: CompositeAttributeComponent,
 	[FormFieldType.Array]: ArrayAttributeComponent,
 };

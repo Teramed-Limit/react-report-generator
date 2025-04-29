@@ -7,7 +7,7 @@ import { fieldSectionContainer } from '../../../ISVReport/style.ts';
 
 interface Props {
 	orientation: 'column' | 'row';
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 function PDFFieldContainer({ orientation, children }: Props) {

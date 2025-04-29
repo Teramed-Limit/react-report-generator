@@ -1,6 +1,22 @@
+import {
+	AlignContent,
+	AlignItems,
+	AlignSelf,
+	BorderStyleValue,
+	Display,
+	FlexDirection,
+	FlexWrap,
+	JustifyContent,
+	Position,
+	TextTransform,
+	Transform,
+	VerticalAlign,
+} from '@react-pdf/stylesheet';
 import { Style } from '@react-pdf/types/style';
 
 export class CSSStyle implements Style {
+	[key: `@media${string}`]: Style;
+
 	// Flexbox
 	// alignContent?:
 	//     | 'flex-start'
@@ -52,7 +68,7 @@ export class CSSStyle implements Style {
 	// Text
 	fontSize?: number;
 	fontFamily?: string;
-	fontStyle?: string | 'normal';
+	fontStyle?: 'normal' | 'italic' | 'oblique';
 	fontWeight?:
 		| number
 		| 'thin'
@@ -174,4 +190,99 @@ export class CSSStyle implements Style {
 		this.textDecoration = style?.textDecoration || 'none';
 		// this.textAlign = style?.textAlign || 'left';
 	}
+	border?: string | number;
+	borderRadius?: string | number;
+	borderWidth?: string | number;
+	borderTopColor?: string;
+	borderTopStyle?: BorderStyleValue;
+	borderTopWidth?: string | number;
+	borderRightColor?: string;
+	borderRightStyle?: BorderStyleValue;
+	borderRightWidth?: string | number;
+	borderBottomColor?: string;
+	borderBottomStyle?: BorderStyleValue;
+	borderBottomWidth?: string | number;
+	borderLeftColor?: string;
+	borderLeftStyle?: BorderStyleValue;
+	borderLeftWidth?: string | number;
+	borderTopLeftRadius?: string | number;
+	borderTopRightRadius?: string | number;
+	borderBottomRightRadius?: string | number;
+	borderBottomLeftRadius?: string | number;
+	opacity?: string | number;
+	height?: string | number;
+	maxHeight?: string | number;
+	maxWidth?: string | number;
+	minHeight?: string | number;
+	minWidth?: string | number;
+	width?: string | number;
+	flex?: string | number;
+	alignContent?: AlignContent;
+	alignItems?: AlignItems;
+	alignSelf?: AlignSelf;
+	flexDirection?: FlexDirection;
+	flexWrap?: FlexWrap;
+	flexFlow?: string | number;
+	flexGrow?: string | number;
+	flexShrink?: string | number;
+	flexBasis?: string | number;
+	justifySelf?: string;
+	justifyContent?: JustifyContent;
+	gap?: string | number;
+	rowGap?: string | number;
+	columnGap?: string | number;
+	aspectRatio?: string | number;
+	bottom?: string | number;
+	display?: Display;
+	left?: string | number;
+	position?: Position;
+	right?: string | number;
+	top?: string | number;
+	overflow?: 'hidden';
+	zIndex?: string | number;
+	margin?: string | number;
+	marginHorizontal?: string | number;
+	marginVertical?: string | number;
+	padding?: string | number;
+	paddingHorizontal?: string | number;
+	paddingVertical?: string | number;
+	objectPosition?: string | number;
+	objectPositionX?: string | number;
+	objectPositionY?: string | number;
+	objectFit?: string;
+	direction?: 'ltr' | 'rtl';
+	letterSpacing?: string | number;
+	lineHeight?: string | number;
+	maxLines?: number;
+	textDecorationColor?: string;
+	textDecorationStyle?: string;
+	textIndent?: any;
+	textOverflow?: 'ellipsis';
+	textTransform?: TextTransform;
+	verticalAlign?: VerticalAlign;
+	transformOrigin?: string | number;
+	transformOriginX?: string | number;
+	transformOriginY?: string | number;
+	transform?: string | Transform[];
+	gradientTransform?: string | Transform[];
+	fill?: string;
+	stroke?: string;
+	strokeDasharray?: string;
+	strokeWidth?: string | number;
+	fillOpacity?: string | number;
+	fillRule?: 'evenodd' | 'nonzero';
+	strokeOpacity?: string | number;
+	textAnchor?: 'end' | 'start' | 'middle';
+	strokeLinecap?: 'round' | 'butt' | 'square';
+	strokeLinejoin?: 'round' | 'butt' | 'square' | 'bevel' | 'miter';
+	visibility?: 'hidden' | 'visible' | 'collapse';
+	clipPath?: string;
+	dominantBaseline?:
+		| 'auto'
+		| 'hanging'
+		| 'mathematical'
+		| 'central'
+		| 'middle'
+		| 'text-after-edge'
+		| 'text-before-edge';
 }

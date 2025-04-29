@@ -11,7 +11,7 @@ const ReportDynamicLabelComponentEvent = (): {
 	onMouseMove: (e: React.MouseEvent) => void;
 	onMouseDown: () => void;
 } => {
-	const onGenerate = (e: React.MouseEvent, pos: Point) => {
+	const onGenerate = (e: React.MouseEvent, pos: Point): RepLabelComponent => {
 		return {
 			uuid: generateUUID(),
 			x: pos.x,

@@ -22,21 +22,18 @@ const styles = ReactPDF.StyleSheet.create({
 });
 
 interface Props<T> {
-	pdfStyle: {
-		imagePerRow: number;
-		imagePageBreak: boolean;
-	};
 	imageList: T[];
+	imagePerRow: number;
 	getImageKey: (image: T) => string;
 	getImageSrc: (image: T) => string;
-	compareFunction: (a: T, b: T) => number;
+	compareFunction?: (a: T, b: T) => number;
 	renderImageDesc?: (image: T) => React.ReactNode;
 	renderImageNumber?: (image: T) => React.ReactNode;
 }
 
 function PDFImageList<T>({
-	pdfStyle,
 	imageList,
+	imagePerRow,
 	getImageKey,
 	getImageSrc,
 	compareFunction,
@@ -44,16 +41,15 @@ function PDFImageList<T>({
 	renderImageNumber,
 }: Props<T>) {
 	// 計算總共幾行，getImageKey
-	let columnCount = Math.ceil(imageList.length / pdfStyle.imagePerRow);
+	let columnCount = Math.ceil(imageList.length / imagePerRow);
 	if (columnCount < 1) columnCount = 1;
 	const columnArray = [...Array(columnCount).keys()];
 
 	return (
-		<ReactPDF.View style={{ marginTop: '1px' }} break={pdfStyle.imagePageBreak}>
+		<ReactPDF.View style={{ marginTop: '1px' }}>
 			{columnArray.map((column) => {
-				const renderImageList = imageList
-					.sort(compareFunction)
-					.slice(pdfStyle.imagePerRow * column, pdfStyle.imagePerRow + pdfStyle.imagePerRow * column);
+				const sortedList = compareFunction ? imageList.sort(compareFunction) : imageList;
+				const renderImageList = sortedList.slice(imagePerRow * column, imagePerRow + imagePerRow * column);
 
 				return (
 					<ReactPDF.View key={column} style={{ ...styles.gallery }}>
@@ -63,8 +59,8 @@ function PDFImageList<T>({
 									key={getImageKey(image)}
 									style={{
 										...styles.item,
-										width: `calc(${100 / pdfStyle.imagePerRow}%)`,
-										maxWidth: `calc(${100 / pdfStyle.imagePerRow}%)`,
+										width: `calc(${100 / imagePerRow}%)`,
+										maxWidth: `calc(${100 / imagePerRow}%)`,
 									}}
 									wrap={false}
 								>

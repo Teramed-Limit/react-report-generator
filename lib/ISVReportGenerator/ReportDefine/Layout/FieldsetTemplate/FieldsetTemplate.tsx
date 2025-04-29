@@ -11,7 +11,7 @@ interface Props {
 	isFocus: boolean;
 	onClick: (e) => void;
 	legendComp: React.ReactNode;
-	children: React.ReactNode;
+	children?: React.ReactNode;
 }
 
 function FieldsetTemplate({ id, style, showGuideLine, isFocus, onClick, legendComp, children }: Props) {
