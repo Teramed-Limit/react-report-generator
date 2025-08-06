@@ -3,6 +3,7 @@ import React from 'react';
 import AttributeList from '../../../../../attribute/AttributeList/AttributeList.tsx';
 import ReportOptionSourceAttribute from '../../Common/Complex/ReportOptionSourceAttribute/ReportOptionSourceAttribute.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { CheckBoxAttributeClass } from './CheckBoxAttributeClass.ts';
 
 function CheckBoxAttributeComponent({

@@ -9,6 +9,7 @@ import { FiCopy } from 'react-icons/fi';
 
 import { CanvasMarker } from '../../types/canvas/canvas-maker-attribute.ts';
 import { NodeEnableMapper } from '../Canvas/Tools/marker-mapper';
+
 import classes from './CanvasOverlay.module.scss';
 
 interface Props {

@@ -14,6 +14,7 @@ import { Field } from '../../../types/field/field.ts';
 import { FormControlArray } from '../../../types/form-state.ts';
 import FieldCompositeContainer from '../FieldCompositeContainer/FieldCompositeContainer.tsx';
 import FieldContainer from '../FieldContainer/FieldContainer.tsx';
+
 import classes from './FieldArrayContainer.module.scss';
 
 interface Props {

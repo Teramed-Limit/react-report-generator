@@ -22,6 +22,7 @@ import StyledTreeItem from '../../../../UI/StyledTreeItem/StyledTreeItem.tsx';
 import TabPanel from '../../../../UI/TabPanel/TabPanel.tsx';
 import ReportComponentAttributeList from '../../Attribute/ReportComponentAttributeList/ReportComponentAttributeList.tsx';
 import ReportPageAttribute from '../../Attribute/ReportPageAttribute/ReportPageAttribute.tsx';
+
 import classes from './ReportPropertyPanel.module.scss';
 
 const StyleTabs = styled(Tabs)({

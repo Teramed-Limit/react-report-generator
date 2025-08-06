@@ -7,6 +7,7 @@ import FontStyleSelection from '../../FontStyleSelection/FontStyleSelection';
 import FontWeightSelection from '../../FontWeightSelection/FontWeightSelection';
 import TextAlignSelection from '../../TextAlignSelection/TextAlignSelection';
 import TextDecorationSelection from '../../TextDecorationSelection/TextDecorationSelection';
+
 import { CSSStyle } from './CSSStyle.ts';
 
 interface Props {

@@ -8,6 +8,7 @@ import { MdGesture } from 'react-icons/md';
 
 import { MarkerType } from '../../types/canvas/canvas-maker-attribute.ts';
 import ColorPickerButton from '../../UI/ColorPickerButton/ColorPickerButton.tsx';
+
 import classes from './CanvasToolbar.module.scss';
 
 interface Props {

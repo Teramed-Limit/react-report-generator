@@ -13,6 +13,7 @@ import PercentageNumber from '../../Common/PercentageNumber/PercentageNumber';
 import { FieldAttributeClassMapper } from '../../FieldAttributeClassMapper.ts';
 import { ArrayAttributeClass } from '../ArrayAttribute/ArrayAttributeClass.ts';
 import { CompositeAttributeClass } from '../CompositeAttribute/CompositeAttributeClass.ts';
+
 import { BaseAttributeClass } from './BaseAttributeClass.ts';
 
 interface Props {

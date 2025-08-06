@@ -2,6 +2,7 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { RepComponent } from '../../../types/report-generator/component/rep-component';
 import { Point } from '../../../types/report-generator/rep-report.ts';
+
 import { ReportComponentMapper } from './report-component-mapper';
 
 interface Props {

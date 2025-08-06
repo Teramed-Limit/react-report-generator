@@ -1,4 +1,5 @@
 import { MarkerType } from '../../../types/canvas/canvas-maker-attribute.ts';
+
 import ArrowMarker from './ArrowMarker/ArrowMarker';
 import CircleMarker from './CircleMarker/CircleMarker';
 import FreeDrawLineMarker from './FreeDrawLineMarker/FreeDrawLineMarker';

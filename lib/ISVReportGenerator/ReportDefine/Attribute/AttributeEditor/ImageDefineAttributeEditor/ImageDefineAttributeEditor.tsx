@@ -14,6 +14,7 @@ import { BaseAttributeClass } from '../../Field/BaseAttribute/BaseAttributeClass
 import BaseAttributeComponent from '../../Field/BaseAttribute/BaseAttributeComponent.tsx';
 import { FieldAttributeComponentMapper } from '../../FieldAttributeComponentMapper.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import classes from './ImageDefineAttributeEditor.module.scss';
 
 function ImageDefineAttributeEditor() {

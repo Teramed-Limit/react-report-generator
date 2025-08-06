@@ -10,6 +10,7 @@ import BaseTextInput from '../../UI/BaseTextInput/BaseTextInput.tsx';
 import ExpandToggler from '../../UI/ExpandToggler/ExpandToggler.tsx';
 import { camelize } from '../../utils/general.ts';
 import AttributeColumn from '../AttributeColumn/AttributeColumn';
+
 import classes from './AttributeList.module.scss';
 
 // 建立一個對應表，把型別對應到對應的組件

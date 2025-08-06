@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useCallback, useMemo } from 'react';
 
 import { Stack } from '@mui/material';
 import * as R from 'ramda';
@@ -50,6 +50,7 @@ function FieldContainer({
 	const fieldValue = useRecoilValue(valueAtom(valueChangedId));
 	const fieldStates = useRecoilValue(stateAtom(valueChangedId));
 
+	// 使用 useRecoilTransaction_UNSTABLE 記憶化批量狀態更新
 	const handleValueChange = useRecoilTransaction_UNSTABLE(({ get, set }) => (newFieldValue: any) => {
 		// eslint-disable-next-line @typescript-eslint/no-shadow
 		const updateFormStatesAndValues = (id: (string | number)[], updatedValue: any) => {
@@ -83,63 +84,152 @@ function FieldContainer({
 		updateFormStatesAndValues(valueChangedId, newFieldValue);
 	});
 
+	// 記憶化樣式和配置物件
+	const labelStyleMemo = useMemo(
+		() => ({
+			display: 'flex',
+			flex: `0 0 ${field.labelWidth || '35%'}`,
+			maxWidth: field.labelWidth || '35%',
+			lineHeight: 1.5,
+			...(field.labelStyle as CSSProperties),
+			...styleConverter(field.labelStyle as CSSProperties),
+		}),
+		[field.labelWidth, field.labelStyle],
+	);
+
+	const valueStyleMemo = useMemo(
+		() => ({
+			...(field.valueStyle as CSSProperties),
+			flex: `1 1 auto`,
+			maxWidth: '100%',
+			height: '100%',
+			lineHeight: 1.5,
+			...styleConverter(field.valueStyle as CSSProperties),
+		}),
+		[field.valueStyle],
+	);
+
+	const containerStyleMemo = useMemo(
+		() => ({
+			...fieldSectionContainer,
+			...containerStyle,
+		}),
+		[containerStyle],
+	);
+
+	// 記憶化子組件 props
+	const fieldLabelProps = useMemo(
+		() => ({
+			id,
+			label: field.label,
+			labelStyle: labelStyleMemo,
+			hint: field.hint,
+			hideLabelSection: field.hideLabel || noLabelField[field.type],
+			hasValidation: field.validate !== undefined && field.validate?.type !== ValidateType.None,
+			prefixComp,
+			suffixComp,
+		}),
+		[
+			id,
+			field.label,
+			field.hint,
+			field.hideLabel,
+			field.type,
+			field.validate,
+			labelStyleMemo,
+			prefixComp,
+			suffixComp,
+		],
+	);
+
+	const fieldValueProps = useMemo(
+		() => ({
+			id,
+			readOnly: !!field.readOnly,
+			isDirty: fieldStates?.isDirty,
+			isValid: fieldStates?.isValid,
+			errorMessage: fieldStates?.errorMessage,
+			disabled: isFormDisabled,
+			noBorder: noBorderField[field.type],
+			noHover: noHoverField[field.type],
+			noPadding: noPaddingField[field.type],
+			valueStyle: valueStyleMemo,
+		}),
+		[
+			id,
+			field.readOnly,
+			field.type,
+			fieldStates?.isDirty,
+			fieldStates?.isValid,
+			fieldStates?.errorMessage,
+			isFormDisabled,
+			valueStyleMemo,
+		],
+	);
+
+	const buttonBarComponent = useMemo(
+		() => <FieldButtonBar field={field} modifiable={!isFormDisabled} />,
+		[field, isFormDisabled],
+	);
+
+	const fieldComponent = useMemo(
+		() => (
+			<FieldDynamicRenderer
+				id={id}
+				field={field}
+				value={fieldValue}
+				fieldMapper={fieldMapper}
+				modifiable={!isFormDisabled}
+				onValueChange={handleValueChange}
+			/>
+		),
+		[id, field, fieldValue, fieldMapper, isFormDisabled, handleValueChange],
+	);
+
 	return (
-		<Stack
-			id={`FieldContainer_${id}`}
-			direction={field.orientation ?? 'row'}
-			sx={{ ...fieldSectionContainer, ...containerStyle }}
-		>
+		<Stack id={`FieldContainer_${id}`} direction={field.orientation ?? 'row'} sx={containerStyleMemo}>
 			{/* Label */}
-			<FieldLabel
-				id={id}
-				label={field.label}
-				labelStyle={{
-					display: 'flex',
-					flex: `0 0 ${field.labelWidth || '35%'}`,
-					maxWidth: field.labelWidth || '35%',
-					lineHeight: 1.5,
-					...(field.labelStyle as CSSProperties),
-					...styleConverter(field.labelStyle as CSSProperties),
-				}}
-				hint={field.hint}
-				hideLabelSection={field.hideLabel || noLabelField[field.type]}
-				hasValidation={field.validate !== undefined && field.validate?.type !== ValidateType.None}
-				prefixComp={prefixComp}
-				suffixComp={suffixComp}
-			/>
+			<FieldLabel {...fieldLabelProps} />
 			{/* Value */}
-			<FieldValue
-				id={id}
-				readOnly={!!field.readOnly}
-				isDirty={fieldStates?.isDirty}
-				isValid={fieldStates?.isValid}
-				errorMessage={fieldStates?.errorMessage}
-				disabled={isFormDisabled}
-				noBorder={noBorderField[field.type]}
-				noHover={noHoverField[field.type]}
-				noPadding={noPaddingField[field.type]}
-				valueStyle={{
-					...(field.valueStyle as CSSProperties),
-					flex: `1 1 auto`,
-					maxWidth: '100%',
-					height: '100%',
-					lineHeight: 1.5,
-					...styleConverter(field.valueStyle as CSSProperties),
-				}}
-				buttonBarComponent={<FieldButtonBar field={field} modifiable={!isFormDisabled} />}
-				fieldComponent={
-					<FieldDynamicRenderer
-						id={id}
-						field={field}
-						value={fieldValue}
-						fieldMapper={fieldMapper}
-						modifiable={!isFormDisabled}
-						onValueChange={handleValueChange}
-					/>
-				}
-			/>
+			<FieldValue {...fieldValueProps} buttonBarComponent={buttonBarComponent} fieldComponent={fieldComponent} />
 		</Stack>
 	);
 }
 
-export default React.memo(FieldContainer);
+// 使用自定義比較函數的 React.memo，確保只有真正需要更新的情況下才重新渲染
+export default React.memo(FieldContainer, (prevProps, nextProps) => {
+	// 比較基本屬性
+	if (
+		prevProps.id !== nextProps.id ||
+		JSON.stringify(prevProps.valueChangedId) !== JSON.stringify(nextProps.valueChangedId) ||
+		prevProps.fieldMapper !== nextProps.fieldMapper ||
+		JSON.stringify(prevProps.containerStyle) !== JSON.stringify(nextProps.containerStyle) ||
+		prevProps.prefixComp !== nextProps.prefixComp ||
+		prevProps.suffixComp !== nextProps.suffixComp
+	) {
+		return false;
+	}
+
+	// 比較 field 的關鍵屬性
+	const prevField = prevProps.field;
+	const nextField = nextProps.field;
+
+	if (
+		prevField.id !== nextField.id ||
+		prevField.type !== nextField.type ||
+		prevField.label !== nextField.label ||
+		prevField.readOnly !== nextField.readOnly ||
+		prevField.hideLabel !== nextField.hideLabel ||
+		prevField.orientation !== nextField.orientation ||
+		prevField.labelWidth !== nextField.labelWidth ||
+		JSON.stringify(prevField.labelStyle) !== JSON.stringify(nextField.labelStyle) ||
+		JSON.stringify(prevField.valueStyle) !== JSON.stringify(nextField.valueStyle) ||
+		JSON.stringify(prevField.validate) !== JSON.stringify(nextField.validate) ||
+		JSON.stringify(prevField.valueChangedEvent) !== JSON.stringify(nextField.valueChangedEvent)
+	) {
+		return false;
+	}
+
+	// 所有關鍵屬性都相同，不需要重新渲染
+	return true;
+});

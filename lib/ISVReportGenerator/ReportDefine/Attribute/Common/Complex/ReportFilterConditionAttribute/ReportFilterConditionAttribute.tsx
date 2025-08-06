@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AttributeList from '../../../../../../attribute/AttributeList/AttributeList.tsx';
+
 import { FilterConditionAttribute } from './FilterConditionAttribute';
 
 interface Props {

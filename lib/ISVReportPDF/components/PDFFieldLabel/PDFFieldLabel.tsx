@@ -1,10 +1,10 @@
 import React from 'react';
 
 import ReactPDF from '@react-pdf/renderer';
+import { Style } from '@react-pdf/types/style';
 
 import { noLabelField } from '../../../field/field-type.ts';
 import { Field } from '../../../types/field/field.ts';
-import { Style } from '@react-pdf/types/style';
 
 interface Props {
 	field: Field;

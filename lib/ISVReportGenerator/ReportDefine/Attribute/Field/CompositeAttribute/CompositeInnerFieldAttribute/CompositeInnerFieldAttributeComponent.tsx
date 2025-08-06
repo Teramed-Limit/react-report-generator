@@ -9,6 +9,7 @@ import FieldTypeSelection from '../../../Common/FieldTypeSelection/FieldTypeSele
 import OrientationSelection from '../../../Common/OrientationSelection/OrientationSelection.tsx';
 import PercentageNumber from '../../../Common/PercentageNumber/PercentageNumber.tsx';
 import { FieldAttributeClassMapper } from '../../../FieldAttributeClassMapper.ts';
+
 import { CompositeInnerFieldAttributeClass } from './CompositeInnerFieldAttributeClass.ts';
 
 interface Props {

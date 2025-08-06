@@ -1,6 +1,7 @@
 import { atom, selector, selectorFamily } from 'recoil';
 
 import { FilterCondition, OptionSource } from '../../types/field/selection-field.ts';
+
 import { formValuesAtom } from './formDataAtoms.ts';
 
 export const codeListMapAtom = atom<Record<string, any[]>>({

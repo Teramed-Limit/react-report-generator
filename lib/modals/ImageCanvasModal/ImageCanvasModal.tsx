@@ -13,6 +13,7 @@ import CanvasToolbar from '../../konva-comp/CanvasToolbar/CanvasToolbar.tsx';
 import { CanvasMarker, MarkerType } from '../../types/canvas/canvas-maker-attribute.ts';
 import ColorPickerButton from '../../UI/ColorPickerButton/ColorPickerButton.tsx';
 import { generateUUID, isEmptyOrNil } from '../../utils/general.ts';
+
 import classes from './ImageCanvasModal.module.scss';
 
 interface Props {

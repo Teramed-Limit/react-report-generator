@@ -3,6 +3,7 @@ import React from 'react';
 import AttributeList from '../../../../../../attribute/AttributeList/AttributeList.tsx';
 import { Field } from '../../../../../../types/field/field.ts';
 import OptionTypeSelection from '../../OptionTypeSelection/OptionTypeSelection';
+
 import { FieldsAttribute } from './FieldsAttribute';
 
 interface Props {

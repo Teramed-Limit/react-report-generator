@@ -1,4 +1,5 @@
 import { Validate } from '../../types/validate.ts';
+
 import { NoneValidator } from './rules/none-validator.ts';
 import { RequireValidator } from './rules/require-validator';
 import { ValidateResult, Validator } from './validator';

@@ -1,6 +1,7 @@
 import { ComponentType } from 'react';
 
 import { FormFieldType, LayoutType } from '../../../field/field-type';
+
 import ArrayAttributeComponent from './Field/ArrayAttribute/ArrayAttributeComponent.tsx';
 import CheckBoxAttributeComponent from './Field/CheckBoxAttribute/CheckBoxAttributeComponent.tsx';
 import CodeListLexiconAttributeComponent from './Field/CodeListLexiconAttribute/CodeListLexiconAttributeComponent.tsx';

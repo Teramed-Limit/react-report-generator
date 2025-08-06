@@ -4,6 +4,7 @@ import AttributeList from '../../../../../attribute/AttributeList/AttributeList.
 import ReportFilterConditionAttribute from '../../Common/Complex/ReportFilterConditionAttribute/ReportFilterConditionAttribute.tsx';
 import ReportOptionSourceAttribute from '../../Common/Complex/ReportOptionSourceAttribute/ReportOptionSourceAttribute.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { CodeListSelectionAttributeClass } from './CodeListSelectionAttributeClass.ts';
 
 function CodeListSelectionAttributeComponent({

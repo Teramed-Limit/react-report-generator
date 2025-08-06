@@ -37,7 +37,6 @@ export function reverse(r1, r2) {
 	return { x1: r1x, y1: r1y, x2: r2x, y2: r2y }; // return the corrected rect.
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 export function nullMouseEvent(
 	e: Konva.KonvaEventObject<MouseEvent>,
 	mainColor: string,

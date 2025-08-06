@@ -7,7 +7,6 @@ import { MarkerEvent } from '../../MarkerEvent/MarkerEvent';
 
 const markerType = MarkerType.Text;
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const TextMarkerMouseEvent = (): MarkerEvent => {
 	const onClick = (
 		e: Konva.KonvaEventObject<MouseEvent>,

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { NumberAttributeClass } from './NumberAttributeClass.ts';
 
 function NumberAttributeComponent({

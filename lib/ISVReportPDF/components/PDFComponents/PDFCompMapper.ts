@@ -1,4 +1,5 @@
 import { ReportComponentType } from '../../../types/report-generator/component/rep-component';
+
 import PDFDynamicImageComponent from './PDFDynamicImageComponent.tsx';
 import PDFDynamicLabelComponent from './PDFDynamicLabelComponent';
 import PDFImageComponent from './PDFImageComponent';

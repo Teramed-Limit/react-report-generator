@@ -19,6 +19,7 @@ import ReportCSSStyleAttribute from '../../Common/Complex/ReportCSSStyleAttribut
 import PercentageNumber from '../../Common/PercentageNumber/PercentageNumber';
 import { TextAttributeClass } from '../../Field/TextAttribute/TextAttributeClass.ts';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { SubSectionAttributeClass } from './SubSectionAttributeClass.tsx';
 
 function SubSectionAttributeComponent({

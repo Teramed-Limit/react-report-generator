@@ -1,5 +1,6 @@
 import { Field, ValueChangedEvent } from '../../../types/field/field.ts';
 import { checkCondition } from '../condition-matcher.ts';
+
 import { Action, Condition } from './action';
 
 interface ChangeOtherValueActionParam {

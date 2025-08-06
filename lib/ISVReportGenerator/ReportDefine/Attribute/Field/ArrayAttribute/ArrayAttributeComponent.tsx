@@ -3,6 +3,7 @@ import React from 'react';
 import AttributeList from '../../../../../attribute/AttributeList/AttributeList.tsx';
 import OrientationSelection from '../../Common/OrientationSelection/OrientationSelection.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { ArrayAttributeClass } from './ArrayAttributeClass.ts';
 import TemplateAttributeComponent from './TemplateAttribute/TemplateAttributeComponent.tsx';
 

@@ -27,6 +27,7 @@ import { SRTreeNode } from '../../../types/sr-tree.ts';
 import BaseTextInput from '../../../UI/BaseTextInput/BaseTextInput.tsx';
 import FileUpload from '../../../UI/FileUpload/FileUpload.tsx';
 import { generateUUID, isEmptyOrNil, isNotEmptyOrNil } from '../../../utils/general.ts';
+
 import { SRTreeItem } from './SRTreeItem/SRTreeItem';
 
 interface Props {

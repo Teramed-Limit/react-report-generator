@@ -7,6 +7,7 @@ import useImage from 'use-image';
 import { useCanvasTool } from '../../hooks/useCanvasTool.ts';
 import { CanvasMarker, MarkerType } from '../../types/canvas/canvas-maker-attribute.ts';
 import { isEmptyOrNil } from '../../utils/general';
+
 import classes from './Canvas.module.scss';
 import RenderMaker from './Tools/RenderMaker/RenderMaker';
 

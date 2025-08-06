@@ -2,6 +2,7 @@ import React from 'react';
 
 import AttributeList from '../../../../../../attribute/AttributeList/AttributeList.tsx';
 import ValidateTypeSelection from '../../ValidateTypeSelection/ValidateTypeSelection';
+
 import { ValidateAttribute } from './ValidateAttribute';
 
 interface Props {

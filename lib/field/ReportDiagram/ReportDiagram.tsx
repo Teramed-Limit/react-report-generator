@@ -10,6 +10,7 @@ import CustomModal from '../../modals/CustomModal/CustomModal.tsx';
 import ImageCanvasModal from '../../modals/ImageCanvasModal/ImageCanvasModal.tsx';
 import { DiagramField } from '../../types/field/diagram-field.ts';
 import { isEmptyOrNil } from '../../utils/general.ts';
+
 import classes from './ReportDiagram.module.scss';
 
 interface Props {

@@ -28,6 +28,7 @@ import BaseAttributeComponent from '../../Field/BaseAttribute/BaseAttributeCompo
 import { CompositeAttributeClass } from '../../Field/CompositeAttribute/CompositeAttributeClass.ts';
 import { FieldAttributeComponentMapper } from '../../FieldAttributeComponentMapper.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import classes from './ReportDefineAttributeEditor.module.scss';
 
 function ReportDefineAttributeEditor() {

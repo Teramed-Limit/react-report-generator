@@ -1,4 +1,5 @@
 import { Field, FormControl, FormDefine } from '../../types';
+
 import { Action } from './actions/action';
 import { ChangeOtherArrayValueEvent } from './actions/change-other-array-value-event';
 import { ChangeOtherValueEvent } from './actions/change-other-value-event';

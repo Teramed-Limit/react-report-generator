@@ -157,13 +157,8 @@ function ReportPDF({ formData, formDefine, headerDefine, footerDefine, imageDefi
 					</ReactPDF.Text>
 				)}
 				contentContainerStyle={{ width: '100%', flexDirection: 'column' }}
-				contentHeaderComponent={<ReactPDF.Text style={{ width: '100%' }}>Content Header</ReactPDF.Text>}
-				contentFooterComponent={<ReactPDF.Text style={{ width: '100%' }}>Content Footer</ReactPDF.Text>}
 				mainContentStyle={{ width: '100%', flexDirection: 'row' }}
-				contentComponent={<ReactPDF.Text>hello content</ReactPDF.Text>}
 				imgContainerStyle={{ width: '100%', flexDirection: 'column' }}
-				imgHeaderComponent={<ReactPDF.Text style={{ width: '100%' }}>Img Header</ReactPDF.Text>}
-				imgFooterComponent={<ReactPDF.Text style={{ width: '100%' }}>Img Footer</ReactPDF.Text>}
 			/>
 			<Stack direction="column" alignItems="end">
 				<Box>

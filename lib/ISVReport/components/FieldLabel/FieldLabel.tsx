@@ -5,6 +5,7 @@ import cx from 'classnames';
 import { FaInfoCircle } from 'react-icons/fa';
 
 import { isEmptyOrNil } from '../../../utils/general.ts';
+
 import classes from './FieldLabel.module.scss';
 
 interface Props {

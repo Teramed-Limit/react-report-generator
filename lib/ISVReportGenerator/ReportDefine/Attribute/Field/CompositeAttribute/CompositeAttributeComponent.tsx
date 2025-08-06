@@ -10,6 +10,7 @@ import { TextField } from '../../../../../types/field/text-field.ts';
 import OrientationSelection from '../../Common/OrientationSelection/OrientationSelection';
 import { FieldAttributeClassMapper } from '../../FieldAttributeClassMapper.ts';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { CompositeAttributeClass } from './CompositeAttributeClass.ts';
 import CompositeFieldsAttributeComponent from './CompositeFieldsAttribute/CompositeFieldsAttributeComponent.tsx';
 

@@ -4,6 +4,7 @@ import { TextareaAutosize } from '@mui/material';
 
 import { TextareaField } from '../../types/field/textarea-field.ts';
 import { isEmptyOrNil } from '../../utils/general.ts';
+
 import classes from './TextArea.module.scss';
 
 interface Props {

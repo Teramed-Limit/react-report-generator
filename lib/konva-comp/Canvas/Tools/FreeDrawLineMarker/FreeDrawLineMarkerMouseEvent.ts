@@ -7,7 +7,6 @@ import { MarkerEvent } from '../../MarkerEvent/MarkerEvent';
 
 const markerType = MarkerType.FreeDraw;
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const FreeDrawLineMarkerMouseEvent = (): MarkerEvent => {
 	const onMouseDown = (
 		e: Konva.KonvaEventObject<MouseEvent>,

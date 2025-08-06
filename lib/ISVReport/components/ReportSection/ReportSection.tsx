@@ -6,6 +6,7 @@ import { Section, SubSection } from '../../../types';
 import { styleConverter } from '../../../utils/style-converter.ts';
 import { reportSection } from '../../style.ts';
 import { ReportSubSection } from '../ReportSubSection/ReportSubSection.tsx';
+
 import classes from './ReportSection.module.scss';
 
 interface Props {

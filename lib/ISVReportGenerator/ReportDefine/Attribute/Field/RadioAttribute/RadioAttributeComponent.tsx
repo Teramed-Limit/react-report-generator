@@ -4,6 +4,7 @@ import AttributeList from '../../../../../attribute/AttributeList/AttributeList.
 import ReportOptionSourceAttribute from '../../Common/Complex/ReportOptionSourceAttribute/ReportOptionSourceAttribute.tsx';
 import OrientationSelection from '../../Common/OrientationSelection/OrientationSelection.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { RadioAttributeClass } from './RadioAttributeClass.ts';
 
 function RadioAttributeComponent({

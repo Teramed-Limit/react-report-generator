@@ -3,6 +3,7 @@ import { Style } from '@react-pdf/types/style';
 import { FormFieldType } from '../../../../../field/field-type.ts';
 import { CompositeField } from '../../../../../types/field/composite-field.ts';
 import { CSSStyle } from '../../Common/Complex/ReportCSSStyleAttribute/CSSStyle';
+
 import { CompositeInnerFieldAttributeClass } from './CompositeInnerFieldAttribute/CompositeInnerFieldAttributeClass.ts';
 
 export class CompositeAttributeClass implements CompositeField {

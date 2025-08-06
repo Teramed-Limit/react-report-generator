@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { RecoilRoot } from 'recoil';
 
 import TabPanel from '../lib/UI/TabPanel/TabPanel.tsx';
+
 import Report from './sample/Report.tsx';
 import ReportGenerator from './sample/ReportGenerator.tsx';
 

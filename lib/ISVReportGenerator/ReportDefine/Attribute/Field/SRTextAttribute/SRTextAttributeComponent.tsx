@@ -2,6 +2,7 @@ import React from 'react';
 
 import AttributeList from '../../../../../attribute/AttributeList/AttributeList.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
+
 import { SRTextAttributeClass } from './SRTextAttributeClass.ts';
 
 function SRTextAttributeComponent({

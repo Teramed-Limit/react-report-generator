@@ -1,4 +1,5 @@
 import { FormFieldType } from '../../../field/field-type';
+
 import { ArrayAttributeClass } from './Field/ArrayAttribute/ArrayAttributeClass.ts';
 import { CheckBoxAttributeClass } from './Field/CheckBoxAttribute/CheckBoxAttributeClass.ts';
 import { CodeListLexiconAttributeClass } from './Field/CodeListLexiconAttribute/CodeListLexiconAttributeClass.ts';

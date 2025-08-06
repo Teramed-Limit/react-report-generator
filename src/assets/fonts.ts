@@ -1,6 +1,7 @@
 import { Font } from '@react-pdf/renderer';
 
 import { FontFamily } from '../../lib/types';
+
 import ArialBold from './fonts/Arial-Bold.ttf';
 import Arial from './fonts/Arial.ttf';
 import MicrosoftBlack from './fonts/MicrosoftBlack.ttf';

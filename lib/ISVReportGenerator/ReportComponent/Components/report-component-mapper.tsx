@@ -1,6 +1,7 @@
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
 import { ReportComponentProps } from '../report-component-props.tsx';
+
 import ReportDynamicImageComponent from './DynamicImage/ReportDynamicImageComponent.tsx';
 import ReportDynamicLabelComponent from './DynamicLabel/ReportDynamicLabelComponent';
 import ReportImageComponent from './Image/ReportImageComponent';

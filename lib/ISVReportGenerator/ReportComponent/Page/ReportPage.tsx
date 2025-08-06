@@ -16,6 +16,7 @@ import { RepPage } from '../../../types/report-generator/rep-page.ts';
 import { Point } from '../../../types/report-generator/rep-report.ts';
 import { generateUUID } from '../../../utils/general.ts';
 import RendererReportComponent from '../Components/RendererReportComponent';
+
 import PagePaddingPseudo from './PagePaddingPseudo/PagePaddingPseudo'; // const PaperSizeMapper = {
 import classes from './ReportPage.module.scss';
 

@@ -16,6 +16,7 @@ import { rootTheme } from '../theme/rootTheme.ts';
 import { Field, FontFamily, FormDefine, RepPage } from '../types';
 import { ISVReportGeneratorHandle } from '../types/component-handle';
 import { deepCopy } from '../utils/general.ts';
+
 import classes from './ISVReportGenerator.module.scss';
 import ReportPropertyPanel from './ReportComponent/Layout/ReportPropertyPanel/ReportPropertyPanel.tsx';
 import ReportPage from './ReportComponent/Page/ReportPage';

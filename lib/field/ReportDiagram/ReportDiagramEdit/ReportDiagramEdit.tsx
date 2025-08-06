@@ -9,6 +9,7 @@ import { fieldPathAtom } from '../../../recoil/atoms/formDefineAtoms.ts';
 import { selectedAttributeAtom, selectedReportDefine } from '../../../recoil/atoms/report-generator-atoms.ts';
 import { DiagramField } from '../../../types/field/diagram-field.ts';
 import FileUpload from '../../../UI/FileUpload/FileUpload.tsx';
+
 import classes from './ReportDiagramEdit.module.scss';
 
 interface Props {

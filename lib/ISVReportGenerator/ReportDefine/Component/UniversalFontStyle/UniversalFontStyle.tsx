@@ -7,6 +7,7 @@ import BaseNumber from '../../../../UI/BaseNumber/BaseNumber.tsx';
 import ColorPickerButton from '../../../../UI/ColorPickerButton/ColorPickerButton.tsx';
 import FontNameSelection from '../../Attribute/Common/FontNameSelection/FontNameSelection';
 import FontWeightSelection from '../../Attribute/Common/FontWeightSelection/FontWeightSelection';
+
 import classes from './UniversalFontStyle.module.scss';
 
 interface Props {

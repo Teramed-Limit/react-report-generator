@@ -41,18 +41,31 @@ module.exports = {
 	rules: {
 		'react/react-in-jsx-scope': 0, //
 		'import/order': [
-			'error',
+			'warn',
 			{
-				groups: ['builtin', 'external', 'internal'],
+				groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
 				pathGroups: [
 					{
 						pattern: 'react+(|-dom)',
 						group: 'external',
 						position: 'before',
 					},
+					{
+						pattern: '@/**',
+						group: 'internal',
+						position: 'before',
+					},
+					{
+						pattern: '../**',
+						group: 'parent',
+					},
+					{
+						pattern: './**',
+						group: 'sibling',
+					},
 				],
 				pathGroupsExcludedImportTypes: ['react'],
-				'newlines-between': 'always',
+				'newlines-between': 'ignore',
 				alphabetize: {
 					order: 'asc',
 					caseInsensitive: true,

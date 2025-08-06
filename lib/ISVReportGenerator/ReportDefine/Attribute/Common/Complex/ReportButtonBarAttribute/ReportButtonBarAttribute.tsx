@@ -11,7 +11,7 @@ interface Props {
 	setAttribute: (attrName: (string | number)[], attrValue: any) => void;
 }
 
-const ReportButtonBarAttribute = ({ attrPath, attribute, setAttribute }: Props) => {
+function ReportButtonBarAttribute({ attrPath, attribute, setAttribute }: Props) {
 	const addButtonBarAttribute = useCallback(
 		(newAttr) => {
 			if (attribute?.find((attr) => attr.id === newAttr.id)) return;
@@ -77,6 +77,6 @@ const ReportButtonBarAttribute = ({ attrPath, attribute, setAttribute }: Props) 
 			</Button>
 		</Stack>
 	);
-};
+}
 
 export default ReportButtonBarAttribute;

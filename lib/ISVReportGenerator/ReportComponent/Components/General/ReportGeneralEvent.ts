@@ -9,7 +9,6 @@ const ReportGeneralEvent = (): {
 	onMouseMove: () => void;
 	onMouseDown: () => void;
 } => {
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const onGenerate = (e: React.MouseEvent, pos: Point) => {
 		return null;
 	};
