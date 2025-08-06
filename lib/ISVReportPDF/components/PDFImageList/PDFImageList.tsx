@@ -64,7 +64,7 @@ function PDFImageList<T>({
 									}}
 									wrap={false}
 								>
-									<ReactPDF.Image style={styles.image} src={getImageSrc(image)} />
+									<ReactPDF.Image style={styles.image} src={getImageSrc(image)} cache={false} />
 									{renderImageDesc && renderImageDesc(image)}
 									{renderImageNumber && renderImageNumber(image)}
 								</ReactPDF.View>
