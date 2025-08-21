@@ -143,7 +143,7 @@ function ReportDefineAttributeEditor() {
 	return (
 		<Stack
 			direction="column"
-			sx={{ border: selectedFields.size >= 1 ? '1px solid darkgrey' : 'none' }}
+			sx={{ border: selectedFields.size >= 1 ? '1px solid darkgrey' : 'none', minWidth: '300px' }}
 			className={classes.container}
 		>
 			{selectedFields.size === 1

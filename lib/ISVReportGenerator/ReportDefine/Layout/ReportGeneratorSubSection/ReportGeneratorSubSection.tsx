@@ -58,7 +58,14 @@ function ReportGeneratorSubSection({ sectionIdx, subSectionIdx, subSection, show
 			}}
 			showGuideLine={showGuideLine}
 			isFocus={isFocus}
-			legendComp={<Chip sx={{ cursor: 'pointer' }} size="small" color="secondary" label={subSection.id} />}
+			legendComp={
+				<Chip
+					sx={{ cursor: 'pointer', maxWidth: '100%' }}
+					size="small"
+					color="secondary"
+					label={subSection.id}
+				/>
+			}
 			onClick={onSetAttributePath}
 		>
 			<BoxInspector

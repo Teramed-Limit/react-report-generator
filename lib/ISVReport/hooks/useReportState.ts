@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { codeListMapAtom } from '../../recoil/atoms/codeListAtom.ts';
 import {
@@ -14,7 +14,7 @@ import { fieldCollectionAtom, formDefineAtom, srFieldsAtom } from '../../recoil/
 import { SRUtility } from '../../service/sr-utility/sr-utility.ts';
 import { ValidationService } from '../../service/validation/validation-service.ts';
 import { Field, FieldMetaInfo, FormDefine, FormState, SRTreeNode } from '../../types';
-import { isEmptyOrNil, isFieldMetaInfo, isFieldMetaMapInfo } from '../../utils/general.ts';
+import { isEmptyOrNil, isFieldMetaInfo, isFieldMetaMapInfo, updateNestedKey } from '../../utils/general.ts';
 
 interface UseReportStateProps {
 	formDefine: FormDefine;
@@ -53,7 +53,7 @@ export const useReportState = ({
 	});
 
 	// Recoil state setters
-	const [internalFormData, setFormData] = useRecoilState(formValuesAtom);
+	const setFormData = useSetRecoilState(formValuesAtom);
 	const setFormState = useSetRecoilState(formStatesAtom);
 	const setFormDefine = useSetRecoilState(formDefineAtom);
 	const setFormDisabled = useSetRecoilState(formDisabledAtom);
@@ -72,6 +72,27 @@ export const useReportState = ({
 
 	// Memoized validation service
 	const validationService = useMemo(() => new ValidationService(), []);
+
+	// 取得完整 formdata
+	const getFormData = useRecoilCallback(
+		({ snapshot }) =>
+			() => {
+				return snapshot.getLoadable(formValuesAtom).contents;
+			},
+		[],
+	);
+
+	// 取得完整 formstate，並把所有 field 設為 dirty
+	const getFormState = useRecoilCallback(
+		({ snapshot }) =>
+			() => {
+				const formState = snapshot.getLoadable(formStatesAtom).contents;
+				const returnFormState = updateNestedKey(formState, 'isDirty', true);
+				setFormState(returnFormState);
+				return returnFormState;
+			},
+		[],
+	);
 
 	// Initialize report state
 	const initializeReport = useCallback(async () => {
@@ -130,6 +151,7 @@ export const useReportState = ({
 		if (memoizedFields.current === JSON.stringify(fieldCollection)) return;
 
 		const formState: FormState = {};
+		const internalFormData = getFormData() || {};
 
 		Object.keys(fieldCollection).forEach((key) => {
 			const initState = {
@@ -169,7 +191,7 @@ export const useReportState = ({
 
 		setFormState(formState);
 		memoizedFields.current = JSON.stringify(fieldCollection);
-	}, [fieldCollection, internalFormData, setFormState, validationService]);
+	}, [fieldCollection, getFormData, setFormState, validationService]);
 
 	// Handle SR Text initialization
 	useEffect(() => {
@@ -185,8 +207,9 @@ export const useReportState = ({
 
 	return {
 		reportState,
-		internalFormData,
 		fieldCollection,
 		initializeReport,
+		getFormData,
+		getFormState,
 	};
 };

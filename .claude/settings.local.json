@@ -2,7 +2,6 @@
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "context7",
-    "sequential-thinking",
-    "puppeteer"
+    "sequential-thinking"
   ]
 }

@@ -92,7 +92,7 @@ function ReportPropertyPanel() {
 	};
 
 	return (
-		<Stack direction="column" className={classes.container}>
+		<Stack direction="column" className={classes.container} sx={{ minWidth: '300px' }}>
 			<Stack sx={{ width: '100%', height: '100%', p: 1, overflow: 'hidden' }} direction="column">
 				<StyleTabs value={value} onChange={handleChange}>
 					<StyleTab label="Component" />

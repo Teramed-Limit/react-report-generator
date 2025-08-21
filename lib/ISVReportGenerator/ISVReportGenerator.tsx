@@ -5,7 +5,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { reportPage } from '../ISVReport/style';
 import { codeListMapAtom } from '../recoil/atoms/codeListAtom.ts';
 import { formValuesAtom } from '../recoil/atoms/formDataAtoms.ts';
 import { formDefineAtom, imageDefineAtom } from '../recoil/atoms/formDefineAtoms.ts';
@@ -45,6 +44,7 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 		const [internalImageDefine, setImageDefine] = useRecoilState(imageDefineAtom);
 		const defineType = useRecoilValue(selectedDefineType);
 		const setCodeListMap = useSetRecoilState(codeListMapAtom);
+		const [fitPageWidth, setFitPageWidth] = useState<boolean>(false);
 
 		useEffect(() => {
 			setCodeListMap(codeList);
@@ -161,6 +161,17 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 							>
 								Remove Spacing
 							</Button>
+							<Button
+								sx={{ marginLeft: '10px' }}
+								size="small"
+								variant="contained"
+								color="primary"
+								onClick={() => {
+									setFitPageWidth(!fitPageWidth);
+								}}
+							>
+								Expand width to 100%
+							</Button>
 						</Box>
 
 						<Stack className={classes.sticky} direction="row" spacing="20px">
@@ -178,8 +189,8 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 							/>
 						</Stack>
 						{/* Report */}
-						<Box className={classes.reportLayout} sx={reportPage}>
-							<Box className={classes.page}>
+						<Box className={classes.reportLayout}>
+							<Box className={classes.page} sx={{ width: fitPageWidth ? '100%' : '794px' }}>
 								{/* Header */}
 								<ReportPage page={internalHeaderDefine} />
 								{/* Content */}

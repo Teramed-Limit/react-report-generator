@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { Button, Stack } from '@mui/material';
 
@@ -63,7 +63,7 @@ function Report() {
 					defineChangeTriggerCallBack={loadFormDefine}
 					codeList={codeList as any}
 					structReportParseApi="http://localhost:61818/api/structureReport/load"
-					showFlowButton={false}
+					showFlowButton
 					buttonActionMap={{
 						createTemplate: (field: Field) => {
 							window.alert('Create Template');

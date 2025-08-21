@@ -1,10 +1,11 @@
 import { initRepPage } from '../../lib/utils/general.ts';
 import { FormDefineMap } from '../types/define.ts';
 
-import { blankDefine, cardiacUltrasoundReportDefine, cystoscopyDefine, gridTableDefine } from './cystoscopy-define.ts';
+import { blankDefine, cardiacUltrasoundReportDefine, cystoscopyDefine } from './cystoscopy-define.ts';
 import { defaultFooterDefine } from './footer-define.ts';
 import { defaultHeaderDefine } from './header-define.ts';
 import { imageFieldsDefine } from './image-define.ts';
+import { newDefine } from './new-define.ts';
 import { WoundDefine } from './wound-define.ts';
 
 export const fakeDefine: FormDefineMap = {
@@ -21,7 +22,7 @@ export const fakeDefine: FormDefineMap = {
 		footerDefine: defaultFooterDefine,
 	},
 	Colonoscopy_MongKok: {
-		formDefine: gridTableDefine,
+		formDefine: newDefine,
 		imageDefine: imageFieldsDefine,
 		headerDefine: defaultHeaderDefine,
 		footerDefine: defaultFooterDefine,

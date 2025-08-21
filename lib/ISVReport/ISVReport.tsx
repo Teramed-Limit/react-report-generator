@@ -3,15 +3,13 @@ import { forwardRef, useImperativeHandle } from 'react';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { Box, IconButton, Stack, ThemeProvider } from '@mui/material';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import useLocalStorage from '../hooks/useLocalStorage.ts';
-import { formStatesAtom } from '../recoil/atoms/formDataAtoms.ts';
 import '../styles/scrollbar.scss';
 import { rootTheme } from '../theme/rootTheme.ts';
 import { FormControl, FormControlArray, Section } from '../types';
 import { ISVReportHandle } from '../types/component-handle';
-import { isFormControl, isFormControlArray, updateNestedKey } from '../utils/general.ts';
+import { isFormControl, isFormControlArray } from '../utils/general.ts';
 
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary.tsx';
 import { LoadingOverlay } from './components/LoadingOverlay/LoadingOverlay.tsx';
@@ -37,7 +35,7 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 	} = props;
 
 	// Use our custom hook for state management
-	const { reportState, internalFormData } = useReportState({
+	const { reportState, getFormData, getFormState } = useReportState({
 		formDefine,
 		formData,
 		formDisabled,
@@ -49,26 +47,14 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 		defineChangeTriggerCallBack,
 	});
 
-	// Form state management for imperative handle
-	const setFormState = useSetRecoilState(formStatesAtom);
-
 	// Scale for zoom functionality
 	const [scale, setScale] = useLocalStorage<number>('reportScale', 1);
 
-	const getAllFormState = () => {
-		let newState: any = {};
-		setFormState((prev) => {
-			newState = updateNestedKey(prev, 'isDirty', true);
-			return newState;
-		});
-		return newState;
-	};
-
 	useImperativeHandle(ref, () => ({
-		getFormData: () => internalFormData,
-		getFormState: () => getAllFormState(),
+		getFormData: () => getFormData(),
+		getFormState: () => getFormState(),
 		isFormValid: () => {
-			const formState = getAllFormState();
+			const formState = getFormState();
 			return !Object.keys(formState).some((key) => {
 				if (isFormControl(formState[key])) {
 					const fieldState = formState[key] as FormControl;

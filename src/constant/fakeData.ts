@@ -63,7 +63,7 @@ export const fakeData = {
 export const fakeImageListData: ReportImageData[] = [
 	{
 		SOPInstanceUID: '1.2.840.113619.2.55.3.2831164350.789.1593457890.56',
-		ImageSrc: 'https://picsum.photos/200/300',
+		ImageSrc: 'https://fastly.picsum.photos/id/698/200/300.jpg?hmac=2Z_fr-yUH1ByQu36MAR319aTCndT4FjG1VBksAKGVKU',
 		thumbnailImageSrc: 'https://example.com/images/thumbnail1.jpg',
 		EditedImageSrc: 'https://example.com/images/edited1.jpg',
 		IsAttachInReport: true,
@@ -71,7 +71,7 @@ export const fakeImageListData: ReportImageData[] = [
 	},
 	{
 		SOPInstanceUID: '1.2.840.113619.2.55.3.2831164350.790.1593457890.568',
-		ImageSrc: 'https://picsum.photos/200/300',
+		ImageSrc: 'https://fastly.picsum.photos/id/698/200/300.jpg?hmac=2Z_fr-yUH1ByQu36MAR319aTCndT4FjG1VBksAKGVKU',
 		thumbnailImageSrc: 'https://example.com/images/thumbnail2.jpg',
 		EditedImageSrc: 'https://example.com/images/edited2.jpg',
 		IsAttachInReport: false,
