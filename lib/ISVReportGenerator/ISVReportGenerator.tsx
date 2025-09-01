@@ -3,7 +3,7 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { Box, Button, Stack, ThemeProvider } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { codeListMapAtom } from '../recoil/atoms/codeListAtom.ts';
 import { formValuesAtom } from '../recoil/atoms/formDataAtoms.ts';
@@ -39,9 +39,9 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 	({ formData, formDefine, imageDefine, headerDefine, footerDefine, codeList, fonts }: Props, ref) => {
 		// Report Form
 		const [showGuideLine, onToggleGuideline] = useState<boolean>(true);
-		const [internalFormData, setFormData] = useRecoilState(formValuesAtom);
-		const [internalFormDefine, setFormDefine] = useRecoilState(formDefineAtom);
-		const [internalImageDefine, setImageDefine] = useRecoilState(imageDefineAtom);
+		const setFormData = useSetRecoilState(formValuesAtom);
+		const setFormDefine = useSetRecoilState(formDefineAtom);
+		const setImageDefine = useSetRecoilState(imageDefineAtom);
 		const defineType = useRecoilValue(selectedDefineType);
 		const setCodeListMap = useSetRecoilState(codeListMapAtom);
 		const [fitPageWidth, setFitPageWidth] = useState<boolean>(false);
@@ -56,8 +56,8 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 		}, [formDefine, imageDefine, setFormDefine, setImageDefine]);
 
 		// Report Page
-		const [internalHeaderDefine, setHeaderDefine] = useRecoilState(headerDefineAtom);
-		const [internalFooterDefine, setFooterDefine] = useRecoilState(footerDefineAtom);
+		const setHeaderDefine = useSetRecoilState(headerDefineAtom);
+		const setFooterDefine = useSetRecoilState(footerDefineAtom);
 
 		useEffect(() => {
 			setFormData(formData);
@@ -68,12 +68,52 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 			setFooterDefine(footerDefine);
 		}, [headerDefine, footerDefine, setHeaderDefine, setFooterDefine]);
 
+		const getFormData = useRecoilCallback(
+			({ snapshot }) =>
+				() => {
+					return snapshot.getLoadable(formValuesAtom).contents;
+				},
+			[],
+		);
+
+		const getFormDefine = useRecoilCallback(
+			({ snapshot }) =>
+				() => {
+					return snapshot.getLoadable(formDefineAtom).contents;
+				},
+			[],
+		);
+
+		const getImageDefine = useRecoilCallback(
+			({ snapshot }) =>
+				() => {
+					return snapshot.getLoadable(imageDefineAtom).contents;
+				},
+			[],
+		);
+
+		const getHeaderDefine = useRecoilCallback(
+			({ snapshot }) =>
+				() => {
+					return snapshot.getLoadable(headerDefineAtom).contents;
+				},
+			[],
+		);
+
+		const getFooterDefine = useRecoilCallback(
+			({ snapshot }) =>
+				() => {
+					return snapshot.getLoadable(footerDefineAtom).contents;
+				},
+			[],
+		);
+
 		useImperativeHandle(ref, () => ({
-			getFormData: () => internalFormData,
-			getFormDefine: () => internalFormDefine,
-			getImageDefine: () => internalImageDefine,
-			getHeaderDefine: () => internalHeaderDefine,
-			getFooterDefine: () => internalFooterDefine,
+			getFormData: () => getFormData(),
+			getFormDefine: () => getFormDefine(),
+			getImageDefine: () => getImageDefine(),
+			getHeaderDefine: () => getHeaderDefine(),
+			getFooterDefine: () => getFooterDefine(),
 		}));
 
 		function updateValueStyleId<T>(obj: T, styleName: string, styleValue: string, target: string): T {
@@ -192,13 +232,13 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 						<Box className={classes.reportLayout}>
 							<Box className={classes.page} sx={{ width: fitPageWidth ? '100%' : '794px' }}>
 								{/* Header */}
-								<ReportPage page={internalHeaderDefine} />
+								<ReportPage page={headerDefine} />
 								{/* Content */}
-								<ReportGeneratorPage showGuideLine={showGuideLine} formDefine={internalFormDefine} />
+								<ReportGeneratorPage showGuideLine={showGuideLine} />
 								{/* Footer */}
-								<ReportPage page={internalFooterDefine} />
+								<ReportPage page={footerDefine} />
 								{/* Image */}
-								<ReportGeneratorImagePage showGuideLine={showGuideLine} fields={internalImageDefine} />
+								<ReportGeneratorImagePage showGuideLine={showGuideLine} />
 							</Box>
 						</Box>
 					</Stack>

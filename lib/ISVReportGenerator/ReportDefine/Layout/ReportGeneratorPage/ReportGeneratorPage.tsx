@@ -1,25 +1,26 @@
 import React from 'react';
 
 import { Chip } from '@mui/material';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { LayoutType } from '../../../../field/field-type.ts';
+import { formDefineAtom } from '../../../../recoil/atoms/formDefineAtoms.ts';
 import {
 	isFieldsetTemplateFocus,
 	selectedAttributeTypeAtom,
 	selectedDefineType,
 } from '../../../../recoil/atoms/report-generator-atoms.ts';
-import { FormDefine, Section } from '../../../../types/define.ts';
+import { Section } from '../../../../types/define.ts';
 import FieldsetTemplate from '../FieldsetTemplate/FieldsetTemplate';
 import ReportGeneratorSection from '../ReportGeneratorSection/ReportGeneratorSection';
 
 interface Props {
-	formDefine: FormDefine;
 	showGuideLine: boolean;
 }
 
-function ReportGeneratorPage({ formDefine, showGuideLine }: Props) {
+function ReportGeneratorPage({ showGuideLine }: Props) {
 	const path = ['page'];
+	const formDefine = useRecoilValue(formDefineAtom);
 	const setSelectedAttributeType = useSetRecoilState(selectedAttributeTypeAtom);
 	const setDefineType = useSetRecoilState(selectedDefineType);
 	const [isFocus, setFocus] = useRecoilState(isFieldsetTemplateFocus(path));

@@ -44,7 +44,7 @@ function ReportGeneratorSection({ section, sectionIdx, showGuideLine }: Props) {
 
 	const style = section?.style as Style;
 
-	const sectionLableStyle = section?.labelStyle as Style;
+	const sectionLabelStyle = section?.labelStyle as Style;
 
 	return (
 		<FieldsetTemplate
@@ -82,14 +82,14 @@ function ReportGeneratorSection({ section, sectionIdx, showGuideLine }: Props) {
 				>
 					{section?.label && (
 						<BoxInspector
-							paddingTop={sectionLableStyle?.paddingTop || '0'}
-							paddingBottom={sectionLableStyle?.paddingBottom || '0'}
-							paddingLeft={sectionLableStyle?.paddingLeft || '0'}
-							paddingRight={sectionLableStyle?.paddingRight || '0'}
-							marginTop={sectionLableStyle?.marginTop || '0'}
-							marginBottom={sectionLableStyle?.marginBottom || '0'}
-							marginLeft={sectionLableStyle?.marginLeft || '0'}
-							marginRight={sectionLableStyle?.marginRight || '0'}
+							paddingTop={sectionLabelStyle?.paddingTop || '0'}
+							paddingBottom={sectionLabelStyle?.paddingBottom || '0'}
+							paddingLeft={sectionLabelStyle?.paddingLeft || '0'}
+							paddingRight={sectionLabelStyle?.paddingRight || '0'}
+							marginTop={sectionLabelStyle?.marginTop || '0'}
+							marginBottom={sectionLabelStyle?.marginBottom || '0'}
+							marginLeft={sectionLabelStyle?.marginLeft || '0'}
+							marginRight={sectionLabelStyle?.marginRight || '0'}
 						>
 							<div
 								className={classes[`section-header`]}

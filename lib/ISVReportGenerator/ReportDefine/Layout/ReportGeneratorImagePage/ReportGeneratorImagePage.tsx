@@ -29,11 +29,11 @@ import { FieldAttributeClassMapper } from '../../Attribute/FieldAttributeClassMa
 import FieldsetTemplate from '../FieldsetTemplate/FieldsetTemplate.tsx';
 
 interface Props {
-	fields: Field[];
 	showGuideLine: boolean;
 }
 
-function ReportGeneratorImagePage({ fields, showGuideLine }: Props) {
+function ReportGeneratorImagePage({ showGuideLine }: Props) {
+	const fields = useRecoilValue(imageDefineAtom);
 	const { anchorEl, open, handleClick, handleClose } = usePopupState();
 	const setAttributePath = useSetRecoilState(selectedAttributePathAtom);
 	const setSelectedAttribute = useSetRecoilState(selectedAttributeAtom);

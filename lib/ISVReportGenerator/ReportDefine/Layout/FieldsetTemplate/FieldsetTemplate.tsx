@@ -54,4 +54,4 @@ function FieldsetTemplate({ id, style, showGuideLine, isFocus, onClick, legendCo
 	);
 }
 
-export default FieldsetTemplate;
+export default React.memo(FieldsetTemplate);
