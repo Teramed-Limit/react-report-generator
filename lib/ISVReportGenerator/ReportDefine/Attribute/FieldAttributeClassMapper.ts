@@ -10,6 +10,7 @@ import { DatePickerAttributeClass } from './Field/DatePickerAttribute/DatePicker
 import { DiagramAttributeClass } from './Field/DiagramAttribute/DiagramAttributeClass.ts';
 // import { GridTableAttributeClass } from './Field/GridTableAttribute/GridTableAttributeClass.ts';
 import { NumberAttributeClass } from './Field/NumberAttribute/NumberAttributeClass.ts';
+import { ParagraphAttributeClass } from './Field/ParagraphAttribute/ParagraphAttributeClass.ts';
 import { RadioAttributeClass } from './Field/RadioAttribute/RadioAttributeClass.ts';
 import { SRTextAttributeClass } from './Field/SRTextAttribute/SRTextAttributeClass.ts';
 import { TextAreaAttributeClass } from './Field/TextAreaAttribute/TextAreaAttributeClass.ts';
@@ -30,6 +31,7 @@ export const FieldAttributeClassMapper = {
 	[FormFieldType.Array]: (field) => new ArrayAttributeClass(field),
 	[FormFieldType.Composite]: (field) => new CompositeAttributeClass(field),
 	[FormFieldType.SRText]: (field) => new SRTextAttributeClass(field),
+	[FormFieldType.Paragraph]: (field) => new ParagraphAttributeClass(field),
 	// [FormFieldType.OBGYNChart]: (field) => new CurveChartAttributeClass(field),
 	// [FormFieldType.GridTable]: (field) => new GridTableAttributeClass(field),
 };

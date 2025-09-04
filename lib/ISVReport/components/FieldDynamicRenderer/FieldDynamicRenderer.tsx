@@ -36,18 +36,4 @@ function FieldDynamicRenderer({ id, field, fieldMapper, value, modifiable, onVal
 }
 
 // 使用 React.memo 並提供自定義比較函數，只有當實際需要的 props 改變時才重新渲染
-export default React.memo(FieldDynamicRenderer, (prevProps, nextProps) => {
-	// 只比較會影響渲染的關鍵屬性
-	return (
-		prevProps.id === nextProps.id &&
-		prevProps.field.type === nextProps.field.type &&
-		prevProps.value === nextProps.value &&
-		prevProps.modifiable === nextProps.modifiable &&
-		prevProps.onValueChange === nextProps.onValueChange &&
-		// 對 field 進行深度比較關鍵屬性
-		prevProps.field.id === nextProps.field.id &&
-		prevProps.field.label === nextProps.field.label &&
-		prevProps.field.readOnly === nextProps.field.readOnly &&
-		JSON.stringify(prevProps.field.validate) === JSON.stringify(nextProps.field.validate)
-	);
-});
+export default React.memo(FieldDynamicRenderer);

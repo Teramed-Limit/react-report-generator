@@ -26,6 +26,7 @@ import { ArrayAttributeClass } from '../../Field/ArrayAttribute/ArrayAttributeCl
 import { BaseAttributeClass } from '../../Field/BaseAttribute/BaseAttributeClass.ts';
 import BaseAttributeComponent from '../../Field/BaseAttribute/BaseAttributeComponent.tsx';
 import { CompositeAttributeClass } from '../../Field/CompositeAttribute/CompositeAttributeClass.ts';
+import { ParagraphAttributeClass } from '../../Field/ParagraphAttribute/ParagraphAttributeClass.ts';
 import { FieldAttributeComponentMapper } from '../../FieldAttributeComponentMapper.tsx';
 import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps.tsx';
 
@@ -53,8 +54,11 @@ function ReportDefineAttributeEditor() {
 		const ComponentToRender = FieldAttributeComponentMapper[type];
 		if (!ComponentToRender) return null;
 
-		let renderAttribute: BaseAttributeClass | CompositeAttributeClass | ArrayAttributeClass =
-			new BaseAttributeClass(attribute || {});
+		let renderAttribute:
+			| BaseAttributeClass
+			| CompositeAttributeClass
+			| ArrayAttributeClass
+			| ParagraphAttributeClass = new BaseAttributeClass(attribute || {});
 		if (ComponentToRender) {
 			switch (type) {
 				case LayoutType.Page:
@@ -66,6 +70,9 @@ function ReportDefineAttributeEditor() {
 					break;
 				case FormFieldType.Array:
 					renderAttribute = new ArrayAttributeClass(attribute);
+					break;
+				case FormFieldType.Paragraph:
+					renderAttribute = new ParagraphAttributeClass(attribute);
 					break;
 				default:
 					renderAttribute = new BaseAttributeClass(attribute);

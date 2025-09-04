@@ -36,7 +36,7 @@ function BaseTextArea({
 	return (
 		<TextareaAutosize
 			id={id}
-			style={style}
+			style={{ ...style, padding: '2px' }}
 			placeholder={placeholder}
 			autoComplete="off"
 			disabled={disabled}

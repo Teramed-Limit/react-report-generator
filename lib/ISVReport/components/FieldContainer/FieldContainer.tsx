@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback, useMemo } from 'react';
+import React, { CSSProperties, useMemo } from 'react';
 
 import { Stack } from '@mui/material';
 import * as R from 'ramda';
@@ -197,39 +197,4 @@ function FieldContainer({
 }
 
 // 使用自定義比較函數的 React.memo，確保只有真正需要更新的情況下才重新渲染
-export default React.memo(FieldContainer, (prevProps, nextProps) => {
-	// 比較基本屬性
-	if (
-		prevProps.id !== nextProps.id ||
-		JSON.stringify(prevProps.valueChangedId) !== JSON.stringify(nextProps.valueChangedId) ||
-		prevProps.fieldMapper !== nextProps.fieldMapper ||
-		JSON.stringify(prevProps.containerStyle) !== JSON.stringify(nextProps.containerStyle) ||
-		prevProps.prefixComp !== nextProps.prefixComp ||
-		prevProps.suffixComp !== nextProps.suffixComp
-	) {
-		return false;
-	}
-
-	// 比較 field 的關鍵屬性
-	const prevField = prevProps.field;
-	const nextField = nextProps.field;
-
-	if (
-		prevField.id !== nextField.id ||
-		prevField.type !== nextField.type ||
-		prevField.label !== nextField.label ||
-		prevField.readOnly !== nextField.readOnly ||
-		prevField.hideLabel !== nextField.hideLabel ||
-		prevField.orientation !== nextField.orientation ||
-		prevField.labelWidth !== nextField.labelWidth ||
-		JSON.stringify(prevField.labelStyle) !== JSON.stringify(nextField.labelStyle) ||
-		JSON.stringify(prevField.valueStyle) !== JSON.stringify(nextField.valueStyle) ||
-		JSON.stringify(prevField.validate) !== JSON.stringify(nextField.validate) ||
-		JSON.stringify(prevField.valueChangedEvent) !== JSON.stringify(nextField.valueChangedEvent)
-	) {
-		return false;
-	}
-
-	// 所有關鍵屬性都相同，不需要重新渲染
-	return true;
-});
+export default React.memo(FieldContainer);

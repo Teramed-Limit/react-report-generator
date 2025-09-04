@@ -14,12 +14,13 @@ import { FieldAttributeClassMapper } from '../../FieldAttributeClassMapper.ts';
 import { ArrayAttributeClass } from '../ArrayAttribute/ArrayAttributeClass.ts';
 import { CompositeAttributeClass } from '../CompositeAttribute/CompositeAttributeClass.ts';
 
+import { ParagraphAttributeClass } from '../ParagraphAttribute/ParagraphAttributeClass.ts';
 import { BaseAttributeClass } from './BaseAttributeClass.ts';
 
 interface Props {
 	title?: string;
 	attrPath: (number | string)[];
-	attribute: BaseAttributeClass | CompositeAttributeClass | ArrayAttributeClass;
+	attribute: BaseAttributeClass | CompositeAttributeClass | ArrayAttributeClass | ParagraphAttributeClass;
 	onSetAttribute: (attrPath: (number | string)[], attrValue: number | string | boolean) => void;
 	children?: React.ReactNode;
 	toolbar?: React.ReactNode;
@@ -54,7 +55,14 @@ function BaseAttributeComponent({ title, attrPath, attribute, onSetAttribute, ch
 					buttonBar: ReportButtonBarAttribute,
 				}}
 				filterType="exclude"
-				excludeAttribute={['fromModal', 'compositeOrientation', 'fields', 'templateField', 'arrayOrientation']}
+				excludeAttribute={[
+					'fromModal',
+					'compositeOrientation',
+					'fields',
+					'templateField',
+					'arrayOrientation',
+					'text',
+				]}
 				toolbar={toolbar}
 			/>
 			{children}

@@ -5,6 +5,7 @@ import { Style } from '@react-pdf/types/style';
 import { ArrayField } from './field/array-field.ts';
 import { CompositeField } from './field/composite-field.ts';
 import { Field } from './field/field.ts';
+import { ParagraphField } from './field/paragraph-field.ts';
 
 export interface FormDefine {
 	sections: Section[];
@@ -29,6 +30,6 @@ export interface SubSection {
 	hide: boolean;
 	hideInPDF: boolean;
 	maxWidth?: string;
-	fields: (Field | ArrayField | CompositeField)[];
+	fields: (Field | ArrayField | CompositeField | ParagraphField)[];
 	style?: CSSProperties | Style | Style[];
 }

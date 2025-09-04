@@ -18,12 +18,13 @@ import {
 import { ArrayField } from '../types/field/array-field.ts';
 import { CompositeField } from '../types/field/composite-field.ts';
 import { Field } from '../types/field/field';
+import { ParagraphField } from '../types/field/paragraph-field.ts';
 
 interface Props {
 	sectionIdx: number;
 	subSectionIdx: number;
 	fieldIdx: number;
-	field: Field | ArrayField | CompositeField;
+	field: Field | ArrayField | CompositeField | ParagraphField;
 }
 
 export function useReportField({ sectionIdx, subSectionIdx, fieldIdx, field }: Props) {

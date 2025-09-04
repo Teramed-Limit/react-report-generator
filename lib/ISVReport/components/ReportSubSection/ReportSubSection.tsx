@@ -7,11 +7,13 @@ import { SubSection } from '../../../types/define.ts';
 import { ArrayField } from '../../../types/field/array-field.ts';
 import { CompositeField } from '../../../types/field/composite-field.ts';
 import { Field } from '../../../types/field/field.ts';
+import { ParagraphField } from '../../../types/field/paragraph-field.ts';
 import { styleConverter } from '../../../utils/style-converter.ts';
 import { reportSubsection } from '../../style.ts';
 import FieldArrayContainer from '../FieldArrayContainer/FieldArrayContainer.tsx';
 import FieldCompositeContainer from '../FieldCompositeContainer/FieldCompositeContainer.tsx';
 import FieldContainer from '../FieldContainer/FieldContainer.tsx';
+import FieldParagraphContainer from '../FieldParagraphContainer/FieldParagraphContainer.tsx';
 
 interface Props {
 	subSection: SubSection;
@@ -42,6 +44,8 @@ export function ReportSubSection({ subSection }: Props) {
 						return <FieldCompositeContainer key={field.id} id={field.id} field={field as CompositeField} />;
 					case FormFieldType.Array:
 						return <FieldArrayContainer key={field.id} field={field as ArrayField} />;
+					case FormFieldType.Paragraph:
+						return <FieldParagraphContainer key={field.id} id={field.id} field={field as ParagraphField} />;
 					default:
 						return (
 							<FieldContainer

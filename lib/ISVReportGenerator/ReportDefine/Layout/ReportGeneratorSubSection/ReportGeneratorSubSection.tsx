@@ -16,12 +16,14 @@ import { SubSection } from '../../../../types/define.ts';
 import { ArrayField } from '../../../../types/field/array-field.ts';
 import { CompositeField } from '../../../../types/field/composite-field.ts';
 import { Field } from '../../../../types/field/field.ts';
+import { ParagraphField } from '../../../../types/field/paragraph-field.ts';
 import BoxInspector from '../../../../UI/BoxInspector/BoxInspector.tsx';
 import { SubSectionAttributeClass } from '../../Attribute/Layout/SubSectionAttribute/SubSectionAttributeClass.tsx';
 import FieldsetTemplate from '../FieldsetTemplate/FieldsetTemplate';
 import ReportGeneratorInputArrayField from '../ReportGeneratorInputArrayField/ReportGeneratorInputArrayField.tsx';
 import ReportGeneratorInputCompositeField from '../ReportGeneratorInputCompositeField/ReportGeneratorInputCompositeField.tsx';
 import ReportGeneratorInputFieldContainer from '../ReportGeneratorInputFieldContainer/ReportGeneratorInputFieldContainer';
+import ReportGeneratorInputParagraphField from '../ReportGeneratorInputParagraphField/ReportGeneratorInputParagraphField.tsx';
 
 interface Props {
 	sectionIdx: number;
@@ -107,6 +109,17 @@ function ReportGeneratorSubSection({ sectionIdx, subSectionIdx, subSection, show
 										subSectionIdx={subSectionIdx}
 										fieldIdx={idx}
 										field={field as ArrayField}
+										showGuideLine={showGuideLine}
+									/>
+								);
+							case FormFieldType.Paragraph:
+								return (
+									<ReportGeneratorInputParagraphField
+										key={field.id}
+										sectionIdx={sectionIdx}
+										subSectionIdx={subSectionIdx}
+										fieldIdx={idx}
+										field={field as ParagraphField}
 										showGuideLine={showGuideLine}
 									/>
 								);

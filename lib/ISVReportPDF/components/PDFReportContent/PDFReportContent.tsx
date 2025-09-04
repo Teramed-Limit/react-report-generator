@@ -9,9 +9,11 @@ import { Section, SubSection } from '../../../types/define.ts';
 import { ArrayField } from '../../../types/field/array-field.ts';
 import { CompositeField } from '../../../types/field/composite-field.ts';
 import { Field } from '../../../types/field/field.ts';
+import { ParagraphField } from '../../../types/field/paragraph-field.ts';
 import PDFArrayField from '../PDFArrayField/PDFArrayField.tsx';
 import PDFCompositeField from '../PDFCompositeField/PDFCompositeField.tsx';
 import PDFField from '../PDFField/PDFField.tsx';
+import PDFParagraphField from '../PDFParagraphField/PDFParagraphField.tsx';
 import PDFReportSection from '../PDFReportSection/PDFReportSection.tsx';
 import PDFReportSubSection from '../PDFReportSubSection/PDFReportSubSection.tsx';
 
@@ -53,6 +55,15 @@ function PDFReportContent({ formSections, formData, getOptions }: Props) {
 														<PDFCompositeField
 															key={field.id}
 															field={field as unknown as CompositeField}
+															formData={formData}
+															getOptions={getOptions}
+														/>
+													);
+												case FormFieldType.Paragraph:
+													return (
+														<PDFParagraphField
+															key={field.id}
+															field={field as unknown as ParagraphField}
 															formData={formData}
 															getOptions={getOptions}
 														/>

@@ -13,6 +13,7 @@ export enum FormFieldType {
 	Composite = 'Composite',
 	Array = 'Array',
 	SRText = 'SRText',
+	Paragraph = 'Paragraph',
 	// OBGYNChart = 'OBGYNChart',
 	// QualityBowelScore = 'QualityBowelScore',
 }

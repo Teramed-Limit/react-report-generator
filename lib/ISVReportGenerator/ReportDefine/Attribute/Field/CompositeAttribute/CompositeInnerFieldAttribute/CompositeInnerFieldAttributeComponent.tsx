@@ -15,7 +15,7 @@ import { CompositeInnerFieldAttributeClass } from './CompositeInnerFieldAttribut
 interface Props {
 	attrPath: (number | string)[];
 	attribute: CompositeInnerFieldAttributeClass;
-	onSetAttribute: (attrPath: (number | string)[], attrValue: number | string | boolean) => void;
+	onSetAttribute: (attrPath: (number | string)[], attrValue: any) => void;
 	toolbar?: React.ReactNode;
 }
 

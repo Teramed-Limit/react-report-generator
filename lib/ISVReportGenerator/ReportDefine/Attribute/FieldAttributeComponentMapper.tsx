@@ -10,6 +10,7 @@ import CompositeAttributeComponent from './Field/CompositeAttribute/CompositeAtt
 import DatePickerAttributeComponent from './Field/DatePickerAttribute/DatePickerAttributeComponent.tsx';
 import DiagramAttributeComponent from './Field/DiagramAttribute/DiagramAttributeComponent.tsx';
 import NumberAttributeComponent from './Field/NumberAttribute/NumberAttributeComponent.tsx';
+import ParagraphAttributeComponent from './Field/ParagraphAttribute/ParagraphAttributeComponent.tsx';
 import RadioAttributeComponent from './Field/RadioAttribute/RadioAttributeComponent.tsx';
 import SRTextAttributeComponent from './Field/SRTextAttribute/SRTextAttributeComponent.tsx';
 import ReportTextAreaAttribute from './Field/TextAreaAttribute/TextAreaAttributeComponent.tsx';
@@ -40,4 +41,5 @@ export const FieldAttributeComponentMapper: ComponentTypeMap = {
 	[FormFieldType.SRText]: SRTextAttributeComponent,
 	[FormFieldType.Composite]: CompositeAttributeComponent,
 	[FormFieldType.Array]: ArrayAttributeComponent,
+	[FormFieldType.Paragraph]: ParagraphAttributeComponent,
 };
