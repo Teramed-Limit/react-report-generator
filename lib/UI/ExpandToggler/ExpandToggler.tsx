@@ -72,4 +72,4 @@ function ExpandToggler({ title, children, defaultExpanded = true }: Props) {
 	);
 }
 
-export default ExpandToggler;
+export default React.memo(ExpandToggler);

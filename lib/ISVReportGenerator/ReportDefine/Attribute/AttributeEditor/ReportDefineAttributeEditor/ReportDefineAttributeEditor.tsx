@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -32,6 +32,17 @@ import { FieldAttributeComponentProps } from '../../FieldAttributeComponentProps
 
 import classes from './ReportDefineAttributeEditor.module.scss';
 
+// 將常量移到組件外部，避免每次渲染都重新創建
+const attributeComponentMapper = {
+	orientation: OrientationSelection,
+	validate: ReportValidateAttribute,
+	labelWidth: PercentageNumber,
+	labelStyle: ReportCSSStyleAttribute,
+	valueStyle: ReportCSSStyleAttribute,
+};
+
+const includeAttribute = ['orientation', 'validate', 'labelWidth', 'labelStyle', 'valueStyle'];
+
 function ReportDefineAttributeEditor() {
 	const attributePath = useRecoilValue(selectedAttributePathAtom);
 	const attributeType = useRecoilValue(selectedAttributeTypeAtom);
@@ -40,12 +51,15 @@ function ReportDefineAttributeEditor() {
 	const setFormDefine = useSetRecoilState(selectedReportDefine);
 	const { moveEntity, copyEntity, deleteEntity } = useReportLayout(attributePath, 'Field');
 
-	const onSetAttribute = (attrPath: (number | string)[], attrValue: number | string | boolean) => {
-		setAttribute((pre) => R.assocPath(attrPath, attrValue, pre));
-		setFormDefine((pre) => {
-			return R.assocPath([...attributePath, ...attrPath], attrValue, pre);
-		});
-	};
+	const onSetAttribute = useCallback(
+		(attrPath: (number | string)[], attrValue: number | string | boolean) => {
+			setAttribute((pre) => R.assocPath(attrPath, attrValue, pre));
+			setFormDefine((pre) => {
+				return R.assocPath([...attributePath, ...attrPath], attrValue, pre);
+			});
+		},
+		[setAttribute, setFormDefine, attributePath]
+	);
 
 	// 定義渲染元件的函數
 	const renderComponent = (type: string | undefined, props: FieldAttributeComponentProps<any>) => {
@@ -107,45 +121,43 @@ function ReportDefineAttributeEditor() {
 		);
 	};
 
-	const onSetMultipleFieldsAttribute = (attrPath: (number | string)[], attrValue: number | string | boolean) => {
-		setAttribute((pre: any) => R.assocPath(attrPath, attrValue, pre));
-		setFormDefine((pre) => {
-			let newValues = { ...pre };
-			selectedFields.forEach((fieldPath) => {
-				newValues = R.assocPath([...JSON.parse(fieldPath), ...attrPath], attrValue, newValues);
-			});
-			return newValues;
-		});
-	};
+	// 將 Set 轉換為字符串鍵用於穩定的依賴比較
+	const selectedFieldsKey = useMemo(() => 
+		Array.from(selectedFields).sort().join('|'), 
+		[selectedFields]
+	);
 
-	const renderCommonFieldAttribute = () => {
-		return (
-			<AttributeList
-				title={attribute.id}
-				defaultExpanded={false}
-				attribute={attribute}
-				setAttribute={onSetMultipleFieldsAttribute}
-				attributeComponentMapper={{
-					orientation: OrientationSelection,
-					validate: ReportValidateAttribute,
-					labelWidth: PercentageNumber,
-					labelStyle: ReportCSSStyleAttribute,
-					valueStyle: ReportCSSStyleAttribute,
-				}}
-				filterType="include"
-				includeAttribute={[
-					// 'type',
-					'orientation',
-					'hideLabel',
-					'readOnly',
-					'validate',
-					'labelWidth',
-					'labelStyle',
-					'valueStyle',
-				]}
-			/>
-		);
-	};
+	const onSetMultipleFieldsAttribute = useCallback(
+		(attrPath: (number | string)[], attrValue: number | string | boolean) => {
+			setAttribute((pre: any) => R.assocPath(attrPath, attrValue, pre));
+			setFormDefine((pre) => {
+				let newValues = { ...pre };
+				selectedFields.forEach((fieldPath) => {
+					newValues = R.assocPath([...JSON.parse(fieldPath), ...attrPath], attrValue, newValues);
+				});
+				return newValues;
+			});
+		},
+		[setAttribute, setFormDefine, selectedFieldsKey, selectedFields]
+	);
+
+	// 使用 useMemo 緩存 AttributeList，只有關鍵 props 改變時才重新創建
+	const commonFieldAttributeList = useMemo(() => (
+		<AttributeList
+			title={attribute.id}
+			defaultExpanded={false}
+			attribute={attribute}
+			setAttribute={onSetMultipleFieldsAttribute}
+			attributeComponentMapper={attributeComponentMapper}
+			filterType="include"
+			includeAttribute={includeAttribute}
+		/>
+	), [
+		attribute.id,
+		attribute,
+		onSetMultipleFieldsAttribute
+		// attributeComponentMapper 和 includeAttribute 已經是穩定的常量
+	]);
 
 	return (
 		<Stack
@@ -159,7 +171,7 @@ function ReportDefineAttributeEditor() {
 						attribute,
 						onSetAttribute,
 					})
-				: renderCommonFieldAttribute()}
+				: commonFieldAttributeList}
 		</Stack>
 	);
 }
