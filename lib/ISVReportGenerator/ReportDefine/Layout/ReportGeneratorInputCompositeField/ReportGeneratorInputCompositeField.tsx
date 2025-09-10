@@ -30,7 +30,7 @@ function ReportGeneratorInputCompositeField({
 	showGuideLine,
 }: Props) {
 	const { anchorEl, open, handleClick, handleClose } = usePopupState();
-	const { isFocus, onSetAttributePath, onDelete, copyField } = useReportField({
+	const { isFocus, onSetAttributePath, onDelete, copyField, onDragStart, onDragEnd } = useReportField({
 		sectionIdx,
 		subSectionIdx,
 		fieldIdx,
@@ -77,6 +77,9 @@ function ReportGeneratorInputCompositeField({
 				</>
 			}
 			onClick={onSetAttributePath}
+			draggable
+			onDragStart={onDragStart}
+			onDragEnd={onDragEnd}
 		>
 			<FieldCompositeContainer
 				key={compositeField.id}

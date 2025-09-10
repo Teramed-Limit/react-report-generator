@@ -12,9 +12,29 @@ interface Props {
 	onClick: (e) => void;
 	legendComp: React.ReactNode;
 	children?: React.ReactNode;
+	draggable?: boolean;
+	onDragStart?: (e: React.DragEvent) => void;
+	onDragEnd?: (e: React.DragEvent) => void;
+	onDrop?: (e: React.DragEvent) => void;
+	onDragOver?: (e: React.DragEvent) => void;
+	isDragTarget?: boolean;
 }
 
-function FieldsetTemplate({ id, style, showGuideLine, isFocus, onClick, legendComp, children }: Props) {
+function FieldsetTemplate({
+	id,
+	style,
+	showGuideLine,
+	isFocus,
+	onClick,
+	legendComp,
+	children,
+	draggable = false,
+	onDragStart,
+	onDragEnd,
+	onDrop,
+	onDragOver,
+	isDragTarget = false,
+}: Props) {
 	const ref = React.useRef<HTMLFieldSetElement>(null);
 	const [elementWidth, setElementWidth] = React.useState(0);
 
@@ -42,11 +62,18 @@ function FieldsetTemplate({ id, style, showGuideLine, isFocus, onClick, legendCo
 			className={cx(classes.fieldset, {
 				[classes.focus]: isFocus,
 				[classes.guideLine]: !showGuideLine,
+				[classes.draggable]: draggable,
+				[classes.dragTarget]: isDragTarget,
 			})}
 			onClick={(e) => {
 				ref?.current?.focus();
 				onClick(e);
 			}}
+			draggable={draggable}
+			onDragStart={onDragStart}
+			onDragEnd={onDragEnd}
+			onDrop={onDrop}
+			onDragOver={onDragOver}
 		>
 			{showGuideLine && <legend style={{ maxWidth: elementWidth }}>{legendComp}</legend>}
 			{children}

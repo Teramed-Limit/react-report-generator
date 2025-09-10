@@ -58,7 +58,7 @@ function ReportDefineAttributeEditor() {
 				return R.assocPath([...attributePath, ...attrPath], attrValue, pre);
 			});
 		},
-		[setAttribute, setFormDefine, attributePath]
+		[setAttribute, setFormDefine, attributePath],
 	);
 
 	// 定義渲染元件的函數
@@ -122,10 +122,7 @@ function ReportDefineAttributeEditor() {
 	};
 
 	// 將 Set 轉換為字符串鍵用於穩定的依賴比較
-	const selectedFieldsKey = useMemo(() => 
-		Array.from(selectedFields).sort().join('|'), 
-		[selectedFields]
-	);
+	const selectedFieldsKey = useMemo(() => Array.from(selectedFields).sort().join('|'), [selectedFields]);
 
 	const onSetMultipleFieldsAttribute = useCallback(
 		(attrPath: (number | string)[], attrValue: number | string | boolean) => {
@@ -138,26 +135,29 @@ function ReportDefineAttributeEditor() {
 				return newValues;
 			});
 		},
-		[setAttribute, setFormDefine, selectedFieldsKey, selectedFields]
+		[setAttribute, setFormDefine, selectedFieldsKey, selectedFields],
 	);
 
 	// 使用 useMemo 緩存 AttributeList，只有關鍵 props 改變時才重新創建
-	const commonFieldAttributeList = useMemo(() => (
-		<AttributeList
-			title={attribute.id}
-			defaultExpanded={false}
-			attribute={attribute}
-			setAttribute={onSetMultipleFieldsAttribute}
-			attributeComponentMapper={attributeComponentMapper}
-			filterType="include"
-			includeAttribute={includeAttribute}
-		/>
-	), [
-		attribute.id,
-		attribute,
-		onSetMultipleFieldsAttribute
-		// attributeComponentMapper 和 includeAttribute 已經是穩定的常量
-	]);
+	const commonFieldAttributeList = useMemo(
+		() => (
+			<AttributeList
+				title={attribute.id}
+				defaultExpanded={false}
+				attribute={attribute}
+				setAttribute={onSetMultipleFieldsAttribute}
+				attributeComponentMapper={attributeComponentMapper}
+				filterType="include"
+				includeAttribute={includeAttribute}
+			/>
+		),
+		[
+			attribute.id,
+			attribute,
+			onSetMultipleFieldsAttribute,
+			// attributeComponentMapper 和 includeAttribute 已經是穩定的常量
+		],
+	);
 
 	return (
 		<Stack

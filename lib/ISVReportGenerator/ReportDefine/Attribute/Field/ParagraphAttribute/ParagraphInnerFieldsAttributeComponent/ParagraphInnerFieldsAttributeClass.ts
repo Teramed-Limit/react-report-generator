@@ -1,5 +1,5 @@
-import { Style } from '@react-pdf/types/style';
 import { CSSProperties } from 'react';
+import { Style } from '@react-pdf/types/style';
 
 import { FormFieldType } from '../../../../../../field/field-type';
 import { ValueChangedEvent } from '../../../../../../types';

@@ -3,12 +3,14 @@ import React, { CSSProperties } from 'react';
 import { Chip } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Style } from '@react-pdf/types/style';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { LayoutType } from '../../../../field/field-type.ts';
+import { useReportSection } from '../../../../hooks/useReportSection.tsx';
 import classes from '../../../../ISVReport/components/ReportSection/ReportSection.module.scss';
 import { reportSection } from '../../../../ISVReport/style.ts';
 import {
+	dragStateAtom,
 	isFieldsetTemplateFocus,
 	selectedAttributeAtom,
 	selectedAttributeTypeAtom,
@@ -28,19 +30,9 @@ interface Props {
 }
 
 function ReportGeneratorSection({ section, sectionIdx, showGuideLine }: Props) {
-	const path = ['sections', sectionIdx];
-	const setSelectedAttribute = useSetRecoilState(selectedAttributeAtom);
-	const setSelectedAttributeType = useSetRecoilState(selectedAttributeTypeAtom);
-	const setDefineType = useSetRecoilState(selectedDefineType);
-	const [isFocus, setFocus] = useRecoilState(isFieldsetTemplateFocus(path));
-
-	const onSetAttributePath = (e) => {
-		e.stopPropagation();
-		setDefineType('FormDefine');
-		setSelectedAttribute(new SectionAttributeClass(section));
-		setSelectedAttributeType(LayoutType.Section);
-		setFocus(false);
-	};
+	const dragState = useRecoilValue(dragStateAtom);
+	const { onSetAttributePath, onDelete, copySection, isFocus, onDragStart, onDragEnd, onDrop, onDragOver } =
+		useReportSection({ sectionIdx, section });
 
 	const style = section?.style as Style;
 
@@ -61,6 +53,12 @@ function ReportGeneratorSection({ section, sectionIdx, showGuideLine }: Props) {
 			isFocus={isFocus}
 			legendComp={<Chip sx={{ cursor: 'pointer' }} size="small" color="primary" label={section.id} />}
 			onClick={onSetAttributePath}
+			draggable
+			onDragStart={onDragStart}
+			onDragEnd={onDragEnd}
+			onDrop={onDrop}
+			onDragOver={onDragOver}
+			isDragTarget={dragState.dragType === 'subsection'}
 		>
 			<BoxInspector
 				paddingTop={style?.paddingTop || '0'}

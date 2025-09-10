@@ -6,6 +6,7 @@ import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 import { FieldAttributeClassMapper } from '../ISVReportGenerator/ReportDefine/Attribute/FieldAttributeClassMapper.ts';
 import { fieldPathCollectionAtom } from '../recoil/atoms/formDefineAtoms.ts';
 import {
+	dragStateAtom,
 	isFieldsetTemplateFocus,
 	previousSelectedAttributePathAtom,
 	selectedAttributeAtom,
@@ -33,6 +34,7 @@ export function useReportField({ sectionIdx, subSectionIdx, fieldIdx, field }: P
 
 	const setAttributePath = useSetRecoilState(selectedAttributePathAtom);
 	const setFormDefine = useSetRecoilState(selectedReportDefine);
+	const setDragState = useSetRecoilState(dragStateAtom);
 
 	// 函式來找到起始和結束路徑之間的所有fields陣列的路徑
 	function findFieldPathsBetween(
@@ -120,5 +122,27 @@ export function useReportField({ sectionIdx, subSectionIdx, fieldIdx, field }: P
 		});
 	};
 
-	return { onSetAttributePath, onDelete, copyField, isFocus };
+	const onDragStart = (e: React.DragEvent) => {
+		e.stopPropagation();
+		setDragState({
+			isDragging: true,
+			dragType: 'field',
+			dragData: field,
+			dragSourcePath: path,
+		});
+		e.dataTransfer.setData('text/plain', JSON.stringify({ type: 'field', path, data: field }));
+		e.dataTransfer.effectAllowed = 'move';
+	};
+
+	const onDragEnd = (e: React.DragEvent) => {
+		e.stopPropagation();
+		setDragState({
+			isDragging: false,
+			dragType: null,
+			dragData: null,
+			dragSourcePath: [],
+		});
+	};
+
+	return { onSetAttributePath, onDelete, copyField, isFocus, onDragStart, onDragEnd };
 }

@@ -45,6 +45,31 @@ export const selectedFieldsAtom = atom<Set<string>>({
 	default: new Set(),
 });
 
+export const selectedSubSectionsAtom = atom<Set<string>>({
+	key: 'report-generator-selected-subsections',
+	default: new Set(),
+});
+
+export const selectedSectionsAtom = atom<Set<string>>({
+	key: 'report-generator-selected-sections',
+	default: new Set(),
+});
+
+export const dragStateAtom = atom<{
+	isDragging: boolean;
+	dragType: 'field' | 'subsection' | 'section' | null;
+	dragData: any;
+	dragSourcePath: (string | number)[];
+}>({
+	key: 'report-generator-drag-state',
+	default: {
+		isDragging: false,
+		dragType: null,
+		dragData: null,
+		dragSourcePath: [],
+	},
+});
+
 export const isFieldsetTemplateFocus = selectorFamily<boolean, (string | number)[]>({
 	key: 'isFieldsetTemplateFocus',
 	get:

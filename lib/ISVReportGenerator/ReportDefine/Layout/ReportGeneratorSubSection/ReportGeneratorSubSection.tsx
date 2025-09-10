@@ -2,23 +2,19 @@ import React, { CSSProperties } from 'react';
 
 import { Box, Chip } from '@mui/material';
 import { Style } from '@react-pdf/types/style';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import * as R from 'ramda';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
 
-import { FormFieldType, LayoutType } from '../../../../field/field-type.ts';
+import { FormFieldType } from '../../../../field/field-type.ts';
+import { useReportSubSection } from '../../../../hooks/useReportSubSection.tsx';
 import { reportSubsection } from '../../../../ISVReport/style.ts';
-import {
-	isFieldsetTemplateFocus,
-	selectedAttributeAtom,
-	selectedAttributeTypeAtom,
-	selectedDefineType,
-} from '../../../../recoil/atoms/report-generator-atoms.ts';
+import { dragStateAtom, selectedReportDefine } from '../../../../recoil/atoms/report-generator-atoms.ts';
 import { SubSection } from '../../../../types/define.ts';
 import { ArrayField } from '../../../../types/field/array-field.ts';
 import { CompositeField } from '../../../../types/field/composite-field.ts';
 import { Field } from '../../../../types/field/field.ts';
 import { ParagraphField } from '../../../../types/field/paragraph-field.ts';
 import BoxInspector from '../../../../UI/BoxInspector/BoxInspector.tsx';
-import { SubSectionAttributeClass } from '../../Attribute/Layout/SubSectionAttribute/SubSectionAttributeClass.tsx';
 import FieldsetTemplate from '../FieldsetTemplate/FieldsetTemplate';
 import ReportGeneratorInputArrayField from '../ReportGeneratorInputArrayField/ReportGeneratorInputArrayField.tsx';
 import ReportGeneratorInputCompositeField from '../ReportGeneratorInputCompositeField/ReportGeneratorInputCompositeField.tsx';
@@ -33,18 +29,67 @@ interface Props {
 }
 
 function ReportGeneratorSubSection({ sectionIdx, subSectionIdx, subSection, showGuideLine }: Props) {
-	const path = ['sections', sectionIdx, 'subSections', subSectionIdx];
-	const setSelectedAttribute = useSetRecoilState(selectedAttributeAtom);
-	const setSelectedAttributeType = useSetRecoilState(selectedAttributeTypeAtom);
-	const setDefineType = useSetRecoilState(selectedDefineType);
-	const [isFocus, setFocus] = useRecoilState(isFieldsetTemplateFocus(path));
+	const dragState = useRecoilValue(dragStateAtom);
+	const { onSetAttributePath, onDelete, copySubSection, isFocus, onDragStart, onDragEnd } = useReportSubSection({
+		sectionIdx,
+		subSectionIdx,
+		subSection,
+	});
 
-	const onSetAttributePath = (e) => {
+	// 處理接收 field 的 drop
+	const onDrop = useRecoilCallback(({ set, snapshot }) => async (e: React.DragEvent) => {
+		e.preventDefault();
 		e.stopPropagation();
-		setDefineType('FormDefine');
-		setSelectedAttribute(new SubSectionAttributeClass(subSection));
-		setSelectedAttributeType(LayoutType.SubSection);
-		setFocus(true);
+
+		try {
+			const dragData = JSON.parse(e.dataTransfer.getData('text/plain'));
+
+			// 只接受 field 類型的拖拉
+			if (dragData.type !== 'field') {
+				return;
+			}
+
+			const currentFormDefine = await snapshot.getPromise(selectedReportDefine);
+			const sourceField = dragData.data;
+			const sourcePath = dragData.path;
+
+			// 移除來源的 field
+			const withoutSource = R.dissocPath(sourcePath, currentFormDefine);
+
+			// 添加到目標 subsection 的 fields
+			const targetFieldsPath = ['sections', sectionIdx, 'subSections', subSectionIdx, 'fields'];
+			const targetFields = R.path<any[]>(targetFieldsPath, withoutSource) || [];
+			const updatedFields = [...targetFields, sourceField];
+
+			const finalFormDefine = R.assocPath(targetFieldsPath, updatedFields, withoutSource);
+
+			set(selectedReportDefine, finalFormDefine);
+
+			// 重置拖拽狀態，確保跨容器拖拽時狀態正確
+			set(dragStateAtom, {
+				isDragging: false,
+				dragType: null,
+				dragData: null,
+				dragSourcePath: [],
+			});
+		} catch (error) {
+			console.error('Drop operation failed:', error);
+			// 錯誤時也要重置拖拽狀態
+			set(dragStateAtom, {
+				isDragging: false,
+				dragType: null,
+				dragData: null,
+				dragSourcePath: [],
+			});
+		}
+	});
+
+	const onDragOver = (e: React.DragEvent) => {
+		// 只在拖拉 field 時允許 drop
+		if (dragState.dragType === 'field') {
+			e.preventDefault();
+			e.dataTransfer.dropEffect = 'move';
+		}
 	};
 
 	const style = subSection?.style as Style;
@@ -69,6 +114,12 @@ function ReportGeneratorSubSection({ sectionIdx, subSectionIdx, subSection, show
 				/>
 			}
 			onClick={onSetAttributePath}
+			draggable
+			onDragStart={onDragStart}
+			onDragEnd={onDragEnd}
+			onDrop={onDrop}
+			onDragOver={onDragOver}
+			isDragTarget={dragState.dragType === 'field'}
 		>
 			<BoxInspector
 				paddingTop={style?.paddingTop || '0'}

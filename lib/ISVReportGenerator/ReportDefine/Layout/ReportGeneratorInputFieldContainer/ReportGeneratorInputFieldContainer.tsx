@@ -25,7 +25,7 @@ interface Props {
 
 function ReportGeneratorInputFieldContainer({ field, sectionIdx, subSectionIdx, fieldIdx, showGuideLine }: Props) {
 	const { anchorEl, open, handleClick, handleClose } = usePopupState();
-	const { isFocus, onSetAttributePath, onDelete, copyField } = useReportField({
+	const { isFocus, onSetAttributePath, onDelete, copyField, onDragStart, onDragEnd } = useReportField({
 		sectionIdx,
 		subSectionIdx,
 		fieldIdx,
@@ -72,6 +72,9 @@ function ReportGeneratorInputFieldContainer({ field, sectionIdx, subSectionIdx, 
 				</>
 			}
 			onClick={onSetAttributePath}
+			draggable
+			onDragStart={onDragStart}
+			onDragEnd={onDragEnd}
 		>
 			<FieldContainer
 				key={field.id}

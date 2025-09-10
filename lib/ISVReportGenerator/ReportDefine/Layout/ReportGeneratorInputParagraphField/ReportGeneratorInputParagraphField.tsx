@@ -24,7 +24,7 @@ interface Props {
 
 function ReportGeneratorInputParagraphField({ field, showGuideLine, sectionIdx, subSectionIdx, fieldIdx }: Props) {
 	const { anchorEl, open, handleClick, handleClose } = usePopupState();
-	const { isFocus, onSetAttributePath, onDelete, copyField } = useReportField({
+	const { isFocus, onSetAttributePath, onDelete, copyField, onDragStart, onDragEnd } = useReportField({
 		sectionIdx,
 		subSectionIdx,
 		fieldIdx,
@@ -71,6 +71,9 @@ function ReportGeneratorInputParagraphField({ field, showGuideLine, sectionIdx, 
 				</>
 			}
 			onClick={onSetAttributePath}
+			draggable
+			onDragStart={onDragStart}
+			onDragEnd={onDragEnd}
 		>
 			<FieldParagraphContainer id={field.id} field={field} />
 		</FieldsetTemplate>
