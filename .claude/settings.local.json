@@ -3,5 +3,10 @@
   "enabledMcpjsonServers": [
     "context7",
     "sequential-thinking"
-  ]
+  ],
+  "permissions": {
+    "allow": [
+      "Read(//d/SourceCode/React/react-report-generator-test/**)"
+    ]
+  }
 }

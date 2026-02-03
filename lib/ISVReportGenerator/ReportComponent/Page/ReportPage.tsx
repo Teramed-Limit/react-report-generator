@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import * as R from 'ramda';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { useRepComponentTool } from '../../../hooks/useRepComponentTool.ts';
 import {
@@ -10,9 +10,10 @@ import {
 	activePageAttributeAtom,
 	activeUidAtom,
 	createRepCompTypeAtom,
+	footerDefineAtom,
+	headerDefineAtom,
 } from '../../../recoil/atoms/header-footer-defineAtom.ts';
 import { RepComponent, ReportComponentType } from '../../../types/report-generator/component/rep-component.ts';
-import { RepPage } from '../../../types/report-generator/rep-page.ts';
 import { Point } from '../../../types/report-generator/rep-report.ts';
 import { generateUUID } from '../../../utils/general.ts';
 import RendererReportComponent from '../Components/RendererReportComponent';
@@ -21,17 +22,14 @@ import PagePaddingPseudo from './PagePaddingPseudo/PagePaddingPseudo'; // const 
 import classes from './ReportPage.module.scss';
 
 interface Props {
-	page: RepPage;
+	pageName: 'Header' | 'Footer';
 }
 
 type RepComponentHandle = React.ElementRef<typeof RendererReportComponent>;
-const GRID_SIZE = 10; // 定義網格大小
-const HALF_GRID_SIZE = GRID_SIZE; // 定義網格大小的一半
 
-const cumulativeMoveX = 0; // 累計 X 方向的移動量
-const cumulativeMoveY = 0; // 累計 Y 方向的移動量
-
-function ReportPage({ page }: Props) {
+function ReportPage({ pageName }: Props) {
+	// 從 Recoil atom 讀取最新的 page 值
+	const page = useRecoilValue(pageName === 'Header' ? headerDefineAtom : footerDefineAtom);
 	const setActivePage = useSetRecoilState(activePageAtom);
 	const setActivePageAttribute = useSetRecoilState(activePageAttributeAtom);
 	const [createRepCompType, setCreateRepCompType] = useRecoilState(createRepCompTypeAtom);
@@ -57,76 +55,6 @@ function ReportPage({ page }: Props) {
 	const repComponentRef = useRef<Record<string, RepComponentHandle>>({});
 	const activeComponentRef = useRef<Record<string, RepComponent>>({});
 	const copyComponentRef = useRef<Record<string, RepComponent>>({});
-
-	// 確定元素在頁面上的位置是否超出邊界
-	// const restrictBoundary = (oriPoint: Point, movePoint: Point, targetRect: DOMRect): Point => {
-	// 	// 累積移動量
-	// 	cumulativeMoveX += movePoint.x / scale;
-	// 	cumulativeMoveY += movePoint.y / scale;
-	//
-	// 	// 如果移動量超過一半的網格大小，則對齊到網格
-	// 	let snappedMoveX = 0;
-	// 	let snappedMoveY = 0;
-	//
-	// 	if (Math.abs(cumulativeMoveX) >= HALF_GRID_SIZE) {
-	// 		snappedMoveX = (cumulativeMoveX > 0 ? 1 : -1) * GRID_SIZE;
-	// 		cumulativeMoveX = 0;
-	// 	}
-	//
-	// 	if (Math.abs(cumulativeMoveY) >= HALF_GRID_SIZE) {
-	// 		snappedMoveY = (cumulativeMoveY > 0 ? 1 : -1) * GRID_SIZE;
-	// 		cumulativeMoveY = 0;
-	// 	}
-	//
-	// 	// 計算移動後的位置
-	// 	const destPoint = {
-	// 		x: oriPoint.x + snappedMoveX,
-	// 		y: oriPoint.y + snappedMoveY,
-	// 	};
-	//
-	// 	if (destPoint.x < 0) destPoint.x = 0;
-	// 	if (destPoint.y < 0) destPoint.y = 0;
-	//
-	// 	// if (destPoint.x % GRID_SIZE !== 0) {
-	// 	// 	if (destPoint.x / GRID_SIZE < 1) {
-	// 	// 		destPoint.x = GRID_SIZE;
-	// 	// 	} else {
-	// 	// 		const remainder = Math.floor(destPoint.x / GRID_SIZE);
-	// 	// 		destPoint.x = remainder * GRID_SIZE;
-	// 	// 	}
-	// 	// }
-	// 	//
-	// 	// if (destPoint.y % GRID_SIZE !== 0) {
-	// 	// 	if (destPoint.y / GRID_SIZE < 1) {
-	// 	// 		destPoint.y = GRID_SIZE;
-	// 	// 	} else {
-	// 	// 		const remainder = Math.floor(destPoint.y / GRID_SIZE);
-	// 	// 		destPoint.y = remainder * GRID_SIZE;
-	// 	// 	}
-	// 	// }
-	//
-	// 	// 限制移動範圍
-	// 	if (destPoint.x <= page.paddingLeft / scale) {
-	// 		destPoint.x = page.paddingLeft / scale;
-	// 	}
-	//
-	// 	if (destPoint.y <= page.paddingTop / scale) {
-	// 		destPoint.y = page.paddingTop / scale;
-	// 	}
-	//
-	// 	if (destPoint.x >= page.width - targetRect.width / scale - page.paddingRight / scale) {
-	// 		destPoint.x = page.width - targetRect.width / scale - page.paddingRight / scale;
-	// 	}
-	//
-	// 	if (destPoint.y > page.height - targetRect.height / scale - page.paddingBottom / 2) {
-	// 		destPoint.y = page.height - targetRect.height / scale - page.paddingBottom / 2;
-	// 	}
-	//
-	// 	return {
-	// 		x: Math.round(destPoint.x),
-	// 		y: Math.round(destPoint.y),
-	// 	};
-	// };
 
 	const restrictBoundary = (oriPoint: Point, movePoint: Point, targetRect: DOMRect): Point => {
 		const destPoint = {
@@ -193,7 +121,7 @@ function ReportPage({ page }: Props) {
 		// deactivate other comp
 		activeComponentRef.current = {};
 		Object.keys(repComponentRef.current)?.forEach((uuid) => {
-			repComponentRef.current[uuid].deactivateComp();
+			repComponentRef.current[uuid]?.deactivateComp();
 		});
 	};
 
@@ -203,7 +131,7 @@ function ReportPage({ page }: Props) {
 		activeComponentRef.current[comp.uuid] = comp;
 		Object.keys(repComponentRef.current).forEach((uuid) => {
 			if (comp.uuid === uuid) {
-				repComponentRef.current[uuid].activeComp();
+				repComponentRef.current[uuid]?.activeComp();
 			}
 		});
 	};
@@ -220,7 +148,7 @@ function ReportPage({ page }: Props) {
 		}
 		// 只要屬標在其中一個Active的元件上，就標記可以移動
 		startMove.current = Object.keys(activeComponentRef.current)?.some((uuid) => {
-			return repComponentRef.current[uuid].movable();
+			return repComponentRef.current[uuid]?.movable();
 		});
 	};
 
@@ -232,7 +160,7 @@ function ReportPage({ page }: Props) {
 		isMoving.current = true;
 		// 元件位移增減通知
 		Object.keys(activeComponentRef.current)?.forEach((uuid) => {
-			repComponentRef.current[uuid].moveCompPosition({
+			repComponentRef.current[uuid]?.moveCompPosition({
 				x: e.movementX,
 				y: e.movementY,
 			});
@@ -304,7 +232,7 @@ function ReportPage({ page }: Props) {
 
 	const handleMovement = (movement: { x: number; y: number }) => {
 		Object.keys(activeComponentRef.current)?.forEach((uuid) => {
-			repComponentRef.current[uuid].moveCompPosition(movement);
+			repComponentRef.current[uuid]?.moveCompPosition(movement);
 		});
 	};
 

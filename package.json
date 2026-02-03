@@ -1,10 +1,17 @@
 {
 	"name": "react-report-lib",
 	"private": false,
-	"version": "0.0.36",
+	"version": "1.0.1",
 	"type": "module",
 	"main": "dist/main.js",
 	"types": "dist/main.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/main.d.ts",
+			"import": "./dist/main.js"
+		},
+		"./style.css": "./dist/style.css"
+	},
 	"files": [
 		"dist"
 	],
@@ -19,33 +26,48 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@emotion/react": "^11.11.1",
-		"@emotion/styled": "^11.11.0",
-		"@fontsource/roboto": "^5.0.8",
-		"@mui/icons-material": "^5.14.18",
-		"@mui/lab": "5.0.0-alpha.141",
-		"@mui/material": "^5.14.18",
-		"@mui/x-date-pickers": "7.12.1",
-		"@mui/x-tree-view": "^7.15.0",
-		"@react-pdf/renderer": "^4.3.0",
-		"@react-pdf/stylesheet": "^6.1.0",
-		"@react-pdf/types": "^2.9.0",
-		"axios": "^1.7.3",
+		"axios": "^1.0.0",
 		"classnames": "^2.5.1",
-		"date-fns": "^2.30.0",
+		"date-fns": "^2.0.0",
 		"date-fns-tz": "^2.0.0",
-		"dayjs": "^1.11.10",
-		"konva": "^9.3.14",
+		"dayjs": "^1.0.0",
 		"ramda": "^0.30.1",
-		"react": "^18.2.0",
-		"react-color": "^2.19.3",
-		"react-dom": "^18.2.0",
-		"react-icons": "^5.2.1",
-		"react-konva": "^18.2.10",
-		"react-scan": "^0.4.3",
-		"recoil": "^0.7.7",
-		"rxjs": "^7.8.1",
-		"use-image": "^1.1.1"
+		"react-icons": "^5.0.0",
+		"rxjs": "^7.0.0"
+	},
+	"peerDependencies": {
+		"@emotion/react": "^11.0.0",
+		"@emotion/styled": "^11.0.0",
+		"@mui/icons-material": "^5.0.0",
+		"@mui/lab": "^5.0.0-alpha.0",
+		"@mui/material": "^5.0.0",
+		"@mui/x-date-pickers": "^7.0.0",
+		"@mui/x-tree-view": "^7.0.0",
+		"@react-pdf/renderer": "^4.0.0",
+		"konva": "^9.0.0",
+		"react": "^18.0.0",
+		"react-color": "^2.0.0",
+		"react-dom": "^18.0.0",
+		"react-konva": "^18.0.0",
+		"recoil": "^0.7.0",
+		"use-image": "^1.0.0"
+	},
+	"peerDependenciesMeta": {
+		"@react-pdf/renderer": {
+			"optional": true
+		},
+		"konva": {
+			"optional": true
+		},
+		"react-konva": {
+			"optional": true
+		},
+		"react-color": {
+			"optional": true
+		},
+		"use-image": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@types/node": "20.4.6",

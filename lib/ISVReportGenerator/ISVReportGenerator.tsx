@@ -12,7 +12,7 @@ import { footerDefineAtom, headerDefineAtom } from '../recoil/atoms/header-foote
 import { selectedDefineType } from '../recoil/atoms/report-generator-atoms.ts';
 import '../styles/scrollbar.scss';
 import { rootTheme } from '../theme/rootTheme.ts';
-import { Field, FontFamily, FormDefine, RepPage } from '../types';
+import { Field, FormDefine, RepPage } from '../types';
 import { ISVReportGeneratorHandle } from '../types/component-handle';
 import { deepCopy } from '../utils/general.ts';
 
@@ -32,11 +32,10 @@ interface Props {
 	headerDefine: RepPage;
 	footerDefine: RepPage;
 	codeList: Record<string, any[]>;
-	fonts: FontFamily[];
 }
 
 export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
-	({ formData, formDefine, imageDefine, headerDefine, footerDefine, codeList, fonts }: Props, ref) => {
+	({ formData, formDefine, imageDefine, headerDefine, footerDefine, codeList }: Props, ref) => {
 		// Report Form
 		const [showGuideLine, onToggleGuideline] = useState<boolean>(true);
 		const setFormData = useSetRecoilState(formValuesAtom);
@@ -143,16 +142,7 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 			return obj;
 		}
 
-		const setGlobalFontStyle = (styleName: string, styleValue: any, target: string) => {
-			setFormDefine((prev) => {
-				return updateValueStyleId<FormDefine>(deepCopy(prev), styleName, styleValue, target);
-			});
-			setImageDefine((prev) => {
-				return updateValueStyleId<Field[]>(deepCopy(prev), styleName, styleValue, target);
-			});
-		};
-
-		const setContainerSpacingZero = (styleName: string, styleValue: any, target: string) => {
+		const setGlobalStyle = (styleName: string, styleValue: any, target: string) => {
 			setFormDefine((prev) => {
 				return updateValueStyleId<FormDefine>(deepCopy(prev), styleName, styleValue, target);
 			});
@@ -193,7 +183,7 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 									properties.forEach((property) => {
 										sides.forEach((side) => {
 											styles.forEach((style) => {
-												setContainerSpacingZero(`${property}${side}`, 0, style);
+												setGlobalStyle(`${property}${side}`, 0, style);
 											});
 										});
 									});
@@ -218,13 +208,13 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 							<UniversalFontStyle
 								title="Universal Label Style"
 								setStyle={(styleName: string, styleValue: any) =>
-									setGlobalFontStyle(styleName, styleValue, 'labelStyle')
+									setGlobalStyle(styleName, styleValue, 'labelStyle')
 								}
 							/>
 							<UniversalFontStyle
 								title="Universal Value Style"
 								setStyle={(styleName: string, styleValue: any) =>
-									setGlobalFontStyle(styleName, styleValue, 'valueStyle')
+									setGlobalStyle(styleName, styleValue, 'valueStyle')
 								}
 							/>
 						</Stack>
@@ -232,11 +222,11 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 						<Box className={classes.reportLayout}>
 							<Box className={classes.page} sx={{ width: fitPageWidth ? '100%' : '794px' }}>
 								{/* Header */}
-								<ReportPage page={headerDefine} />
+								<ReportPage pageName="Header" />
 								{/* Content */}
 								<ReportGeneratorPage showGuideLine={showGuideLine} />
 								{/* Footer */}
-								<ReportPage page={footerDefine} />
+								<ReportPage pageName="Footer" />
 								{/* Image */}
 								<ReportGeneratorImagePage showGuideLine={showGuideLine} />
 							</Box>
