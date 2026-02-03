@@ -28,7 +28,8 @@
   "include": [
     ".eslintrc.cjs",
     "src",
-    "lib"
+    "lib",
+    "typings.d.ts"
   ],
   "references": [
     {

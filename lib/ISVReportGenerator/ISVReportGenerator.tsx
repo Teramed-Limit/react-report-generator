@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 
 import { Box, Button, Stack, ThemeProvider } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -14,7 +14,6 @@ import '../styles/scrollbar.scss';
 import { rootTheme } from '../theme/rootTheme.ts';
 import { Field, FormDefine, RepPage } from '../types';
 import { ISVReportGeneratorHandle } from '../types/component-handle';
-import { deepCopy } from '../utils/general.ts';
 
 import classes from './ISVReportGenerator.module.scss';
 import ReportPropertyPanel from './ReportComponent/Layout/ReportPropertyPanel/ReportPropertyPanel.tsx';
@@ -115,41 +114,69 @@ export const ISVReportGenerator = forwardRef<ISVReportGeneratorHandle, Props>(
 			getFooterDefine: () => getFooterDefine(),
 		}));
 
-		function updateValueStyleId<T>(obj: T, styleName: string, styleValue: string, target: string): T {
-			if (Array.isArray(obj)) {
-				// 使用 map 來返回新的陣列
-				return obj.map((item) => updateValueStyleId(item, styleName, styleValue, target)) as unknown as T;
-			}
-			if (typeof obj === 'object' && obj !== null) {
-				// 創建新物件以避免直接修改函數參數
-				const newObj = { ...obj };
-
-				// 檢查是否具有 target 屬性
-				if (newObj?.[target]) {
-					newObj[target] = {
-						...newObj[target],
-						[styleName]: styleValue,
-					};
+		// 優化版本：只在需要時創建新對象，減少不必要的對象創建
+		const updateStyleInPlace = useCallback(
+			<T,>(obj: T, styleName: string, styleValue: string | number, target: string): T => {
+				if (Array.isArray(obj)) {
+					return obj.map((item) => updateStyleInPlace(item, styleName, styleValue, target)) as unknown as T;
 				}
 
-				// 使用 Object.entries() 和 reduce 來遍歷並返回新的物件
-				return Object.entries(newObj).reduce((acc, [key, value]) => {
-					acc[key] = updateValueStyleId(value, styleName, styleValue, target);
+				if (typeof obj !== 'object' || obj === null) {
+					return obj;
+				}
+
+				const hasTarget = target in obj && obj[target as keyof T] !== undefined;
+				let hasNestedChanges = false;
+
+				// 使用 reduce 來處理嵌套對象
+				const processedEntries = Object.entries(obj).reduce<[string, unknown][]>((acc, [key, value]) => {
+					if (key === target) {
+						acc.push([key, value]);
+						return acc;
+					}
+
+					if (typeof value === 'object' && value !== null) {
+						const updatedValue = updateStyleInPlace(value, styleName, styleValue, target);
+						if (updatedValue !== value) {
+							hasNestedChanges = true;
+							acc.push([key, updatedValue]);
+						} else {
+							acc.push([key, value]);
+						}
+					} else {
+						acc.push([key, value]);
+					}
 					return acc;
-				}, {} as T);
-			}
+				}, []);
 
-			return obj;
-		}
+				// 如果沒有 target 屬性且沒有嵌套變更，直接返回原對象
+				if (!hasTarget && !hasNestedChanges) {
+					return obj;
+				}
 
-		const setGlobalStyle = (styleName: string, styleValue: any, target: string) => {
-			setFormDefine((prev) => {
-				return updateValueStyleId<FormDefine>(deepCopy(prev), styleName, styleValue, target);
-			});
-			setImageDefine((prev) => {
-				return updateValueStyleId<Field[]>(deepCopy(prev), styleName, styleValue, target);
-			});
-		};
+				// 創建新對象
+				const result = Object.fromEntries(processedEntries) as T;
+
+				// 更新 target 屬性
+				if (hasTarget) {
+					result[target as keyof T] = {
+						...(obj[target as keyof T] as object),
+						[styleName]: styleValue,
+					} as T[keyof T];
+				}
+
+				return result;
+			},
+			[],
+		);
+
+		const setGlobalStyle = useCallback(
+			(styleName: string, styleValue: string | number, target: string) => {
+				setFormDefine((prev) => updateStyleInPlace<FormDefine>(prev, styleName, styleValue, target));
+				setImageDefine((prev) => updateStyleInPlace<Field[]>(prev, styleName, styleValue, target));
+			},
+			[setFormDefine, setImageDefine, updateStyleInPlace],
+		);
 
 		return (
 			<ThemeProvider theme={rootTheme}>

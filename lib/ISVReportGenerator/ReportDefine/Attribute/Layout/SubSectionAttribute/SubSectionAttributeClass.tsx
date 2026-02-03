@@ -4,12 +4,13 @@ import { SubSection } from '../../../../../types/define.ts';
 import { ArrayField } from '../../../../../types/field/array-field.ts';
 import { CompositeField } from '../../../../../types/field/composite-field.ts';
 import { Field } from '../../../../../types/field/field.ts';
+import { ParagraphField } from '../../../../../types/field/paragraph-field.ts';
 import { CSSStyle } from '../../Common/Complex/ReportCSSStyleAttribute/CSSStyle';
 
 export class SubSectionAttributeClass implements SubSection {
 	id: string;
 	maxWidth?: string;
-	fields: (Field | ArrayField | CompositeField)[];
+	fields: (Field | ArrayField | CompositeField | ParagraphField)[];
 	style: Style;
 	hideInPDF: boolean;
 	hide: boolean;

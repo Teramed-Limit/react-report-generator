@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, FormControl, IconButton, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -266,9 +265,9 @@ function SRTextInputEdit({ field, value, onValueChange, disabled }: Props) {
 				<FileUpload
 					accept=".dcm"
 					uiComponent={
-						<LoadingButton sx={{ padding: 0 }} size="small" loading={loadingSR} variant="contained">
+						<Button sx={{ padding: 0 }} size="small" loading={loadingSR} variant="contained">
 							Open SR
-						</LoadingButton>
+						</Button>
 					}
 					onFileChange={loadStructureReportFile}
 				/>

@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect } from 'react';
+import { CSSProperties, useEffect } from 'react';
 
 import { TextField } from '../../types/field/text-field.ts';
 import { isEmptyOrNil } from '../../utils/general.ts';

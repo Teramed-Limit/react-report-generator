@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 
 import { RepComponent } from '../../../types/report-generator/component/rep-component';
 import { Point } from '../../../types/report-generator/rep-report.ts';
@@ -21,6 +21,9 @@ type RepComponentHandle = {
 	deactivateComp: () => void;
 	movable: () => boolean;
 };
+
+// 空函數提取到組件外部，避免每次渲染重建
+const noop = () => {};
 
 const RendererReportComponent = React.forwardRef<RepComponentHandle, Props>(
 	({ component, scale, onValueChanged, onComponentActive, restrictBoundary, onSaveCompPosition }: Props, ref) => {
@@ -58,19 +61,33 @@ const RendererReportComponent = React.forwardRef<RepComponentHandle, Props>(
 			};
 		});
 
-		const onMouseDown = (e: React.MouseEvent) => {
-			movable.current = true;
-			if (isActive) return;
-			setIsActive(true);
-			onComponentActive(component, !e.shiftKey);
-		};
+		const onMouseDown = useCallback(
+			(e: React.MouseEvent) => {
+				movable.current = true;
+				if (isActive) return;
+				setIsActive(true);
+				onComponentActive(component, !e.shiftKey);
+			},
+			[isActive, component, onComponentActive],
+		);
 
-		const onMouseUp = (e: React.MouseEvent) => {
+		const onMouseUp = useCallback(() => {
 			movable.current = false;
 			onSaveCompPosition();
-		};
+		}, [onSaveCompPosition]);
 
-		const onMouseMove = (e: React.MouseEvent) => {};
+		// Memoize style object
+		const componentStyle = useMemo(
+			() => ({
+				position: 'absolute' as const,
+				top: position.y * scale,
+				left: position.x * scale,
+				boxShadow: `inset 0 0 0 2px ${isActive ? 'red' : 'black'}`,
+				zIndex: isActive ? 999 : 'unset',
+				boxSizing: 'content-box' as const,
+			}),
+			[position.x, position.y, scale, isActive],
+		);
 
 		const RenderComponent = ReportComponentMapper[component.componentType];
 		if (!RenderComponent) return <></>;
@@ -78,24 +95,15 @@ const RendererReportComponent = React.forwardRef<RepComponentHandle, Props>(
 		return (
 			<RenderComponent
 				ref={componentRef}
-				style={{
-					position: 'absolute',
-					top: position.y * scale,
-					left: position.x * scale,
-					// outline: '2px dotted',
-					boxShadow: `inset 0 0 0 2px ${isActive ? 'red' : 'black'}`,
-					// outlineColor: isActive ? 'red' : 'black',
-					zIndex: isActive ? 999 : 'unset',
-					boxSizing: 'content-box',
-				}}
+				style={componentStyle}
 				scale={scale}
 				component={component}
-				onClick={() => {}}
+				onClick={noop}
 				onMouseDown={onMouseDown}
 				onMouseUp={onMouseUp}
-				onMouseMove={onMouseMove}
-				onMouseEnter={() => {}}
-				onMouseLeave={() => {}}
+				onMouseMove={noop}
+				onMouseEnter={noop}
+				onMouseLeave={noop}
 				onActive={onComponentActive}
 				onValueChanged={onValueChanged}
 			/>
