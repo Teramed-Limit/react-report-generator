@@ -32,6 +32,16 @@ export const rootTheme = createTheme({
 			styleOverrides: {
 				root: {
 					textTransform: 'none',
+					fontWeight: 500,
+					borderRadius: '6px',
+				},
+				outlined: {
+					borderColor: '#e0e0e0',
+					color: '#5f6368',
+					'&:hover': {
+						backgroundColor: '#e8e8e8',
+						borderColor: '#c0c0c0',
+					},
 				},
 			},
 		},
@@ -108,6 +118,17 @@ export const rootTheme = createTheme({
 			styleOverrides: {
 				root: {
 					textTransform: 'none',
+					fontWeight: 500,
+					fontSize: '0.875rem',
+					minHeight: 48,
+				},
+			},
+		},
+		MuiTabs: {
+			styleOverrides: {
+				indicator: {
+					height: 3,
+					borderRadius: '3px 3px 0 0',
 				},
 			},
 		},

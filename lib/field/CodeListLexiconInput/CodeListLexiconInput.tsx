@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Autocomplete, TextField } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useRecoilValue } from 'recoil';
@@ -23,8 +21,8 @@ function CodeListLexiconInput({ id, field, value, onValueChange, disabled }: Pro
 		}),
 	);
 
-	const labelKey = field.optionSource.labelKey || 'Label';
-	const valueKey = field.optionSource.key || 'Value';
+	const labelKey = field.optionSource.labelKey || 'label';
+	const valueKey = field.optionSource.key || 'value';
 
 	let defaultValue = null;
 	defaultValue = options.find((option) => option[valueKey] === value);
@@ -37,9 +35,14 @@ function CodeListLexiconInput({ id, field, value, onValueChange, disabled }: Pro
 			freeSolo
 			disablePortal
 			value={defaultValue}
+			inputValue={value ?? ''}
 			options={options}
+			disabled={disabled}
 			getOptionLabel={(option: any) => option[labelKey]}
-			getOptionKey={(option: any) => option[valueKey]}
+			getOptionKey={(option: any) => option.id}
+			onInputChange={(event, newValue: any) => {
+				onValueChange(newValue);
+			}}
 			onChange={(event, newValue: any) => {
 				if (!newValue) {
 					onValueChange('');

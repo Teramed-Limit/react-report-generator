@@ -17,6 +17,7 @@ export interface ISVReportProps {
 		page?: CSSProperties;
 	};
 	showFlowButton?: boolean;
+	children?: React.ReactNode;
 }
 
 // 內部狀態類型

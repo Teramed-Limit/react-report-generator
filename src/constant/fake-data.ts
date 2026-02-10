@@ -52,4 +52,5 @@ export const fakeData: Record<string, any> = {
 	PatientName: 'John Doe',
 	PatientId: '123456',
 	SignatureImage: 'https://picsum.photos/200/200',
+	DiagramData: 'https://picsum.photos/200/200',
 };

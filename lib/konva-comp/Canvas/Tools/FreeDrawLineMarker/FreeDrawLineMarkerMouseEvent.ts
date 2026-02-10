@@ -8,6 +8,9 @@ import { MarkerEvent } from '../../MarkerEvent/MarkerEvent';
 const markerType = MarkerType.FreeDraw;
 
 const FreeDrawLineMarkerMouseEvent = (): MarkerEvent => {
+	// 用閉包保存繪製狀態
+	let drawingId: string | null = null;
+
 	const onMouseDown = (
 		e: Konva.KonvaEventObject<MouseEvent>,
 		mainColor: string,
@@ -16,9 +19,10 @@ const FreeDrawLineMarkerMouseEvent = (): MarkerEvent => {
 		setCanvasMarkers: (value: CanvasMarker<Konva.ShapeConfig>[]) => void,
 	) => {
 		const point = getRelativePointerPosition(e.target.getStage());
-		const uuid = generateUUID();
+		drawingId = generateUUID();
+
 		const newMarker: CanvasMarker<Konva.LineConfig> = {
-			id: uuid,
+			id: drawingId,
 			name: `${markerType}`,
 			type: markerType,
 			attribute: {
@@ -31,34 +35,46 @@ const FreeDrawLineMarkerMouseEvent = (): MarkerEvent => {
 			},
 		};
 
-		setCanvasMarkers(canvasMarkers.concat([newMarker]));
+		setCanvasMarkers([...canvasMarkers, newMarker]);
 	};
 
 	const onMouseMove = (
 		e: Konva.KonvaEventObject<MouseEvent>,
-		mainColor: string,
-		subColor: string,
+		_mainColor: string,
+		_subColor: string,
 		canvasMarkers: CanvasMarker<Konva.ShapeConfig>[],
 		setCanvasMarkers: (value: CanvasMarker<Konva.ShapeConfig>[]) => void,
 	) => {
+		if (!drawingId) return;
+
 		const point = getRelativePointerPosition(e.target.getStage());
-		const lastMarker = { ...canvasMarkers[canvasMarkers.length - 1] };
 
-		// add point
-		lastMarker.attribute.points = lastMarker.attribute.points.concat([point.x, point.y]);
+		const updatedMarkers = canvasMarkers.map((marker) => {
+			if (marker.id === drawingId) {
+				return {
+					...marker,
+					attribute: {
+						...marker.attribute,
+						points: [...(marker.attribute.points || []), point.x, point.y],
+					},
+				};
+			}
+			return marker;
+		});
 
-		// replace last
-		canvasMarkers.splice(canvasMarkers.length - 1, 1, lastMarker);
-		setCanvasMarkers(canvasMarkers.concat());
+		setCanvasMarkers(updatedMarkers);
 	};
 
 	const onMouseUp = (
-		e: Konva.KonvaEventObject<MouseEvent>,
-		mainColor: string,
-		subColor: string,
-		canvasMarkers: CanvasMarker<Konva.ShapeConfig>[],
-		setCanvasMarkers: (value: CanvasMarker<Konva.ShapeConfig>[]) => void,
-	) => {};
+		_e: Konva.KonvaEventObject<MouseEvent>,
+		_mainColor: string,
+		_subColor: string,
+		_canvasMarkers: CanvasMarker<Konva.ShapeConfig>[],
+		_setCanvasMarkers: (value: CanvasMarker<Konva.ShapeConfig>[]) => void,
+	) => {
+		// 重置狀態
+		drawingId = null;
+	};
 
 	return {
 		onClick: nullMouseEvent,

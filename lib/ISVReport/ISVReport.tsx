@@ -32,10 +32,11 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 		defineChangeTriggerCallBack,
 		pageStyle,
 		showFlowButton = true,
+		children,
 	} = props;
 
 	// Use our custom hook for state management
-	const { reportState, getFormData, getFormState } = useReportState({
+	const { reportState, getFormData, getFormState, setFormData, valueChanged, getFormValue } = useReportState({
 		formDefine,
 		formData,
 		formDisabled,
@@ -53,6 +54,9 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 	useImperativeHandle(ref, () => ({
 		getFormData: () => getFormData(),
 		getFormState: () => getFormState(),
+		getFormValue: (path: (string | number)[]) => getFormValue(path),
+		setFormData: (data: Record<string, any>) => setFormData(data),
+		valueChanged: (path: (string | number)[], value: any) => valueChanged(path, value),
 		isFormValid: () => {
 			const formState = getFormState();
 			return !Object.keys(formState).some((key) => {
@@ -77,8 +81,8 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 	return (
 		<ErrorBoundary onError={handleError}>
 			<ThemeProvider theme={rootTheme}>
-				<Box sx={{ position: 'relative', height: '100%' }}>
-					<LoadingOverlay isLoading={reportState.isLoading} message="初始化報告中..." />
+				<Box id="reportContainer" sx={{ position: 'relative', height: '100%', overflow: 'auto' }}>
+					<LoadingOverlay isLoading={reportState.isLoading} message="Initializing report..." />
 
 					{reportState.error && (
 						<Box sx={{ p: 3 }}>
@@ -105,6 +109,9 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 										.map((section: Section) => (
 											<ReportSection key={section.id} section={section} />
 										))}
+									<Stack id="childrenContainer" direction="column" width="100%" height="fit-content">
+										{children}
+									</Stack>
 								</Box>
 							</Box>
 							{showFlowButton && (

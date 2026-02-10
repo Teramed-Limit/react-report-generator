@@ -135,7 +135,7 @@ export function useReportSection({ sectionIdx, section }: Props) {
 			const finalFormDefine = R.assocPath(targetSubSectionsPath, updatedSubSections, withoutSource);
 
 			set(selectedReportDefine, finalFormDefine);
-			
+
 			// 重置拖拽狀態，確保跨容器拖拽時狀態正確
 			set(dragStateAtom, {
 				isDragging: false,

@@ -1,41 +1,39 @@
 .reportLayout {
-    width: fit-content;
-    //margin: 10px auto;
-    //padding: 10px;
-    //user-select: none;
-    //border: 1px solid darkgrey;
-    //box-shadow: 5px 5px 5px 1px #ccc;
-    //border-radius: 5px;
+	width: fit-content;
+	//margin: 10px auto;
+	//padding: 10px;
+	//user-select: none;
+	//border: 1px solid darkgrey;
+	//box-shadow: 5px 5px 5px 1px #ccc;
+	//border-radius: 5px;
 }
 
 .page {
-    //width: 210mm;
-    width: 794px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 10px 8px;
-    user-select: none;
-    border: 1px solid darkgrey;
-    box-shadow: 5px 5px 5px 1px #ccc;
-    border-radius: 5px;
-    transform: scale(1.5);
-    transform-origin: top center;
+	//width: 210mm;
+	width: 794px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 10px 8px;
+	user-select: none;
+	border: 1px solid darkgrey;
+	box-shadow: 5px 5px 5px 1px #ccc;
+	border-radius: 5px;
+	transform: scale(1.5);
+	transform-origin: top center;
 }
-
 
 .pageContainer {
-    position: relative;
-    display: flex;
-    justify-content: center;
+	position: relative;
+	display: flex;
+	justify-content: center;
 }
 
-
 .flowButtonContainer {
-    width: fit-content;
-    height: fit-content;
-    position: sticky;
-    z-index: 1200;
-    left: 2500px;
-    top: 20px;
+	width: fit-content;
+	height: fit-content;
+	position: sticky;
+	z-index: 1200;
+	left: 2500px;
+	top: 20px;
 }

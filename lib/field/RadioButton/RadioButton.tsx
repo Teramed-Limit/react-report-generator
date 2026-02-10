@@ -22,8 +22,8 @@ function RadioButton({ id, field, value, onValueChange, disabled }: Props) {
 	const { filterCondition, optionSource, direction } = field;
 	const options = useRecoilValue(codeListAtom({ optionSource, filterCondition }));
 
-	const labelKey = field.optionSource.labelKey || 'Label';
-	const valueKey = field.optionSource.key || 'Value';
+	const labelKey = field.optionSource.labelKey || 'label';
+	const valueKey = field.optionSource.key || 'value';
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		event.stopPropagation();
@@ -40,7 +40,7 @@ function RadioButton({ id, field, value, onValueChange, disabled }: Props) {
 							m: 0,
 						}}
 						disabled={disabled}
-						key={option[valueKey]}
+						key={option.id}
 						value={option[valueKey]}
 						control={<BpRadio />}
 						label={

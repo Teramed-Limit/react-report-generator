@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { MarkerEvent } from '../konva-comp/Canvas/MarkerEvent/MarkerEvent.ts';
 import ArrowMarkerMouseEvent from '../konva-comp/Canvas/Tools/ArrowMarker/ArrowMarkerMouseEvent.ts';
 import CircleMarkerMouseEvent from '../konva-comp/Canvas/Tools/CircleMarker/CircleMarkerMouseEvent.ts';
@@ -17,7 +19,10 @@ const ToolMouseEventMapper = {
 };
 
 export function useCanvasTool(markerType: MarkerType = MarkerType.None) {
-	const event = ToolMouseEventMapper[markerType]() as MarkerEvent;
+	// 使用 useMemo 快取事件物件，避免每次 render 都重新建立閉包
+	const event = useMemo(() => {
+		return ToolMouseEventMapper[markerType]() as MarkerEvent;
+	}, [markerType]);
 
 	return {
 		onClick: event.onClick,

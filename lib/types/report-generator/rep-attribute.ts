@@ -5,8 +5,4 @@ import { RepLineComponent } from './component/rep-line-component';
 import { RepPageNumberComponent } from './component/rep-page-num-component';
 
 export interface RepComponentAttribute
-	extends RepComponent,
-		RepImageComponent,
-		RepLabelComponent,
-		RepPageNumberComponent,
-		RepLineComponent {}
+	extends RepComponent, RepImageComponent, RepLabelComponent, RepPageNumberComponent, RepLineComponent {}

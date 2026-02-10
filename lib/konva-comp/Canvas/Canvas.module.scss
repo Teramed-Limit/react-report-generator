@@ -1,3 +1,8 @@
 .canvas {
-  box-shadow: 0 0 5px grey;
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.3),
+    0 8px 32px rgba(0, 0, 0, 0.2);
+  cursor: crosshair;
 }

@@ -1,13 +1,12 @@
 import React from 'react';
 
-import { lighten, Stack, Tab, Tabs } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
+import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 import * as R from 'ramda';
 import { AiOutlineMinus } from 'react-icons/ai';
 import { BsCardImage } from 'react-icons/bs';
 import { FaMousePointer } from 'react-icons/fa';
 import { IoTextOutline } from 'react-icons/io5';
+import { MdOutlineDescription, MdOutlineTune, MdOutlineWidgets } from 'react-icons/md';
 import { TbNumbers } from 'react-icons/tb';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
@@ -18,39 +17,98 @@ import {
 	headerDefineAtom,
 } from '../../../../recoil/atoms/header-footer-defineAtom.ts';
 import { ReportComponentType } from '../../../../types/report-generator/component/rep-component.ts';
-import StyledTreeItem from '../../../../UI/StyledTreeItem/StyledTreeItem.tsx';
 import TabPanel from '../../../../UI/TabPanel/TabPanel.tsx';
 import ReportComponentAttributeList from '../../Attribute/ReportComponentAttributeList/ReportComponentAttributeList.tsx';
 import ReportPageAttribute from '../../Attribute/ReportPageAttribute/ReportPageAttribute.tsx';
 
 import classes from './ReportPropertyPanel.module.scss';
 
-const StyleTabs = styled(Tabs)({
-	borderBottom: '1px solid #e8e8e8',
-	'& .MuiTabs-indicator': {
-		backgroundColor: 'mediumslateblue',
+// Component type definitions grouped by category
+const componentGroups = [
+	{
+		category: 'Basic',
+		items: [
+			{ type: ReportComponentType.General, label: 'General', icon: FaMousePointer },
+			{ type: ReportComponentType.Line, label: 'Line', icon: AiOutlineMinus },
+		],
 	},
+	{
+		category: 'Text',
+		items: [
+			{ type: ReportComponentType.Label, label: 'Label', icon: IoTextOutline },
+			{ type: ReportComponentType.DynamicLabel, label: 'Dynamic Label', icon: IoTextOutline },
+			{ type: ReportComponentType.PageNumber, label: 'Page Number', icon: TbNumbers },
+		],
+	},
+	{
+		category: 'Media',
+		items: [
+			{ type: ReportComponentType.Image, label: 'Image', icon: BsCardImage },
+			{ type: ReportComponentType.DynamicImage, label: 'Dynamic Image', icon: BsCardImage },
+		],
+	},
+];
+
+interface ComponentCardProps {
+	label: string;
+	icon: React.ElementType;
+	selected: boolean;
+	onClick: () => void;
+}
+
+const ComponentCard = React.memo(function ComponentCard({ label, icon: Icon, selected, onClick }: ComponentCardProps) {
+	return (
+		<Paper
+			elevation={0}
+			onClick={onClick}
+			role="button"
+			tabIndex={0}
+			onKeyDown={(e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					onClick();
+				}
+			}}
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				justifyContent: 'center',
+				gap: 0.75,
+				p: 1.5,
+				minHeight: 64,
+				cursor: 'pointer',
+				border: 1,
+				borderColor: selected ? 'primary.main' : 'transparent',
+				borderRadius: 2,
+				bgcolor: selected ? 'primary.50' : 'grey.100',
+				transition: 'all 0.15s ease-in-out',
+				'&:hover': {
+					bgcolor: selected ? 'primary.100' : 'grey.200',
+					borderColor: selected ? 'primary.main' : 'grey.300',
+				},
+			}}
+		>
+			<Box
+				component={Icon}
+				sx={{
+					fontSize: 20,
+					color: selected ? 'primary.main' : 'text.secondary',
+				}}
+			/>
+			<Typography
+				variant="caption"
+				sx={{
+					fontWeight: selected ? 600 : 500,
+					color: selected ? 'primary.main' : 'text.primary',
+					textAlign: 'center',
+					lineHeight: 1.2,
+				}}
+			>
+				{label}
+			</Typography>
+		</Paper>
+	);
 });
-
-const StyleTab = styled((props: { label: string }) => <Tab disableRipple {...props} />)(({ theme }) => ({
-	textTransform: 'none',
-	minWidth: 0,
-	marginRight: theme.spacing(1),
-
-	color: lighten('#7B68EE', 0.5),
-	fontSize: '0.875em',
-	fontWeight: 'bold',
-	fontFamily: ['Roboto', 'Helvetica', 'Arial', 'Roboto', 'sans-serif'].join(','),
-	'&:hover': {
-		color: lighten('#7B68EE', 0.2),
-	},
-	'&.Mui-selected': {
-		color: 'mediumslateblue',
-	},
-	'&.Mui-focusVisible': {
-		color: 'mediumslateblue',
-	},
-}));
 
 function ReportPropertyPanel() {
 	const [headerDefine, setHeaderDefine] = useRecoilState(headerDefineAtom);
@@ -58,15 +116,15 @@ function ReportPropertyPanel() {
 	const [activeCompAttribute, setActiveCompAttribute] = useRecoilState(activeCompAttributeAtom);
 	const setCreateRepCompType = useSetRecoilState(createRepCompTypeAtom);
 	const [value, setValue] = React.useState(0);
-	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+	const [selectedComponentType, setSelectedComponentType] = React.useState<ReportComponentType | null>(null);
+
+	const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
 		setValue(newValue);
 	};
 
-	const handleItemSelectionToggle = (event: React.SyntheticEvent, itemId: string, isSelected: boolean) => {
-		if (isSelected) {
-			if (!Object.values(ReportComponentType).includes(itemId as ReportComponentType)) return;
-			setCreateRepCompType(itemId as ReportComponentType);
-		}
+	const handleComponentSelect = (type: ReportComponentType) => {
+		setSelectedComponentType(type);
+		setCreateRepCompType(type);
 	};
 
 	const onSetHeaderAttribute = (attrPath: (number | string)[], attrValue: any) => {
@@ -92,62 +150,92 @@ function ReportPropertyPanel() {
 	};
 
 	return (
-		<Stack direction="column" className={classes.container} sx={{ minWidth: '300px' }}>
-			<Stack sx={{ width: '100%', height: '100%', p: 1, overflow: 'hidden' }} direction="column">
-				<StyleTabs value={value} onChange={handleChange}>
-					<StyleTab label="Component" />
-					<StyleTab label="Attribute" />
-					<StyleTab label="Page" />
-				</StyleTabs>
-				{/* Component */}
+		<Paper
+			elevation={1}
+			className={classes.container}
+			sx={{
+				minWidth: 300,
+				bgcolor: 'background.paper',
+				borderRadius: 3,
+				border: 1,
+				borderColor: 'divider',
+			}}
+		>
+			<Stack sx={{ width: '100%', height: '100%', overflow: 'hidden' }} direction="column">
+				<Tabs
+					value={value}
+					onChange={handleChange}
+					variant="fullWidth"
+					sx={{
+						borderBottom: 1,
+						borderColor: 'divider',
+						bgcolor: 'grey.50',
+						'& .MuiTab-root': {
+							minHeight: 48,
+							py: 1.5,
+						},
+					}}
+				>
+					<Tab
+						icon={<MdOutlineWidgets size={18} />}
+						iconPosition="start"
+						label="Component"
+						sx={{ gap: 0.75 }}
+					/>
+					<Tab icon={<MdOutlineTune size={18} />} iconPosition="start" label="Attribute" sx={{ gap: 0.75 }} />
+					<Tab
+						icon={<MdOutlineDescription size={18} />}
+						iconPosition="start"
+						label="Page"
+						sx={{ gap: 0.75 }}
+					/>
+				</Tabs>
+
+				{/* Component Tab - Grouped Cards */}
 				<TabPanel value={value} index={0}>
-					<SimpleTreeView
-						sx={{ height: '100%', width: '200px', padding: '8px 8px 8px 0' }}
-						onItemSelectionToggle={handleItemSelectionToggle}
-					>
-						<StyledTreeItem
-							itemId={ReportComponentType.General}
-							labelText="General"
-							labelIcon={FaMousePointer}
-						/>
-						<StyledTreeItem
-							itemId={ReportComponentType.Label}
-							labelText="Label"
-							labelIcon={IoTextOutline}
-						/>
-						<StyledTreeItem
-							itemId={ReportComponentType.DynamicLabel}
-							labelText="Dynamic Label"
-							labelIcon={IoTextOutline}
-						/>
-						<StyledTreeItem itemId={ReportComponentType.Image} labelText="Image" labelIcon={BsCardImage} />
-						<StyledTreeItem
-							itemId={ReportComponentType.DynamicImage}
-							labelText="Dynamic Image"
-							labelIcon={BsCardImage}
-						/>
-						<StyledTreeItem itemId={ReportComponentType.Line} labelText="Line" labelIcon={AiOutlineMinus} />
-						<StyledTreeItem
-							itemId={ReportComponentType.PageNumber}
-							labelText="Page Number"
-							labelIcon={TbNumbers}
-						/>
-					</SimpleTreeView>
+					{componentGroups.map((group) => (
+						<Box key={group.category} className={classes.componentGroup}>
+							<Typography
+								variant="overline"
+								sx={{
+									fontWeight: 600,
+									color: 'text.secondary',
+									letterSpacing: 0.5,
+									px: 0.5,
+								}}
+							>
+								{group.category}
+							</Typography>
+							<Box className={classes.componentGrid}>
+								{group.items.map((comp) => (
+									<ComponentCard
+										key={comp.type}
+										label={comp.label}
+										icon={comp.icon}
+										selected={selectedComponentType === comp.type}
+										onClick={() => handleComponentSelect(comp.type)}
+									/>
+								))}
+							</Box>
+						</Box>
+					))}
 				</TabPanel>
-				{/* Attribute */}
+
+				{/* Attribute Tab */}
 				<TabPanel value={value} index={1}>
 					<ReportComponentAttributeList
 						compAttribute={activeCompAttribute}
 						onSetCompAttribute={onSetActiveCompAttribute}
 					/>
 				</TabPanel>
-				{/* Page */}
+
+				{/* Page Tab */}
 				<TabPanel value={value} index={2}>
 					<ReportPageAttribute pageAttribute={headerDefine} onSetPageAttribute={onSetHeaderAttribute} />
 					<ReportPageAttribute pageAttribute={footerDefine} onSetPageAttribute={onSetFooterAttribute} />
 				</TabPanel>
 			</Stack>
-		</Stack>
+		</Paper>
 	);
 }
 

@@ -8,6 +8,8 @@ import { MarkerEvent } from '../../MarkerEvent/MarkerEvent';
 const markerType = MarkerType.Circle;
 
 const CircleMarkerMouseEvent = (): MarkerEvent => {
+	const uuid = generateUUID();
+
 	const onClick = (
 		e: Konva.KonvaEventObject<MouseEvent>,
 		mainColor: string,
@@ -17,7 +19,7 @@ const CircleMarkerMouseEvent = (): MarkerEvent => {
 	) => {
 		e.cancelBubble = true;
 		const point = getRelativePointerPosition(e.target.getStage());
-		const uuid = generateUUID();
+
 		const newMarker: CanvasMarker<Konva.CircleConfig> = {
 			id: uuid,
 			name: `${markerType}`,

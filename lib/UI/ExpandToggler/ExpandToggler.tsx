@@ -7,10 +7,22 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
+// Figma-style light theme colors
+const lightTheme = {
+	bgSecondary: '#ffffff',
+	bgTertiary: '#f5f5f5',
+	bgHover: '#fafafa',
+	borderColor: '#e0e0e0',
+	textPrimary: '#1a1a1a',
+	textSecondary: '#5f6368',
+	textMuted: '#9aa0a6',
+};
+
 const StyledAccordion = styled(Accordion)(() => ({
 	'&.MuiAccordion-root': {
 		margin: '0 !important',
 		boxShadow: 'none',
+		backgroundColor: 'transparent',
 	},
 	'&.MuiAccordion-root.Mui-expanded': {
 		boxShadow: 'none',
@@ -22,16 +34,17 @@ const StyledAccordion = styled(Accordion)(() => ({
 }));
 
 const StyledAccordionSummary = styled(AccordionSummary)(() => ({
-	minHeight: '36px', // 設定展開時的最小高度
-	borderBottom: 'solid 1px rgba(0, 0, 0, 0.35)',
-	padding: '0 0 0 8px',
+	minHeight: '32px',
+	borderBottom: `solid 1px ${lightTheme.borderColor}`,
+	padding: '0 8px 0 12px',
 	margin: 0,
+	backgroundColor: lightTheme.bgSecondary,
 
 	'&.Mui-expanded .MuiAccordionSummary-content': {
-		margin: 0, // 展開時設定內容區塊的邊距為0
+		margin: 0,
 	},
 	'&.Mui-expanded': {
-		minHeight: '36px', // 設定展開時的最小高度
+		minHeight: '32px',
 		margin: 0,
 	},
 	'.MuiAccordionSummary-content': {
@@ -41,17 +54,24 @@ const StyledAccordionSummary = styled(AccordionSummary)(() => ({
 	'.MuiPaper-root': {
 		margin: 0,
 	},
+	'.MuiAccordionSummary-expandIconWrapper': {
+		color: lightTheme.textMuted,
+	},
+	'&:hover': {
+		backgroundColor: lightTheme.bgHover,
+	},
 }));
 
 const StyledAccordionDetails = styled(AccordionDetails)(() => ({
-	minHeight: '36px', // 設定展開時的最小高度
+	minHeight: '32px',
 	padding: 0,
 	margin: 0,
+	backgroundColor: 'transparent',
 	'&.MuiCollapse-root': {
 		padding: 0,
 	},
 	'&.MuiAccordionDetails-root': {
-		paddingLeft: '12px',
+		paddingLeft: '8px',
 	},
 }));
 
@@ -65,7 +85,16 @@ function ExpandToggler({ title, children, defaultExpanded = true }: Props) {
 	return (
 		<StyledAccordion sx={{ margin: '0' }} defaultExpanded={defaultExpanded}>
 			<StyledAccordionSummary expandIcon={<ExpandMoreIcon />}>
-				<Typography>{title}</Typography>
+				<Typography
+					sx={{
+						fontSize: '11px',
+						fontWeight: 500,
+						color: lightTheme.textSecondary,
+						textTransform: 'capitalize',
+					}}
+				>
+					{title}
+				</Typography>
 			</StyledAccordionSummary>
 			<StyledAccordionDetails>{children}</StyledAccordionDetails>
 		</StyledAccordion>

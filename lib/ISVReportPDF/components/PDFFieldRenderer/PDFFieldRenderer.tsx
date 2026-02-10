@@ -65,16 +65,18 @@ const PDFFieldRenderer = ({ field, value, getOptions }: Props) => {
 	};
 
 	const selection = (rendererField: SelectionField, rendererValue) => {
-		const labelKey = rendererField.optionSource.labelKey || 'Label';
-		const valueKey = rendererField.optionSource.key || 'Value';
+		const labelKey = rendererField.optionSource.labelKey || 'label';
+		const valueKey = rendererField.optionSource.key || 'value';
 		const codelist = getOptions(rendererField.optionSource.source);
 
 		if (rendererField.isMulti) {
 			// 一律用Label顯示
 			const labelList = (rendererValue as string[])?.map((optValue) => {
 				const foundOption = codelist.find((option) => option[valueKey] === optValue);
-				return foundOption?.Label || '';
+				return foundOption?.label || '';
 			});
+
+			if (isEmptyOrNil(labelList)) return text(rendererField, '');
 
 			// const newValue = (labelList as string[])?.join('\n') || '';
 			const defaultJoinStr = ', ';
@@ -89,8 +91,8 @@ const PDFFieldRenderer = ({ field, value, getOptions }: Props) => {
 	};
 
 	const radio = (rendererField: RadioField, rendererValue: string) => {
-		const labelKey = rendererField.optionSource.labelKey || 'Label';
-		const valueKey = rendererField.optionSource.key || 'Value';
+		const labelKey = rendererField.optionSource.labelKey || 'label';
+		const valueKey = rendererField.optionSource.key || 'value';
 		const codelist = getOptions(rendererField.optionSource.source);
 
 		const foundOption = codelist.find((option) => option[valueKey] === rendererValue);

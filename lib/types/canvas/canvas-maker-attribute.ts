@@ -15,3 +15,10 @@ export interface CanvasMarker<T extends ShapeConfig> {
 	name: string;
 	attribute: T;
 }
+
+export interface PositionMarker<T = unknown> {
+	mappingNumber: number;
+	pointX: number;
+	pointY: number;
+	data: T;
+}

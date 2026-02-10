@@ -1,8 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { Button, Stack } from '@mui/material';
 
-import { ISVReport } from '../../lib/main.ts';
+import { FormFieldType } from '../../lib/field/field-type.ts';
+import { ISVReport, PureFieldContainer } from '../../lib/main.ts';
 import CustomModal from '../../lib/modals/CustomModal/CustomModal.tsx';
 import { Field } from '../../lib/types';
 import { ISVReportHandle } from '../../lib/types/component-handle';
@@ -12,11 +13,77 @@ import { useModalControl } from '../hooks/useModalControl.ts';
 
 import ReportPDF from './ReportPDF.tsx';
 
+const testField: Field = {
+	id: 'DescriptionOfSites',
+	type: FormFieldType.CodeListLexicon,
+	hide: false,
+	hideInPDF: false,
+	label: 'Site',
+	labelWidth: '35%',
+	labelStyle: {
+		backgroundColor: 'transparent',
+		color: '#0070c0',
+		fontSize: 9,
+		fontFamily: 'Noto Sans TC',
+		fontStyle: 'normal',
+		fontWeight: 'bold',
+		textAlign: 'left',
+		textDecoration: 'none',
+		marginTop: 0,
+		marginRight: 0,
+		marginBottom: 0,
+		marginLeft: 0,
+		paddingTop: 0,
+		paddingRight: 0,
+		paddingBottom: 0,
+		paddingLeft: 0,
+	},
+	valueStyle: {
+		backgroundColor: 'transparent',
+		color: 'black',
+		fontSize: 9,
+		fontFamily: 'Noto Sans TC',
+		fontStyle: 'normal',
+		fontWeight: 'bold',
+		textAlign: 'center',
+		textDecoration: 'none',
+		marginTop: 0,
+		marginRight: 0,
+		marginBottom: 0,
+		marginLeft: 0,
+		paddingTop: 0,
+		paddingRight: 0,
+		paddingBottom: 0,
+		paddingLeft: 0,
+	},
+	defaultValue: '',
+	initMapping: '',
+	orientation: 'row',
+	readOnly: false,
+	buttonBar: [],
+	validate: {
+		type: 'none',
+	},
+	hint: '',
+	hideLabel: false,
+	optionSource: {
+		type: 'http',
+		source: 'ImageSites',
+		labelKey: '',
+		key: '',
+	},
+	filterCondition: {
+		filterById: '',
+		filterOptionKey: '',
+	},
+	maxLength: 1000,
+};
+
 function Report() {
+	const [testValue, setTestValue] = useState('test');
 	const { isModalOpen, openModal, closeModal } = useModalControl();
 	const isvReportRef = useRef<ISVReportHandle>();
 
-	// 使用自定義 Hook 來管理表單定義的狀態
 	const { formData, setFormData, formDefine, imageDefine, headerDefine, footerDefine, loadFormDefine } =
 		useFormDefine();
 
@@ -53,7 +120,8 @@ function Report() {
 					Print PDF
 				</Button>
 			</Stack>
-			{formDefine && (
+
+			{formDefine && formData && (
 				<ISVReport
 					ref={isvReportRef}
 					formData={formData}
@@ -69,7 +137,17 @@ function Report() {
 							window.alert('Create Template');
 						},
 					}}
-				/>
+				>
+					<PureFieldContainer
+						id="test"
+						field={testField}
+						value={testValue}
+						onValueChange={(text: string) => {
+							console.log(text);
+							setTestValue(text);
+						}}
+					/>
+				</ISVReport>
 			)}
 			<CustomModal width="90%" height="90%" label="" open={isModalOpen} onModalClose={closeModal}>
 				<ReportPDF

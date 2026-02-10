@@ -32,10 +32,10 @@ function ColorPickerButton({ label = '', value, onValueChange }: Props) {
 
 	return (
 		<>
-			<Button onClick={handleClick} className={classes.button}>
+			<Button sx={{ padding: '0' }} onClick={handleClick} className={classes.button}>
 				<span>{label}</span>
 				<FormatColorFill style={{ color: value, fontSize: '24px' }} />
-				<ArrowDropDown />
+				<ArrowDropDown style={{ fontSize: '24px' }} />
 			</Button>
 			<Popover
 				open={colorPickerOpen}

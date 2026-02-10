@@ -1,3 +1,4 @@
+export type * from './canvas/canvas-maker-attribute';
 export type * from './define';
 export type * from './field/field';
 export type * from './form-state';

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Autocomplete, Box, TextField } from '@mui/material';
 import { useRecoilValue } from 'recoil';
@@ -18,8 +18,8 @@ function CodeListSelection({ id, field, value, onValueChange, disabled }: Select
 	const { isMulti, filterCondition, optionSource } = field;
 	const options = useRecoilValue(codeListAtom({ optionSource, filterCondition }));
 
-	const labelKey = field.optionSource.labelKey || 'Label';
-	const valueKey = field.optionSource.key || 'Value';
+	const labelKey = field.optionSource.labelKey || 'label';
+	const valueKey = field.optionSource.key || 'value';
 
 	let selectedOption: any = null;
 	if (!isMulti) {
@@ -64,7 +64,7 @@ function CodeListSelection({ id, field, value, onValueChange, disabled }: Select
 			}}
 			options={options}
 			getOptionLabel={(option: any) => option[labelKey]}
-			getOptionKey={(option: any) => option[valueKey]}
+			getOptionKey={(option: any) => option.id}
 			onChange={(event, newValue: any) => {
 				if (!newValue) {
 					onValueChange('');

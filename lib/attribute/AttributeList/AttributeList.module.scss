@@ -1,19 +1,26 @@
+// Figma-style light theme variables
+$bg-secondary: #ffffff;
+$border-color: #e0e0e0;
+$text-secondary: #5f6368;
+
 .title {
-    background-color: white;
+    background-color: $bg-secondary;
     position: sticky;
     top: 0;
-    color: mediumslateblue;
-    font-size: 1.5em;
+    color: $text-secondary;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     box-sizing: border-box;
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-    font-weight: 700;
     line-height: 1.75;
-    letter-spacing: 0.02857em;
-    text-align: center;
+    text-align: left;
     align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    border-bottom: 1px solid darkgrey;
+    justify-content: space-between;
+    min-height: 36px;
+    padding: 8px 12px;
+    border-bottom: 1px solid $border-color;
     z-index: 999;
 }
 

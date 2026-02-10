@@ -1,5 +1,5 @@
-import './App.css';
 import React from 'react';
+import './App.css';
 
 import { Stack, Tab, Tabs } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -9,6 +9,7 @@ import TabPanel from '../lib/UI/TabPanel/TabPanel.tsx';
 
 import Report from './sample/Report.tsx';
 import ReportGenerator from './sample/ReportGenerator.tsx';
+import ReportImagePainter from './sample/ReportImagePainter.tsx';
 
 function App() {
 	const [tabIndex, setTabIndex] = React.useState(0);
@@ -44,7 +45,7 @@ function App() {
 					<ReportGenerator />
 				</TabPanel>
 				<TabPanel value={tabIndex} index={2}>
-					<div />
+					<ReportImagePainter />
 				</TabPanel>
 				<TabPanel value={tabIndex} index={3}>
 					<div />

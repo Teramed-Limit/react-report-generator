@@ -8,6 +8,10 @@ import { MarkerEvent } from '../../MarkerEvent/MarkerEvent';
 const markerType = MarkerType.Square;
 
 const SquareMarkerMouseEvent = (): MarkerEvent => {
+	// 用閉包保存繪製狀態
+	let startPoint: Konva.Vector2d | null = null;
+	let drawingId: string | null = null;
+
 	const onMouseDown = (
 		e: Konva.KonvaEventObject<MouseEvent>,
 		mainColor: string,
@@ -15,18 +19,19 @@ const SquareMarkerMouseEvent = (): MarkerEvent => {
 		canvasMarkers: CanvasMarker<Konva.ShapeConfig>[],
 		setCanvasMarkers: (value: CanvasMarker<Konva.ShapeConfig>[]) => void,
 	) => {
-		const point = getRelativePointerPosition(e.target.getStage());
-		const uuid = generateUUID();
+		startPoint = getRelativePointerPosition(e.target.getStage());
+		drawingId = generateUUID();
+
 		const newMarker: CanvasMarker<Konva.RectConfig> = {
-			id: uuid,
+			id: drawingId,
 			name: `${markerType}`,
 			type: markerType,
 			attribute: {
 				fill: subColor,
 				stroke: mainColor,
 				strokeWidth: 10,
-				x: point.x,
-				y: point.y,
+				x: startPoint.x,
+				y: startPoint.y,
 				width: 0,
 				height: 0,
 				rotation: 0,
@@ -35,8 +40,9 @@ const SquareMarkerMouseEvent = (): MarkerEvent => {
 			},
 		};
 
-		setCanvasMarkers(canvasMarkers.concat([newMarker]));
+		setCanvasMarkers([...canvasMarkers, newMarker]);
 	};
+
 	const onMouseMove = (
 		e: Konva.KonvaEventObject<MouseEvent>,
 		mainColor: string,
@@ -44,33 +50,30 @@ const SquareMarkerMouseEvent = (): MarkerEvent => {
 		canvasMarkers: CanvasMarker<Konva.ShapeConfig>[],
 		setCanvasMarkers: (value: CanvasMarker<Konva.ShapeConfig>[]) => void,
 	) => {
-		const lastMarker = { ...canvasMarkers[canvasMarkers.length - 1] };
-		const beginPoint = { x: lastMarker.attribute.x, y: lastMarker.attribute.y };
+		if (!startPoint || !drawingId) return;
+
 		const movePoint = getRelativePointerPosition(e.target.getStage());
+		const posRect = reverse(startPoint, movePoint);
 
-		const posRect = reverse(beginPoint, movePoint);
-		const uuid = generateUUID();
-		const newMarker: CanvasMarker<Konva.RectConfig> = {
-			id: uuid,
-			name: `${markerType}`,
-			type: markerType,
-			attribute: {
-				fill: subColor,
-				stroke: mainColor,
-				strokeWidth: 10,
-				x: posRect.x1,
-				y: posRect.y1,
-				width: Math.floor(posRect.x2 - posRect.x1),
-				height: Math.floor(posRect.y2 - posRect.y1),
-				rotation: 0,
-				scaleX: 1,
-				scaleY: 1,
-			},
-		};
+		const updatedMarkers = canvasMarkers.map((marker) => {
+			if (marker.id === drawingId) {
+				return {
+					...marker,
+					attribute: {
+						...marker.attribute,
+						x: posRect.x1,
+						y: posRect.y1,
+						width: Math.floor(posRect.x2 - posRect.x1),
+						height: Math.floor(posRect.y2 - posRect.y1),
+					},
+				};
+			}
+			return marker;
+		});
 
-		canvasMarkers.splice(canvasMarkers.length - 1, 1);
-		setCanvasMarkers(canvasMarkers.concat([newMarker]));
+		setCanvasMarkers(updatedMarkers);
 	};
+
 	const onMouseUp = (
 		e: Konva.KonvaEventObject<MouseEvent>,
 		mainColor: string,
@@ -78,11 +81,18 @@ const SquareMarkerMouseEvent = (): MarkerEvent => {
 		canvasMarkers: CanvasMarker<Konva.ShapeConfig>[],
 		setCanvasMarkers: (value: CanvasMarker<Konva.ShapeConfig>[]) => void,
 	) => {
-		const lastMarker = canvasMarkers[canvasMarkers.length - 1];
-		if (!lastMarker.attribute.width || lastMarker.attribute.width < 20) {
-			canvasMarkers.splice(canvasMarkers.length - 1, 1);
-			setCanvasMarkers(canvasMarkers.concat());
+		if (!drawingId) return;
+
+		const drawingMarker = canvasMarkers.find((m) => m.id === drawingId);
+
+		// 如果太小就刪除
+		if (!drawingMarker?.attribute.width || drawingMarker.attribute.width < 20) {
+			setCanvasMarkers(canvasMarkers.filter((m) => m.id !== drawingId));
 		}
+
+		// 重置狀態
+		startPoint = null;
+		drawingId = null;
 	};
 
 	return {

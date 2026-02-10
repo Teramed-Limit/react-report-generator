@@ -1,58 +1,166 @@
-.title {
-    color: mediumslateblue;
-    font-size: 0.875rem;
-    box-sizing: border-box;
-    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-    font-weight: 700;
-    line-height: 1.75;
-    letter-spacing: 0.02857em;
-    text-align: center;
-    padding: 3px;
+// Figma-style light theme variables
+$bg-primary: #f5f5f5;
+$bg-secondary: #ffffff;
+$bg-tertiary: #f0f0f0;
+$bg-hover: #e8e8e8;
+$bg-selected: #e3f2fd;
+$border-color: #e0e0e0;
+$border-selected: #0d99ff;
+$text-primary: #1a1a1a;
+$text-secondary: #5f6368;
+$text-muted: #9aa0a6;
+$danger-color: #d93025;
+
+.layerPanel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-top: 1px solid $border-color;
 }
 
-.canvasMarkerList {
-    min-width: 250px;
-    position: absolute;
-    bottom: 4px;
-    left: 0;
-    overflow: hidden;
-    color: black;
-    border: 1px solid rgba(0, 0, 0, 0.35);
-    border-radius: 4px;
-    padding: 4px;
+.panelHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid $border-color;
+}
 
-    .itemContainer {
-        max-height: 200px;
-        overflow: scroll;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+.panelTitle {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $text-secondary;
+}
+
+.layerCount {
+    font-size: 10px;
+    color: $text-muted;
+    background-color: $bg-tertiary;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.layerList {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // Custom scrollbar
+    &::-webkit-scrollbar {
+        width: 6px;
     }
 
-    .buttonContainer {
-        button {
-            margin: 0 1px;
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $border-color;
+        border-radius: 3px;
+
+        &:hover {
+            background: #c0c0c0;
         }
     }
+}
 
-    .item {
-        margin: 2px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 280px;
-        font-size: 16px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
-        border: 2px solid rgba(0, 0, 0, 0.35);
-        padding: 8px;
-        border-radius: 3px;
-    }
+.emptyState {
+    padding: 24px 16px;
+    text-align: center;
+    color: $text-muted;
+    font-size: 12px;
+}
 
-    .selected {
-        border: 2px solid red;
+.layerItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    border-left: 2px solid transparent;
+
+    &:hover {
+        background-color: $bg-hover;
+
+        .layerActions {
+            opacity: 1;
+        }
     }
 }
 
-.icon {
-    font-size: 20px;
+.selected {
+    background-color: $bg-selected;
+    border-left-color: $border-selected;
+
+    .layerName {
+        color: $text-primary;
+    }
+
+    .layerActions {
+        opacity: 1;
+    }
+}
+
+.layerInfo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    flex: 1;
+}
+
+.layerIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $text-muted;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.layerName {
+    font-size: 12px;
+    color: $text-secondary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.layerActions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.actionButton {
+    width: 24px;
+    height: 24px;
+    color: $text-muted !important;
+    transition: all 0.1s ease;
+
+    &:hover {
+        color: $text-primary !important;
+        background-color: $bg-tertiary !important;
+    }
+
+    svg {
+        font-size: 12px;
+    }
+}
+
+.deleteButton {
+    &:hover {
+        color: $danger-color !important;
+        background-color: rgba($danger-color, 0.1) !important;
+    }
+}
+
+.rotateIcon {
+    transform: rotate(45deg);
 }

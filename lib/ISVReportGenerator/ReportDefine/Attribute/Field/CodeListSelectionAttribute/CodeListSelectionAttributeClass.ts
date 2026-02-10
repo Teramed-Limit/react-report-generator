@@ -20,8 +20,8 @@ export class CodeListSelectionAttributeClass extends BaseAttributeClass implemen
 		this.optionSource = field?.optionSource || {
 			type: 'http',
 			source: 'ReportTemplate',
-			labelKey: 'Label',
-			key: 'Value',
+			labelKey: 'label',
+			key: 'value',
 		};
 		this.filterCondition = field.filterCondition || {
 			filterById: '',

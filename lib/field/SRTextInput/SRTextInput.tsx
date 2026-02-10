@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { SRTextField } from '../../types/field/sr-text-field';
 import BaseTextInput from '../../UI/BaseTextInput/BaseTextInput.tsx';
 

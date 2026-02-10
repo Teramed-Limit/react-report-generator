@@ -2,7 +2,7 @@ import React, { CSSProperties, useMemo } from 'react';
 
 import { Stack } from '@mui/material';
 import * as R from 'ramda';
-import { useRecoilTransaction_UNSTABLE, useRecoilValue } from 'recoil';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
 
 import { FieldMapper } from '../../../field/field-mapper.tsx';
 import { noBorderField, noHoverField, noLabelField, noPaddingField } from '../../../field/field-type.ts';
@@ -50,15 +50,41 @@ function FieldContainer({
 	const fieldValue = useRecoilValue(valueAtom(valueChangedId));
 	const fieldStates = useRecoilValue(stateAtom(valueChangedId));
 
-	// 使用 useRecoilTransaction_UNSTABLE 記憶化批量狀態更新
-	const handleValueChange = useRecoilTransaction_UNSTABLE(({ get, set }) => (newFieldValue: any) => {
+	const handleFieldValueChange = useRecoilCallback(
+		({ snapshot, set }) =>
+			(path: (string | number)[], newFieldValue: any) => {
+				const loadable = snapshot.getLoadable(formValuesAtom);
+				if (loadable.state === 'hasValue') {
+					const updatedFormValues = R.assocPath(path, newFieldValue, loadable.contents);
+					set(formValuesAtom, updatedFormValues);
+				}
+			},
+	);
+
+	const handleGetFieldValue = useRecoilCallback(({ snapshot }) => (path: (string | number)[]) => {
+		const loadable = snapshot.getLoadable(formValuesAtom);
+		if (loadable.state === 'hasValue') {
+			return R.path(path, loadable.contents);
+		}
+		return undefined;
+	});
+
+	const handleValueChange = useRecoilCallback(({ snapshot, set }) => (newFieldValue: any) => {
+		const formValuesLoadable = snapshot.getLoadable(formValuesAtom);
+		const formStatesLoadable = snapshot.getLoadable(formStatesAtom);
+
+		if (formValuesLoadable.state !== 'hasValue' || formStatesLoadable.state !== 'hasValue') {
+			return;
+		}
+
+		const currentFormValues = formValuesLoadable.contents;
+		const currentFormStates = formStatesLoadable.contents;
+
 		// eslint-disable-next-line @typescript-eslint/no-shadow
 		const updateFormStatesAndValues = (id: (string | number)[], updatedValue: any) => {
-			const currentFormValues = get(formValuesAtom);
 			const updatedFormValues = R.assocPath(id, updatedValue, currentFormValues);
 			set(formValuesAtom, updatedFormValues);
 
-			const currentFormStates = get(formStatesAtom);
 			const updatedFormStates = R.assocPath(
 				id,
 				{
@@ -70,7 +96,6 @@ function FieldContainer({
 			set(formStatesAtom, updatedFormStates);
 		};
 
-		const currentFormValues = get(formValuesAtom);
 		const newFormValues = R.assocPath(valueChangedId, newFieldValue, currentFormValues);
 		set(formValuesAtom, newFormValues);
 
@@ -181,9 +206,20 @@ function FieldContainer({
 				fieldMapper={fieldMapper}
 				modifiable={!isFormDisabled}
 				onValueChange={handleValueChange}
+				onFieldValueChange={handleFieldValueChange}
+				onGetFieldValue={handleGetFieldValue}
 			/>
 		),
-		[id, field, fieldValue, fieldMapper, isFormDisabled, handleValueChange],
+		[
+			id,
+			field,
+			fieldValue,
+			fieldMapper,
+			isFormDisabled,
+			handleValueChange,
+			handleFieldValueChange,
+			handleGetFieldValue,
+		],
 	);
 
 	return (

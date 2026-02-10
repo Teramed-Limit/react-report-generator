@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRecoilCallback, useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -69,9 +70,22 @@ export const useReportState = ({
 	// Refs for tracking changes
 	const prevReportTemplate = useRef<string>();
 	const memoizedFields = useRef<string>();
+	const isInitializedRef = useRef(false);
 
 	// Memoized validation service
 	const validationService = useMemo(() => new ValidationService(), []);
+
+	// 局部更新 formdata 某個路徑的值
+	const valueChanged = useRecoilCallback(
+		({ snapshot, set }) =>
+			(path: (string | number)[], value: any) => {
+				const loadable = snapshot.getLoadable(formValuesAtom);
+				if (loadable.state === 'hasValue') {
+					set(formValuesAtom, R.assocPath(path, value, loadable.contents));
+				}
+			},
+		[],
+	);
 
 	// 取得完整 formdata
 	const getFormData = useRecoilCallback(
@@ -94,12 +108,20 @@ export const useReportState = ({
 		[],
 	);
 
-	// Initialize report state
+	// 取得 formdata 某個路徑的值
+	const getFormValue = useRecoilCallback(
+		({ snapshot }) =>
+			(path: (string | number)[]) => {
+				return R.path(path, snapshot.getLoadable(formValuesAtom).contents);
+			},
+		[],
+	);
+
+	// 首次初始化：設定所有 Recoil state（只執行一次）
 	const initializeReport = useCallback(async () => {
 		try {
 			setReportState((prev) => ({ ...prev, isLoading: true, error: null }));
 
-			// Batch state updates
 			setFormData(formData);
 			setFormDefine(formDefine);
 			setFormDisabled(formDisabled);
@@ -107,6 +129,7 @@ export const useReportState = ({
 			setButtonActionMap(buttonActionMap);
 			setStructReportParseApi(structReportParseApi);
 
+			isInitializedRef.current = true;
 			setReportState({
 				isLoading: false,
 				error: null,
@@ -119,25 +142,56 @@ export const useReportState = ({
 				isInitialized: false,
 			});
 		}
-	}, [
-		formData,
-		formDefine,
-		formDisabled,
-		codeList,
-		buttonActionMap,
-		structReportParseApi,
-		setFormData,
-		setFormDefine,
-		setFormDisabled,
-		setCodeListMap,
-		setButtonActionMap,
-		setStructReportParseApi,
-	]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // 只在 mount 時執行一次
 
-	// Initialize on mount and when dependencies change
+	// 初始化（只跑一次）
 	useEffect(() => {
 		initializeReport();
 	}, [initializeReport]);
+
+	// ===== 以下為各 prop 獨立的增量更新，不碰 formData =====
+
+	// formDefine 變更時更新（範本切換）
+	useEffect(() => {
+		if (!isInitializedRef.current) return;
+		setFormDefine(formDefine);
+	}, [formDefine, setFormDefine]);
+
+	// formDisabled 變更時更新
+	useEffect(() => {
+		if (!isInitializedRef.current) return;
+		setFormDisabled(formDisabled);
+	}, [formDisabled, setFormDisabled]);
+
+	// codeList 變更時更新
+	useEffect(() => {
+		if (!isInitializedRef.current) return;
+		setCodeListMap(codeList);
+	}, [codeList, setCodeListMap]);
+
+	// buttonActionMap 變更時更新
+	useEffect(() => {
+		if (!isInitializedRef.current) return;
+		setButtonActionMap(buttonActionMap);
+	}, [buttonActionMap, setButtonActionMap]);
+
+	// structReportParseApi 變更時更新
+	useEffect(() => {
+		if (!isInitializedRef.current) return;
+		setStructReportParseApi(structReportParseApi);
+	}, [structReportParseApi, setStructReportParseApi]);
+
+	// formData 變更時更新（僅在 formDefine 同時變更時，代表範本切換）
+	const prevFormDefineRef = useRef(formDefine);
+	useEffect(() => {
+		if (!isInitializedRef.current) return;
+		// 只有 formDefine 也跟著變了才重設 formData（範本切換場景）
+		if (prevFormDefineRef.current !== formDefine) {
+			setFormData(formData);
+			prevFormDefineRef.current = formDefine;
+		}
+	}, [formData, formDefine, setFormData]);
 
 	// Handle template changes
 	useEffect(() => {
@@ -211,5 +265,8 @@ export const useReportState = ({
 		initializeReport,
 		getFormData,
 		getFormState,
+		setFormData,
+		getFormValue,
+		valueChanged,
 	};
 };

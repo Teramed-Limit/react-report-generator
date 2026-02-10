@@ -9,9 +9,20 @@ interface Props {
 	value: any;
 	modifiable: boolean;
 	onValueChange?: (value: any) => void;
+	onGetFieldValue?: (path: (string | number)[]) => any;
+	onFieldValueChange?: (path: (string | number)[], value: any) => void;
 }
 
-function FieldDynamicRenderer({ id, field, fieldMapper, value, modifiable, onValueChange }: Props) {
+function FieldDynamicRenderer({
+	id,
+	field,
+	fieldMapper,
+	value,
+	modifiable,
+	onValueChange,
+	onGetFieldValue,
+	onFieldValueChange,
+}: Props) {
 	// 記憶化組件選擇，避免每次都重新查找
 	const RenderComponent = useMemo(() => fieldMapper[field.type], [fieldMapper, field.type]);
 
@@ -23,8 +34,10 @@ function FieldDynamicRenderer({ id, field, fieldMapper, value, modifiable, onVal
 			field,
 			value,
 			onValueChange,
+			onGetFieldValue,
+			onFieldValueChange,
 		}),
-		[id, modifiable, field, value, onValueChange],
+		[id, modifiable, field, value, onValueChange, onGetFieldValue, onFieldValueChange],
 	);
 
 	if (!RenderComponent) {

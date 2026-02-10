@@ -1,11 +1,11 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 
 import Konva from 'konva';
-import { Image, Layer, Stage } from 'react-konva';
+import { Group, Image, Layer, Rect, Stage, Text } from 'react-konva';
 import useImage from 'use-image';
 
 import { useCanvasTool } from '../../hooks/useCanvasTool.ts';
-import { CanvasMarker, MarkerType } from '../../types/canvas/canvas-maker-attribute.ts';
+import { CanvasMarker, MarkerType, PositionMarker } from '../../types/canvas/canvas-maker-attribute.ts';
 import { isEmptyOrNil } from '../../utils/general';
 
 import classes from './Canvas.module.scss';
@@ -13,6 +13,7 @@ import RenderMaker from './Tools/RenderMaker/RenderMaker';
 
 type CanvasHandle = {
 	onExport(): string;
+	getStage(): Konva.Stage | null;
 };
 
 interface Props {
@@ -26,6 +27,7 @@ interface Props {
 	imageSrc: string;
 	containerWidth: number;
 	containerHeight: number;
+	positionMarkers?: PositionMarker[];
 }
 
 const Canvas = forwardRef<CanvasHandle, Props>(
@@ -41,6 +43,7 @@ const Canvas = forwardRef<CanvasHandle, Props>(
 			imageSrc,
 			containerWidth,
 			containerHeight,
+			positionMarkers = [],
 		},
 		ref,
 	) => {
@@ -74,6 +77,9 @@ const Canvas = forwardRef<CanvasHandle, Props>(
 					return stageRef.current.toDataURL({
 						pixelRatio: ratio,
 					});
+				},
+				getStage(): Konva.Stage | null {
+					return stageRef.current;
 				},
 			}),
 			[],
@@ -184,6 +190,32 @@ const Canvas = forwardRef<CanvasHandle, Props>(
 								onMarkerSelect={setSelectMarkerId}
 								onUpdateAttr={updateMarkerAttr}
 							/>
+						);
+					})}
+					{positionMarkers.map((pm) => {
+						const size = 40;
+						return (
+							<Group key={pm.mappingNumber} x={pm.pointX - size / 2} y={pm.pointY - size / 2}>
+								<Rect
+									width={size}
+									height={size}
+									fill="rgba(255, 0, 0, 0.8)"
+									stroke="rgba(255, 255, 255, 1)"
+									strokeWidth={2}
+									cornerRadius={2}
+								/>
+								<Text
+									text={pm.mappingNumber.toString()}
+									width={size}
+									height={size}
+									align="center"
+									verticalAlign="middle"
+									fontSize={size * 0.6}
+									fill="white"
+									fontStyle="bold"
+									listening={false}
+								/>
+							</Group>
 						);
 					})}
 				</Layer>
