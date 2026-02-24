@@ -122,11 +122,11 @@ function ReportPDF({ formData, formDefine, headerDefine, footerDefine, imageDefi
 				imagePerRow={imagePerRow}
 				imagePageBreak={imagePageBreak}
 				onPdfRenderCallback={setPdfBlob}
-				getImageKey={(image) => image.SOPInstanceUID}
-				getImageSrc={(image) => image.ImageSrc}
-				compareFunction={(a, b) => (a.MappingNumber > b.MappingNumber ? 1 : -1)}
+				getImageKey={(image) => image.sopInstanceUID}
+				getImageSrc={(image) => image.imageSrc}
 				renderImageDesc={(image) => (
 					<ReactPDF.View
+						key={image.sopInstanceUID}
 						style={{
 							width: '100%',
 							maxWidth: '100%',
@@ -141,8 +141,9 @@ function ReportPDF({ formData, formDefine, headerDefine, footerDefine, imageDefi
 						))}
 					</ReactPDF.View>
 				)}
-				renderImageNumber={(image) => (
+				renderImageNumber={(image: ReportImageData) => (
 					<ReactPDF.Text
+						key={`${image.sopInstanceUID}`}
 						style={{
 							fontWeight: 'bold',
 							fontSize: '18px',
@@ -153,7 +154,7 @@ function ReportPDF({ formData, formDefine, headerDefine, footerDefine, imageDefi
 							top: 0,
 						}}
 					>
-						{image.MappingNumber > 0 && `${image.MappingNumber}`}
+						{image.mappingNumber > 0 && `${image.mappingNumber}`}
 					</ReactPDF.Text>
 				)}
 				contentContainerStyle={{ width: '100%', flexDirection: 'column' }}

@@ -14,6 +14,7 @@ import { isFormControl, isFormControlArray } from '../utils/general.ts';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary.tsx';
 import { LoadingOverlay } from './components/LoadingOverlay/LoadingOverlay.tsx';
 import ReportSection from './components/ReportSection/ReportSection.tsx';
+import ValueChangeWatcher from './components/ValueChangeWatcher/ValueChangeWatcher.tsx';
 import { useReportState } from './hooks/useReportState.ts';
 import classes from './ISVReport.module.scss';
 import { reportPage } from './style.ts';
@@ -32,6 +33,7 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 		defineChangeTriggerCallBack,
 		pageStyle,
 		showFlowButton = true,
+		valueChangeSubscriptions,
 		children,
 	} = props;
 
@@ -91,48 +93,58 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 					)}
 
 					{reportState.isInitialized && !reportState.error && (
-						<Stack
-							id="pageContainer"
-							style={pageStyle?.pageContainer}
-							direction="row"
-							className={classes.pageContainer}
-						>
-							<Box id="reportLayout" className={classes.reportLayout} sx={reportPage}>
-								<Box
-									id="page"
-									style={pageStyle?.page}
-									className={classes.page}
-									sx={{ transform: `scale(${scale})` }}
-								>
-									{formDefine?.sections
-										.filter((section: Section) => !section.hide)
-										.map((section: Section) => (
-											<ReportSection key={section.id} section={section} />
-										))}
-									<Stack id="childrenContainer" direction="column" width="100%" height="fit-content">
-										{children}
-									</Stack>
+						<>
+							{valueChangeSubscriptions?.map((sub) => (
+								<ValueChangeWatcher key={sub.fieldId} fieldId={sub.fieldId} onChange={sub.onChange} />
+							))}
+							<Stack
+								id="pageContainer"
+								style={pageStyle?.pageContainer}
+								direction="row"
+								className={classes.pageContainer}
+							>
+								<Box id="reportLayout" className={classes.reportLayout} sx={reportPage}>
+									<Box
+										id="page"
+										style={pageStyle?.page}
+										className={classes.page}
+										sx={{ transform: `scale(${scale})` }}
+									>
+										{formDefine?.sections
+											.filter((section: Section) => !section.hide)
+											.map((section: Section) => (
+												<ReportSection key={section.id} section={section} />
+											))}
+										<Stack
+											id="childrenContainer"
+											direction="column"
+											width="100%"
+											height="fit-content"
+										>
+											{children}
+										</Stack>
+									</Box>
 								</Box>
-							</Box>
-							{showFlowButton && (
-								<Stack id="flowScaleButton" className={classes.flowButtonContainer}>
-									<IconButton
-										size="large"
-										color="primary"
-										onClick={() => setScale((prev) => prev + 0.2)}
-									>
-										<AddCircleIcon fontSize="large" />
-									</IconButton>
-									<IconButton
-										size="large"
-										color="primary"
-										onClick={() => setScale((prev) => prev - 0.2)}
-									>
-										<RemoveCircleIcon fontSize="large" />
-									</IconButton>
-								</Stack>
-							)}
-						</Stack>
+								{showFlowButton && (
+									<Stack id="flowScaleButton" className={classes.flowButtonContainer}>
+										<IconButton
+											size="large"
+											color="primary"
+											onClick={() => setScale((prev) => prev + 0.2)}
+										>
+											<AddCircleIcon fontSize="large" />
+										</IconButton>
+										<IconButton
+											size="large"
+											color="primary"
+											onClick={() => setScale((prev) => prev - 0.2)}
+										>
+											<RemoveCircleIcon fontSize="large" />
+										</IconButton>
+									</Stack>
+								)}
+							</Stack>
+						</>
 					)}
 				</Box>
 			</ThemeProvider>

@@ -21,9 +21,10 @@ interface Props {
 	formSections: Section[];
 	formData: Record<string, any>;
 	getOptions: (id: string) => any[];
+	getFormValue: (path: (string | number)[]) => any;
 }
 
-function PDFReportContent({ formSections, formData, getOptions }: Props) {
+function PDFReportContent({ formSections, formData, getOptions, getFormValue }: Props) {
 	return (
 		<ReactPDF.View style={{ ...(reportPage as Style), width: '100%' }}>
 			{formSections
@@ -48,6 +49,7 @@ function PDFReportContent({ formSections, formData, getOptions }: Props) {
 															field={field as unknown as ArrayField}
 															formData={formData}
 															getOptions={getOptions}
+															getFormValue={getFormValue}
 														/>
 													);
 												case FormFieldType.Composite:
@@ -57,6 +59,7 @@ function PDFReportContent({ formSections, formData, getOptions }: Props) {
 															field={field as unknown as CompositeField}
 															formData={formData}
 															getOptions={getOptions}
+															getFormValue={getFormValue}
 														/>
 													);
 												case FormFieldType.Paragraph:
@@ -75,6 +78,7 @@ function PDFReportContent({ formSections, formData, getOptions }: Props) {
 															field={field}
 															value={formData[field.id]}
 															getOptions={getOptions}
+															getFormValue={getFormValue}
 														/>
 													);
 											}

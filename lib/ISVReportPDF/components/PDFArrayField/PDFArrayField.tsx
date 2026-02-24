@@ -12,11 +12,12 @@ interface Props {
 	field: ArrayField;
 	formData: Record<string, any>;
 	getOptions: (id: string) => any[];
+	getFormValue: (path: (string | number)[]) => any;
 }
 
 const GenerateArrayFieldId = (fieldId: string, idx: number) => `${fieldId}_${idx}`;
 
-function PDFArrayField({ field, formData, getOptions }: Props) {
+function PDFArrayField({ field, formData, getOptions, getFormValue }: Props) {
 	const fieldRenderer = (): React.JSX.Element => {
 		const { templateField } = field;
 		const valueList = formData[field.id] || [];
@@ -38,6 +39,7 @@ function PDFArrayField({ field, formData, getOptions }: Props) {
 									}
 									formData={valueList[idx]}
 									getOptions={getOptions}
+									getFormValue={getFormValue}
 								/>
 							);
 						})}
@@ -59,6 +61,7 @@ function PDFArrayField({ field, formData, getOptions }: Props) {
 									}}
 									value={val}
 									getOptions={getOptions}
+									getFormValue={getFormValue}
 								/>
 							);
 						})}

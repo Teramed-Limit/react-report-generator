@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { ISVReportGenerator } from '../../lib/main.ts';
 import CustomModal from '../../lib/modals/CustomModal/CustomModal.tsx';
 import { ISVReportGeneratorHandle } from '../../lib/types/component-handle';
-import { fonts } from '../assets/fonts.ts';
 import { codeList } from '../constant/code-list.ts';
 import { useFormDefine } from '../hooks/useFormDefine.ts';
 import { useModalControl } from '../hooks/useModalControl.ts';
@@ -84,7 +83,6 @@ function ReportGenerator() {
 				ref={isvReportGeneratorHandleRef}
 				formData={formData}
 				formDefine={formDefine}
-				fonts={fonts}
 				imageDefine={imageDefine}
 				headerDefine={headerDefine}
 				footerDefine={footerDefine}

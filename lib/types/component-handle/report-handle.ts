@@ -6,4 +6,5 @@ export type ISVReportHandle = {
 	isFormValid(): boolean;
 	setFormData(data: Record<string, any>): void;
 	valueChanged(path: (string | number)[], value: any): void;
+	getFormValue(path: (string | number)[]): any;
 };

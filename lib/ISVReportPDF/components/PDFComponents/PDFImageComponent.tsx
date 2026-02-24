@@ -1,8 +1,7 @@
-import React from 'react';
-
 import ReactPDF from '@react-pdf/renderer';
 
 import { RepImageComponent } from '../../../types/report-generator/component/rep-image-component.ts';
+import { emptyBaseImage } from '../../../utils/general.ts';
 
 interface Props {
 	comp: RepImageComponent;
@@ -19,7 +18,7 @@ function PDFImageComponent({ comp }: Props) {
 				left: comp.x,
 				top: comp.y,
 			}}
-			src={comp.src}
+			src={comp.src || emptyBaseImage()}
 		/>
 	);
 }
