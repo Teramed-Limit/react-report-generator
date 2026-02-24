@@ -136,13 +136,14 @@ function ReportPage({ pageName }: Props) {
 	const onMouseDown = useCallback(() => {
 		const remainActiveComp = Object.values(activeComponentRef.current)[0];
 		isMoving.current = false;
-		setActivePage(page.name);
+		setActivePage(page.name.toLowerCase());
 		if (remainActiveComp) {
 			setActiveCompUUid(remainActiveComp.uuid);
 		}
 		startMove.current = Object.keys(activeComponentRef.current)?.some((uuid) => {
 			return repComponentRef.current[uuid]?.movable();
 		});
+		pageRef.current?.focus();
 	}, [page.name, setActivePage, setActiveCompUUid]);
 
 	const onMouseMove = useCallback((e: React.MouseEvent) => {
@@ -201,7 +202,7 @@ function ReportPage({ pageName }: Props) {
 	}, [onSaveCompPosition]);
 
 	const onClick = useCallback(() => {
-		setActivePage(page.name);
+		setActivePage(page.name.toLowerCase());
 	}, [page.name, setActivePage]);
 
 	const handleCopy = useCallback(() => {
@@ -271,7 +272,7 @@ function ReportPage({ pageName }: Props) {
 				}
 			}
 
-			if (e.code === 'Delete') {
+			if (e.code === 'Delete' || e.code === 'NumpadDecimal') {
 				handleDelete();
 			}
 		},

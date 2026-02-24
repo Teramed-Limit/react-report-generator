@@ -1,17 +1,19 @@
 import React from 'react';
 
-import { Box, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 import * as R from 'ramda';
 import { AiOutlineMinus } from 'react-icons/ai';
 import { BsCardImage } from 'react-icons/bs';
 import { FaMousePointer } from 'react-icons/fa';
 import { IoTextOutline } from 'react-icons/io5';
-import { MdOutlineDescription, MdOutlineTune, MdOutlineWidgets } from 'react-icons/md';
+import { MdDeleteOutline, MdOutlineDescription, MdOutlineTune, MdOutlineWidgets } from 'react-icons/md';
 import { TbNumbers } from 'react-icons/tb';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import {
 	activeCompAttributeAtom,
+	activePageAttributeAtom,
+	activeUidAtom,
 	createRepCompTypeAtom,
 	footerDefineAtom,
 	headerDefineAtom,
@@ -114,6 +116,8 @@ function ReportPropertyPanel() {
 	const [headerDefine, setHeaderDefine] = useRecoilState(headerDefineAtom);
 	const [footerDefine, setFooterDefine] = useRecoilState(footerDefineAtom);
 	const [activeCompAttribute, setActiveCompAttribute] = useRecoilState(activeCompAttributeAtom);
+	const activeUid = useRecoilValue(activeUidAtom);
+	const setActivePageAttribute = useSetRecoilState(activePageAttributeAtom);
 	const setCreateRepCompType = useSetRecoilState(createRepCompTypeAtom);
 	const [value, setValue] = React.useState(0);
 	const [selectedComponentType, setSelectedComponentType] = React.useState<ReportComponentType | null>(null);
@@ -147,6 +151,11 @@ function ReportPropertyPanel() {
 		if (!activeCompAttribute) return;
 		const newValue = R.assocPath([...attrPath], attrValue, activeCompAttribute);
 		setActiveCompAttribute(newValue);
+	};
+
+	const handleDeleteComponent = () => {
+		if (!activeUid) return;
+		setActivePageAttribute((prev) => R.dissocPath(['components', activeUid], prev));
 	};
 
 	return (
@@ -223,6 +232,19 @@ function ReportPropertyPanel() {
 
 				{/* Attribute Tab */}
 				<TabPanel value={value} index={1}>
+					{activeCompAttribute && (
+						<Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+							<Button
+								variant="contained"
+								color="error"
+								size="small"
+								startIcon={<MdDeleteOutline />}
+								onClick={handleDeleteComponent}
+							>
+								Delete
+							</Button>
+						</Box>
+					)}
 					<ReportComponentAttributeList
 						compAttribute={activeCompAttribute}
 						onSetCompAttribute={onSetActiveCompAttribute}
