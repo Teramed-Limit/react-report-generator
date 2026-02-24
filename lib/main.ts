@@ -9,7 +9,13 @@ export * from './types';
 export * from './types/component-handle';
 
 // Export ISVReport specific types for advanced usage
-export type { ISVReportProps, LoadingState, ReportErrorType, ReportInternalState } from './ISVReport/types';
+export type {
+	ISVReportProps,
+	LoadingState,
+	ReportErrorType,
+	ReportInternalState,
+	ValueChangeSubscription,
+} from './ISVReport/types';
 
 // Export utility components for external use if needed
 export { ImageCanvas } from './components/ImageCanvas/ImageCanvas.tsx';

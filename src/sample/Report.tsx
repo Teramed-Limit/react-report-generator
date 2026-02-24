@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Button, Stack } from '@mui/material';
 
 import { FormFieldType } from '../../lib/field/field-type.ts';
-import { ISVReport, PureFieldContainer } from '../../lib/main.ts';
+import { ISVReport, PureFieldContainer, ValueChangeSubscription } from '../../lib/main.ts';
 import CustomModal from '../../lib/modals/CustomModal/CustomModal.tsx';
 import { Field } from '../../lib/types';
 import { ISVReportHandle } from '../../lib/types/component-handle';
@@ -103,6 +103,16 @@ function Report() {
 		openModal();
 	};
 
+	// 訂閱欄位值變動
+	const handlePatientIdChange = useCallback((value: unknown, fieldId: string) => {
+		console.log(`[ValueChangeSubscription] ${fieldId} changed:`, value);
+	}, []);
+
+	const valueChangeSubscriptions = useMemo<ValueChangeSubscription[]>(
+		() => [{ fieldId: 'PatientsAge', onChange: handlePatientIdChange }],
+		[handlePatientIdChange],
+	);
+
 	return (
 		<>
 			<Stack
@@ -132,6 +142,7 @@ function Report() {
 					codeList={codeList as any}
 					structReportParseApi="http://localhost:61818/api/structureReport/load"
 					showFlowButton
+					valueChangeSubscriptions={valueChangeSubscriptions}
 					buttonActionMap={{
 						createTemplate: (field: Field) => {
 							window.alert('Create Template');

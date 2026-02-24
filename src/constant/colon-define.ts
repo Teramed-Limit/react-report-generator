@@ -1174,14 +1174,7 @@ export const colonoscopyDefine: any = {
 							imageSource: {
 								type: 'base64',
 							},
-							labelStyle: {
-								fontSize: 10,
-								color: '#218cc5',
-							},
-							valueStyle: {
-								fontSize: 9,
-							},
-							hideToolbar: true,
+							hideToolbar: false,
 						},
 					],
 					style: {

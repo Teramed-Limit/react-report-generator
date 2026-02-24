@@ -11,9 +11,10 @@ interface Props {
 	field: Field;
 	value: string;
 	getOptions: (id: string) => any[];
+	getFormValue: (path: (string | number)[]) => any;
 }
 
-function PDFField({ field, value, getOptions }: Props) {
+function PDFField({ field, value, getOptions, getFormValue }: Props) {
 	return (
 		<PDFFieldContainer orientation={field.orientation}>
 			{/* Label */}
@@ -24,7 +25,7 @@ function PDFField({ field, value, getOptions }: Props) {
 					width: field.orientation === 'column' ? '100%' : `calc(100% - ${field.labelWidth || '35%'})`,
 				}}
 			>
-				<PDFFieldRenderer field={field} value={value} getOptions={getOptions} />
+				<PDFFieldRenderer field={field} value={value} getOptions={getOptions} getFormValue={getFormValue} />
 			</ReactPDF.View>
 		</PDFFieldContainer>
 	);

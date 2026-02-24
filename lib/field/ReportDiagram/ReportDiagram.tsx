@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import FormatPaintIcon from '@mui/icons-material/FormatPaint';
 import { IconButton, Stack } from '@mui/material';
@@ -43,21 +41,13 @@ function ReportDiagram({ id, field, value, onGetFieldValue, onValueChange, onFie
 	const markersId = `${field.id}Markers`;
 
 	const { open, setOpen, onModalClose } = useModal({});
-	const [imageUrl, setImageUrl] = useState<string>('');
-	const [markers, setMarkers] = useState<any[]>([]);
 
 	const onResetDiagram = () => {
 		onFieldValueChange?.([editId], undefined);
 		onFieldValueChange?.([markersId], []);
-		setImageUrl(processImageSource(value));
-		setMarkers([]);
 	};
 
-	useEffect(() => {
-		const editValue = onGetFieldValue?.([editId]);
-		setImageUrl(processImageSource(editValue ?? value));
-		setMarkers(onGetFieldValue?.([markersId]) ?? []);
-	}, [editId, markersId, onGetFieldValue, value]);
+	const imageUrl = (onGetFieldValue?.([editId]) || processImageSource(value)) ?? '';
 
 	return (
 		<>
@@ -77,13 +67,11 @@ function ReportDiagram({ id, field, value, onGetFieldValue, onValueChange, onFie
 			<CustomModal width="90%" height="90%" label="" open={open} onModalClose={() => onModalClose()}>
 				<ImagePainter
 					imageSrc={processImageSource(value)}
-					initMarkers={markers}
+					initMarkers={onGetFieldValue?.([markersId]) ?? []}
 					onCancel={() => onModalClose()}
 					onExportCanvas={(canvasMarkers, base64) => {
 						onFieldValueChange?.([editId], base64);
 						onFieldValueChange?.([markersId], canvasMarkers);
-						setImageUrl(base64);
-						setMarkers(canvasMarkers);
 						setOpen(false);
 					}}
 				/>

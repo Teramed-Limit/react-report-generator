@@ -1,6 +1,11 @@
 import { CSSProperties } from 'react';
 import { Field, FormDefine, SRTreeNode } from '../../types';
 
+export interface ValueChangeSubscription {
+	fieldId: string;
+	onChange: (value: unknown, fieldId: string) => void;
+}
+
 // 更嚴格的 Props 類型定義
 export interface ISVReportProps {
 	formDefine: FormDefine;
@@ -17,6 +22,7 @@ export interface ISVReportProps {
 		page?: CSSProperties;
 	};
 	showFlowButton?: boolean;
+	valueChangeSubscriptions?: ValueChangeSubscription[];
 	children?: React.ReactNode;
 }
 

@@ -13,9 +13,10 @@ interface Props {
 	field: CompositeField;
 	formData: Record<string, any>;
 	getOptions: (id: string) => any[];
+	getFormValue: (path: (string | number)[]) => any;
 }
 
-function PDFCompositeField({ field, formData, getOptions }: Props) {
+function PDFCompositeField({ field, formData, getOptions, getFormValue }: Props) {
 	return (
 		<PDFFieldContainer orientation={field.orientation}>
 			{/* Label */}
@@ -48,6 +49,7 @@ function PDFCompositeField({ field, formData, getOptions }: Props) {
 									field={compositeChildField}
 									value={compositeChildValue}
 									getOptions={getOptions}
+									getFormValue={getFormValue}
 								/>
 							</ReactPDF.View>
 							{field.joinStr && !isLastJoinStr && (

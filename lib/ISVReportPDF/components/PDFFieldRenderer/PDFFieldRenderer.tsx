@@ -40,9 +40,10 @@ interface Props {
 	field: Field;
 	value: string;
 	getOptions: (id: string) => any[];
+	getFormValue: (path: (string | number)[]) => any;
 }
 
-const PDFFieldRenderer = ({ field, value, getOptions }: Props) => {
+const PDFFieldRenderer = ({ field, value, getOptions, getFormValue }: Props) => {
 	const fieldRenderer = (rendererField, rendererValue) => {
 		switch (rendererField.type) {
 			case FormFieldType.Text:
@@ -169,6 +170,8 @@ const PDFFieldRenderer = ({ field, value, getOptions }: Props) => {
 	};
 
 	const reportDiagram = (renderedField: DiagramField, rendererValue: string) => {
+		const diagramValue = getFormValue([`Edit${renderedField.id}`]) || rendererValue;
+		if (isEmptyOrNil(diagramValue)) return <></>;
 		return (
 			<ReactPDF.Image
 				style={{
@@ -177,7 +180,7 @@ const PDFFieldRenderer = ({ field, value, getOptions }: Props) => {
 					width: renderedField?.width ? renderedField.width : 'auto',
 					height: renderedField?.height ? renderedField.height : 'auto',
 				}}
-				src={rendererValue || emptyBaseImage()}
+				src={diagramValue || emptyBaseImage()}
 			/>
 		);
 	};

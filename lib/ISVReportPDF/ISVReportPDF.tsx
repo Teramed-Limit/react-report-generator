@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import ReactPDF, { OnRenderProps, View } from '@react-pdf/renderer';
 import { Style } from '@react-pdf/types';
+import * as R from 'ramda';
 import { useRecoilValue } from 'recoil';
 import { Observable, Subject, switchMap } from 'rxjs';
 
@@ -140,6 +141,7 @@ export function ISVReportPDF<TImage>({
 	}, [onPdfRenderCallback]);
 
 	const getOptions = useCallback((id: string) => codeListMap[id], [codeListMap]);
+	const getFormValue = useCallback((path: (string | number)[]) => R.path(path, formData), [formData]);
 
 	// 將表單區塊分為頁眉部分和內容部分
 	const headerSections = formDefine.sections.filter((section: Section) => section?.isHeader);
@@ -187,6 +189,7 @@ export function ISVReportPDF<TImage>({
 										formSections={headerSections}
 										formData={formData}
 										getOptions={getOptions}
+										getFormValue={getFormValue}
 									/>
 								</View>
 							</PDFReportHeader>
@@ -201,6 +204,7 @@ export function ISVReportPDF<TImage>({
 										formSections={contentSections}
 										formData={formData}
 										getOptions={getOptions}
+										getFormValue={getFormValue}
 									/>
 									{contentComponent}
 								</View>

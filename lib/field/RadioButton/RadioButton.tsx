@@ -32,7 +32,7 @@ function RadioButton({ id, field, value, onValueChange, disabled }: Props) {
 	};
 
 	return (
-		<RadioGroup row onChange={handleChange}>
+		<RadioGroup row value={value} onChange={handleChange}>
 			{options.map((option) => {
 				return (
 					<FormControlLabel

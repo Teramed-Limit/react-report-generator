@@ -1,8 +1,8 @@
 export interface ReportImageData {
-	SOPInstanceUID: string;
-	ImageSrc: string;
+	sopInstanceUID: string;
+	imageSrc: string;
 	thumbnailImageSrc: string;
-	EditedImageSrc: string;
-	IsAttachInReport: boolean;
-	MappingNumber: number;
+	editedImageSrc: string;
+	isAttachInReport: boolean;
+	mappingNumber: number;
 }
