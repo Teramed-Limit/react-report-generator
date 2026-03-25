@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { ImageCanvas, ImagePainter, PositionMarker } from '../../lib/main.ts';
 import CustomModal from '../../lib/modals/CustomModal/CustomModal.tsx';
 
-const TEST_IMAGE_SRC =
-	'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/800px-Camponotus_flavomarginatus_ant.jpg';
+const TEST_IMAGE_SRC = 'https://picsum.photos/640/480';
 
 const draggableItems = [
 	{ id: 'item-A', label: 'Image A' },

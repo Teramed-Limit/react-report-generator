@@ -83,7 +83,10 @@ export const ISVReport = forwardRef<ISVReportHandle, ISVReportProps>((props, ref
 	return (
 		<ErrorBoundary onError={handleError}>
 			<ThemeProvider theme={rootTheme}>
-				<Box id="reportContainer" sx={{ position: 'relative', height: '100%', overflow: 'auto' }}>
+				<Box
+					id="reportContainer"
+					sx={{ position: 'relative', width: '100%', height: '100%', overflow: 'auto' }}
+				>
 					<LoadingOverlay isLoading={reportState.isLoading} message="Initializing report..." />
 
 					{reportState.error && (
