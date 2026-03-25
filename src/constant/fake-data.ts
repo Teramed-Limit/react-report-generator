@@ -71,8 +71,7 @@ export const fakeData: Record<string, any> = {
 			SedationDosageUnit: '',
 		},
 	],
-	'Field-6': 'dddd',
-	DiagramData: 'http://192.168.50.131:860/Resource/Diagram/7c3d8ccc-a8e6-406d-955d-817ecafb0343.jpeg',
+	DiagramData: 'https://picsum.photos/640/480',
 	DiagramDataMarkers: [
 		{
 			id: '95826310-4591-6159-4f8d-e32452b4aa25',
