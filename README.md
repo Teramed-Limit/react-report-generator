@@ -1,3 +1,5 @@
+> **2.0 lives in the TeraLinkaERS monorepo** (`packages/report-lib`), published as `react-report-lib@2.x` to the same Verdaccio. This repository is the 1.x history and receives no new features.
+
 <img width="500" alt="ViteReactComponentLibrary" src="https://github.com/receter/my-component-library/assets/2504695/dbb53036-d228-477b-8cf8-f61cd6130776">
 
 # NPM Component Library
